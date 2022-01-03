@@ -8,6 +8,7 @@ const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
 const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
 const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
+const Subject = lazy(() => import('../pages/Subject'))
 const Home = lazy(() => import('../pages/Home/Home'))
 const DialogDemo = lazy(() => import('../pages/DialogDemo/DialogDemo'))
 const ToastDemo = lazy(() => import('../pages/ToastDemo/ToastDemo'))
@@ -48,6 +49,11 @@ const routes = [
     path: '/about',
     exact: true,
     element: <About />,
+  },
+  {
+    path: '/subject',
+    exact: true,
+    element: <Subject />,
   },
   {
     path: '/my_account',

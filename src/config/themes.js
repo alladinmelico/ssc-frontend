@@ -1,8 +1,16 @@
-import { green, red, pink } from '@mui/material/colors'
+import { green, red, pink, teal, blueGrey } from '@mui/material/colors'
 
 const themes = [
   {
     id: 'default',
+    color: '#80deea',
+    source: {
+      palette: {
+        primary: teal,
+        secondary: blueGrey,
+        error: red,
+      },
+    },
   },
   {
     id: 'red',

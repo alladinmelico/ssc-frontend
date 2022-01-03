@@ -1,0 +1,19 @@
+.fabIcon {
+  margin: 0 !important;
+  top: auto;
+  right: 20px;
+  bottom: 20px;
+  left: auto;
+  position: fixed !important;
+}
+
+.formModal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 400px;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+}

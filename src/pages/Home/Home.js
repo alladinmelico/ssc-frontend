@@ -7,7 +7,7 @@ const HomePage = () => {
   const intl = useIntl()
 
   return (
-    <Page pageTitle={intl.formatMessage({ id: 'home' })}>
+    <Page pageTitle={intl.formatMessage({ id: 'home' })} >
       <Typography>{intl.formatMessage({ id: 'home' })}</Typography>
     </Page>
   )
