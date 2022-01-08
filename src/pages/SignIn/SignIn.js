@@ -19,14 +19,13 @@ const SignIn = ({ redirectTo = '/' }) => {
 
   const responseGoogle = async response => {
     if (!response.error) {
-      await API.post(`auth?google_id`, {
-        name: response.profileObj.name,
-        email: response.profileObj.email,
-        google_id: response.googleId,
-        avatar: response.profileObj.imageUrl,
-        avatar_original: response.profileObj.imageUrl        
-      }).then(res => {
-        console.log(res)
+      await API.post(`auth`, {
+          name: response.profileObj.name,
+          email: response.profileObj.email,
+          google_id: response.googleId,
+          avatar: response.profileObj.imageUrl,
+          avatar_original: response.profileObj.imageUrl        
+        }).then(res => {
         authenticate({
           ...response.profileObj,
           displayName: response.profileObj.name,
