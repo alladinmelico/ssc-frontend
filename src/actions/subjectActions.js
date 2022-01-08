@@ -137,11 +137,12 @@ export const getAdminSubjects = (page = 1, limit = 10) => async (dispatch) => {
 
         dispatch({ type: ADMIN_SUBJECTS_REQUEST })
 
-        const { data } = await API.get(`subject?page=${page}&limit=${limit}`)
+        const { data } = await API.get(`subject?page=${++page}&limit=${limit}`)
 
+        console.log(data)
         dispatch({
             type: ADMIN_SUBJECTS_SUCCESS,
-            payload: data.data
+            payload: data
         })
 
     } catch (error) {

@@ -44,7 +44,8 @@ export const subjectsReducer = (state = { subjects: [] }, action) => {
     case ADMIN_SUBJECTS_SUCCESS:
       return {
         loading: false,
-        subjects: action.payload,
+        subjects: action.payload.data,
+        count: action.payload.meta.total
       }
 
     case ALL_SUBJECTS_FAIL:

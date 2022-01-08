@@ -1,8 +1,8 @@
 .fabIcon {
   margin: 0 !important;
-  top: auto;
+  bottom: auto;
   right: 20px;
-  bottom: 20px;
+  top: 70px;
   left: auto;
   position: fixed !important;
 }

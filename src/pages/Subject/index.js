@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import Page from 'material-ui-shell/lib/containers/Page';
+import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
@@ -19,17 +20,19 @@ import {
 import { DELETE_SUBJECT_RESET } from "../../constants/subjectConstants"
 
 const Subject = () => {
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [subject, setSubject] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
 
-  const { loading, subjects } = useSelector((state) => state.subjects)
+  const { loading, subjects, count } = useSelector((state) => state.subjects)
   const { error: deleteError, isDeleted } = useSelector((state) => state.subject)
 
   useEffect(() => {
-    dispatch(getAdminSubjects())
+    dispatch(getAdminSubjects(page, rowsPerPage))
 
     if (deleteError) {
       alert.error(deleteError)
@@ -47,47 +50,21 @@ const Subject = () => {
         },
       })
     }
-  }, [dispatch, deleteError, isDeleted])
+  }, [dispatch, deleteError, isDeleted, page, rowsPerPage])
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 100 },
+    { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'code', headerName: 'Code', width: 150 },
+    { field: 'code', headerName: 'Code', width: 300 },
     {
-      field: 'action',
-      headerName: 'Action',
-      sortable: false,
-      renderCell: (params) => {
-        const edit = (e) => {
-          e.stopPropagation(); 
-
-          const api = params.api;
-          const thisRow = {};
-
-          api
-            .getAllColumns()
-            .filter((c) => c.field !== '__check__' && !!c)
-            .forEach(
-              (c) => (thisRow[c.field] = params.getValue(params.id, c.field)),
-            );
-
-          return  setSubject(thisRow);
-        };
-
-        const deleteItem = (e) => {
-          e.stopPropagation(); 
-
-          const api = params.api;
-          const thisRow = {};
-
-          api
-            .getAllColumns()
-            .filter((c) => c.field !== '__check__' && !!c)
-            .forEach(
-              (c) => (thisRow[c.field] = params.getValue(params.id, c.field)),
-            );
-
-          return openDialog({
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      disableExport: true,
+      getActions: (params) => [
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSubject(params)} label="Edit" />,
+        <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
+          openDialog({
             title: intl.formatMessage({
               id: 'dialog_title',
               defaultMessage: 'Dialog Item',
@@ -102,23 +79,12 @@ const Subject = () => {
               defaultMessage: 'YES, Delete',
             }),
             handleAction: (handleClose) => {
-              dispatch(deleteSubject(thisRow.id))
+              dispatch(deleteSubject(params.id))
               handleClose()
             },
-          });
-        };
-
-        return (
-          <Stack direction="row" spacing={1}>
-            <IconButton  onClick={edit}  color="primary" aria-label="Edit">
-              <EditIcon />
-            </IconButton>
-            <IconButton onClick={deleteItem} color="secondary" aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
-          </Stack>
-        );
-      },
+          })
+        } label="Delete" />,
+      ]
     },
   ];
 
@@ -126,7 +92,16 @@ const Subject = () => {
     <Page
       pageTitle={intl.formatMessage({ id: 'subject', defaultMessage: 'Subject' })}
     >
-      <DataTable rows={subjects} columns={columns} loading={loading} loadData={(page, limit) => dispatch(getAdminSubjects(page, limit))} />
+      <DataTable
+        rows={subjects}
+        columns={columns}
+        count={count}
+        loading={loading}
+        page={page}
+        setPage={setPage}
+        rowsPerPage={rowsPerPage}
+        setRowsPerPage={setRowsPerPage}
+      />
       <Box>
         <SubjectForm subject={subject} modalClosed={() => setSubject({})} />
       </Box>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   DataGrid,
   GridToolbar,
@@ -9,19 +9,14 @@ import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
-const DataTable = (props) => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+const DataTable = ({page, setPage, count, rows, columns, loading, rowsPerPage, setRowsPerPage}) => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    props.loadData(page, rowsPerPage)
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-    props.loadData(page, rowsPerPage)
   };
 
   const StyledGridOverlay = styled(GridOverlay)(({ theme }) => ({
@@ -48,7 +43,7 @@ const DataTable = (props) => {
     return (
       <TablePagination
         component="div"
-        count={props.rows.length}
+        count={count}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
@@ -119,9 +114,10 @@ const DataTable = (props) => {
       <div style={{ display: 'flex', height: '100%' }}>
         <div style={{ flexGrow: 1 }}>
           <DataGrid
-            rows={props.rows}
-            columns={props.columns}
-            loading={props.loading}
+            initialState={{ pinnedColumns: { left: ['id'], right: ['actions'] } }}
+            rows={rows}
+            columns={columns}
+            loading={loading}
             components={{
               Toolbar: GridToolbar,
               LoadingOverlay: CustomLoadingOverlay,
