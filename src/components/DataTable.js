@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Scrollbar from 'material-ui-shell/lib/components/Scrollbar';
+import React from 'react';
 import {
   DataGrid,
   GridToolbar,
@@ -116,23 +115,22 @@ const DataTable = (props) => {
   }
 
   return (
-    <Scrollbar>
-      <div style={{ height: 400, width: '100%' }}>
-        <div style={{ display: 'flex', height: '100%' }}>
-          <div style={{ flexGrow: 1 }}>
-            <DataGrid
-              rows={props.rows}
-              columns={props.columns}
-              components={{
-                Toolbar: GridToolbar,
-                LoadingOverlay: CustomLoadingOverlay,
-                NoRowsOverlay: CustomNoRowsOverlay,
-                Pagination: CustomPagination
-              }} />
-          </div>
+    <div style={{ height: '100%', width: '100%' }}>
+      <div style={{ display: 'flex', height: '100%' }}>
+        <div style={{ flexGrow: 1 }}>
+          <DataGrid
+            rows={props.rows}
+            columns={props.columns}
+            loading={props.loading}
+            components={{
+              Toolbar: GridToolbar,
+              LoadingOverlay: CustomLoadingOverlay,
+              NoRowsOverlay: CustomNoRowsOverlay,
+              Pagination: CustomPagination
+            }} />
         </div>
       </div>
-    </Scrollbar>
+    </div>
   );
 };
 export default DataTable;
