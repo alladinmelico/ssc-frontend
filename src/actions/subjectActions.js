@@ -146,7 +146,9 @@ export const getAdminSubjects = (page = 1, limit = 10) => async (dispatch) => {
         })
 
     } catch (error) {
-
+        if (error.response.status === 401) {
+          // localStorage.setItem('auth', JSON.stringify({isAuthenticated: false}))
+        }
         dispatch({
             type: ADMIN_SUBJECTS_FAIL,
             payload: error.response.data.message

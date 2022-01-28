@@ -19,6 +19,7 @@ import {
   Tab,
   ViewList,
   Web,
+  MenuBookOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -159,10 +160,16 @@ const getMenuItems = (props) => {
       leftIcon: <InfoOutlined />,
     },
     {
+      value: '/schedule',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'schedule' }),
+      leftIcon: <MenuBookOutlined />,
+    },
+    {
       value: '/subject',
       visible: true,
       primaryText: intl.formatMessage({ id: 'subject' }),
-      leftIcon: <InfoOutlined />,
+      leftIcon: <MenuBookOutlined />,
     },
     { divider: true },
     {

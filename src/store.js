@@ -9,6 +9,12 @@ import {
   subjectDetailsReducer,
 } from "./reducers/subjectReducers"
 import {
+  schedulesReducer,
+  newScheduleReducer,
+  scheduleReducer,
+  scheduleDetailsReducer,
+} from "./reducers/scheduleReducers"
+import {
   authReducer,
   userReducer,
   forgotPasswordReducer,
@@ -23,6 +29,12 @@ const reducer = combineReducers({
   subjectDetails: subjectDetailsReducer,
   newSubject: newSubjectReducer,
   subject: subjectReducer,
+
+  // schedules
+  schedules: schedulesReducer,
+  scheduleDetails: scheduleDetailsReducer,
+  newSchedule: newScheduleReducer,
+  schedule: scheduleReducer,
 
 
   auth: authReducer,

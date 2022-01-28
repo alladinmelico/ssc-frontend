@@ -5,34 +5,36 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import SubjectForm from './SubjectForm'
+import ScheduleForm from './ScheduleForm'
 import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
-  getAdminSubjects,
-  deleteSubject,
+  getAdminSchedules,
+  deleteSchedule,
   clearErrors,
-} from "../../actions/subjectActions"
-import { DELETE_SUBJECT_RESET } from "../../constants/subjectConstants"
+} from "../../actions/scheduleActions"
+import { DELETE_SCHEDULE_RESET } from "../../constants/scheduleConstants"
 
-const Subject = ({history}) => {
+const Schedule = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [subject, setSubject] = useState({})
+  const [schedule, setSchedule] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
 
-  const { loading, subjects, count, error } = useSelector((state) => state.subjects)
-  const { error: deleteError, isDeleted } = useSelector((state) => state.subject)
+  const { loading, schedules, count, error } = useSelector((state) => state.schedules)
+  const { error: deleteError, isDeleted } = useSelector((state) => state.schedule)
 
   useEffect(() => {
-    dispatch(getAdminSubjects(page, rowsPerPage))
+    dispatch(getAdminSchedules(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
       console.log(history)
       history.push('/signin')
@@ -44,9 +46,9 @@ const Subject = ({history}) => {
     }
 
     if (isDeleted) {
-      dispatch({ type: DELETE_SUBJECT_RESET })
-      dispatch(getAdminSubjects())
-      enqueueSnackbar('Subject successfully added.', {
+      dispatch({ type: DELETE_SCHEDULE_RESET })
+      dispatch(getAdminSchedules())
+      enqueueSnackbar('Schedule successfully added.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -66,7 +68,7 @@ const Subject = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSubject(params)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSchedule(params)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -83,7 +85,7 @@ const Subject = ({history}) => {
               defaultMessage: 'YES, Delete',
             }),
             handleAction: (handleClose) => {
-              dispatch(deleteSubject(params.id))
+              dispatch(deleteSchedule(params.id))
               handleClose()
             },
           })
@@ -92,12 +94,16 @@ const Subject = ({history}) => {
     },
   ];
 
+  const handleOpen = () => {
+  
+  }
+
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'subject', defaultMessage: 'Subject' })}
+      pageTitle={intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedule' })}
     >
       <DataTable
-        rows={subjects}
+        rows={schedules}
         columns={columns}
         count={count}
         loading={loading}
@@ -107,9 +113,11 @@ const Subject = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <SubjectForm subject={subject} modalClosed={() => setSubject({})} />
+        <Fab onClick={handleOpen} color="primary" aria-label="add" className="fabIcon">
+          <AddIcon />
+        </Fab>
       </Box>
     </Page>
   );
 };
-export default Subject;
+export default Schedule;
