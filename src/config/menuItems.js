@@ -171,6 +171,18 @@ const getMenuItems = (props) => {
       primaryText: intl.formatMessage({ id: 'subject' }),
       leftIcon: <MenuBookOutlined />,
     },
+    {
+      value: '/facility',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'facility' }),
+      leftIcon: <MenuBookOutlined />,
+    },
+    {
+      value: '/course',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'course' }),
+      leftIcon: <MenuBookOutlined />,
+    },
     { divider: true },
     {
       primaryText: intl.formatMessage({ id: 'settings' }),
