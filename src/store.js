@@ -9,6 +9,18 @@ import {
   subjectDetailsReducer,
 } from "./reducers/subjectReducers"
 import {
+  facilitiesReducer,
+  newFacilityReducer,
+  facilityReducer,
+  facilityDetailsReducer,
+} from "./reducers/facilityReducers"
+import {
+  sectionsReducer,
+  newSectionReducer,
+  sectionReducer,
+  sectionDetailsReducer,
+} from "./reducers/sectionReducers"
+import {
   schedulesReducer,
   newScheduleReducer,
   scheduleReducer,
@@ -29,6 +41,18 @@ const reducer = combineReducers({
   subjectDetails: subjectDetailsReducer,
   newSubject: newSubjectReducer,
   subject: subjectReducer,
+
+  // facility
+  facilities: facilitiesReducer,
+  facilityDetails: facilityDetailsReducer,
+  newFacility: newFacilityReducer,
+  facility: facilityReducer,
+
+  // sections
+  sections: sectionsReducer,
+  sectionDetails: sectionDetailsReducer,
+  newSection: newSectionReducer,
+  section: sectionReducer,
 
   // schedules
   schedules: schedulesReducer,
