@@ -28,7 +28,7 @@ export const getFacilities = (keyword = '', currentPage = 1) => async (dispatch)
 
         dispatch({ type: ALL_FACILITIES_REQUEST })
 
-        let link = `facility?type=1&${currentPage}`
+        let link = `facility?type=1&page=${currentPage}`
 
         const { data } = await API.get(link)
 

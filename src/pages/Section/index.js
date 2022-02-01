@@ -5,7 +5,7 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import FacilityForm from './FacilityForm'
+import SectionForm from './SectionForm'
 import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,26 +13,26 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
-  getAdminFacilities,
-  deleteFacility,
+  getAdminSections,
+  deleteSection,
   clearErrors,
-} from "../../actions/facilityActions"
-import { DELETE_FACILITY_RESET } from "../../constants/facilityConstants"
+} from "../../actions/sectionActions"
+import { DELETE_SECTION_RESET } from "../../constants/sectionConstants"
 
-const Facility = ({history}) => {
+const Section = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [facility, setFacility] = useState({})
+  const [section, setSection] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
 
-  const { loading, facilities, count, error } = useSelector((state) => state.facilities)
-  const { error: deleteError, isDeleted } = useSelector((state) => state.facility)
+  const { loading, sections, count, error } = useSelector((state) => state.sections)
+  const { error: deleteError, isDeleted } = useSelector((state) => state.section)
 
   useEffect(() => {
-    dispatch(getAdminFacilities(page, rowsPerPage))
+    dispatch(getAdminSections(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
       console.log(history)
       history.push('/signin')
@@ -44,9 +44,9 @@ const Facility = ({history}) => {
     }
 
     if (isDeleted) {
-      dispatch({ type: DELETE_FACILITY_RESET })
-      dispatch(getAdminFacilities())
-      enqueueSnackbar('Facility successfully Deleted.', {
+      dispatch({ type: DELETE_SECTION_RESET })
+      dispatch(getAdminSections())
+      enqueueSnackbar('Section successfully Deleted.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -59,17 +59,15 @@ const Facility = ({history}) => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'code', headerName: 'Code', width: 300 },
-    { field: 'capacity', headerName: 'Capacity', width: 150 },
-    { field: 'type', headerName: 'Type', width: 150 },
-    { field: 'building', headerName: 'Building', width: 150 },
+    { field: 'president_name', headerName: 'President', width: 300 },
+    { field: 'faculty_name', headerName: 'Faculty', width: 300 },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setFacility(params)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSection(params)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -86,7 +84,7 @@ const Facility = ({history}) => {
               defaultMessage: 'YES, Delete',
             }),
             handleAction: (handleClose) => {
-              dispatch(deleteFacility(params.id))
+              dispatch(deleteSection(params.id))
               handleClose()
             },
           })
@@ -97,10 +95,10 @@ const Facility = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'facility', defaultMessage: 'Facility' })}
+      pageTitle={intl.formatMessage({ id: 'section', defaultMessage: 'Section' })}
     >
       <DataTable
-        rows={facilities}
+        rows={sections}
         columns={columns}
         count={count}
         loading={loading}
@@ -110,9 +108,9 @@ const Facility = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <FacilityForm facility={facility} modalClosed={() => setFacility({})} />
+        <SectionForm section={section} modalClosed={() => setSection({})} />
       </Box>
     </Page>
   );
 };
-export default Facility;
+export default Section;
