@@ -4,30 +4,28 @@ import { useForm } from "react-hook-form";
 import TextField from '@mui/material/TextField';
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import { useDispatch, useSelector } from "react-redux"
-import { getAdminFacilities, newFacility, updateFacility, clearErrors } from "../../actions/facilityActions"
-import { NEW_FACILITY_RESET, UPDATE_FACILITY_RESET } from "../../constants/facilityConstants"
+import { getAdminCourses, newCourse, updateCourse, clearErrors } from "../../actions/courseActions"
+import { NEW_COURSE_RESET, UPDATE_COURSE_RESET } from "../../constants/courseConstants"
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 
-export default function FacilityModal ({modalClosed, facility}) {
+export default function CourseModal ({modalClosed, course}) {
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
-  const { loading, error, success } = useSelector((state) => state.newFacility)
+  const { loading, error, success } = useSelector((state) => state.newCourse)
   const {
     loading: updateLoading,
     error: updateError,
     isUpdated,
-  } = useSelector((state) => state.facility) 
+  } = useSelector((state) => state.course) 
   const { auth } = useAuth()
   const { enqueueSnackbar } = useSnackbar()
 
   const schema = yup.object({
     name: yup.string().required(),
     code: yup.string().required(),
-    capacity: yup.number().required(),
-    type: yup.number().required(),
-    building_id: yup.number().required(),
+    department_id: yup.number().required()
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
@@ -35,18 +33,16 @@ export default function FacilityModal ({modalClosed, facility}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', code: '', capacity: 0, type: '', building_id: ''})
+    reset({ name: '', code: '', department_id: '0'})
   }
 
   useEffect(() => {
-    console.log(facility)
-    if(facility.id && !openModal) {
+    console.log(course)
+    if(course.id && !openModal) {
       setOpenModal(true)
-      setValue('name', facility.name)
-      setValue('code', facility.code)
-      setValue('capacity', facility.capacity)
-      setValue('type', facility.type)
-      setValue('building_id', facility.building_id)
+      setValue('name', course.name)
+      setValue('code', course.code)
+      setValue('department_id', course.department_id)
     }
 
     if (error || updateError) {
@@ -55,10 +51,10 @@ export default function FacilityModal ({modalClosed, facility}) {
 
     if (success) {
       resetForm()
-      dispatch({ type: NEW_FACILITY_RESET })
-      dispatch(getAdminFacilities())
+      dispatch({ type: NEW_COURSE_RESET })
+      dispatch(getAdminCourses())
       modalClosed()
-      enqueueSnackbar('Facility successfully added.', {
+      enqueueSnackbar('Course successfully added.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -70,9 +66,9 @@ export default function FacilityModal ({modalClosed, facility}) {
     if (isUpdated) {
       resetForm()     
       modalClosed() 
-      dispatch({ type: UPDATE_FACILITY_RESET })
-      dispatch(getAdminFacilities())
-      enqueueSnackbar('Facility successfully updated.', {
+      dispatch({ type: UPDATE_COURSE_RESET })
+      dispatch(getAdminCourses())
+      enqueueSnackbar('Course successfully updated.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -80,14 +76,14 @@ export default function FacilityModal ({modalClosed, facility}) {
         },
       })
     }
-  }, [dispatch, error, updateError, isUpdated, success, facility])
+  }, [dispatch, error, updateError, isUpdated, success, course])
 
   const onSubmit = async data => {
     console.log(data)
-    if (facility.id) {
-      dispatch(updateFacility(facility.id, data))
+    if (course.id) {
+      dispatch(updateCourse(course.id, data))
     } else {
-      dispatch(newFacility(data))
+      dispatch(newCourse(data))
     }
   };
 
@@ -95,7 +91,7 @@ export default function FacilityModal ({modalClosed, facility}) {
   return (
     <div>
       <FormModal
-        title={facility ? 'Edit Facility' : 'Add Facility'}
+        title={course ? 'Add Course' : 'Edit Course'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
         loading={loading}
@@ -110,7 +106,7 @@ export default function FacilityModal ({modalClosed, facility}) {
           error={errors.name ? true : false}
           label="Name"
           variant="outlined"
-          defaultValue={facility ? facility.name : ''}
+          defaultValue={course ? course.name : ''}
           helperText={errors.name?.message}
           margin="normal"
           fullWidth
@@ -121,46 +117,24 @@ export default function FacilityModal ({modalClosed, facility}) {
           error={errors.code ? true : false}
           label="Code"
           variant="outlined"
-          defaultValue={facility ? facility.code : ''}
+          defaultValue={course ? course.code : ''}
           helperText={errors.code?.message}
           margin="normal"
           fullWidth
         />
+        
         <TextField 
-          {...register("capacity", { required: true, min: 3 })}
-          error={errors.capacity ? true : false}
-          label="Capacity"
-          variant="outlined"
-          defaultValue={facility ? facility.capacity : ''}
-          helperText={errors.capacity?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
-
-        <TextField 
-          {...register("type", { required: true, min: 3 })}
+          {...register("department_id", { required: true, min: 3 })}
           error={errors.type ? true : false}
-          label="Type"
+          label="Department"
           variant="outlined"
-          defaultValue={facility ? facility.type : ''}
-          helperText={errors.type?.message}
+          defaultValue={course ? course.department_id : ''}
+          helperText={errors.department_id?.message}
           margin="normal"
           fullWidth
           type="number"
         />
 
-        <TextField 
-          {...register("building_id", { required: true, min: 3 })}
-          error={errors.building_id ? true : false}
-          label="Building"
-          variant="outlined"
-          defaultValue={facility ? facility.building_id : ''}
-          helperText={errors.building_id?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
       </FormModal>
     </div>
   );
