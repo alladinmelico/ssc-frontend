@@ -28,7 +28,7 @@ export const getFacilities = (keyword = '', currentPage = 1) => async (dispatch)
 
         dispatch({ type: ALL_FACILITIES_REQUEST })
 
-        let link = `facility?type=1&${currentPage}`
+        let link = `facility?type=1&page=${currentPage}`
 
         const { data } = await API.get(link)
 
@@ -137,7 +137,7 @@ export const getAdminFacilities = (page = 1, limit = 10) => async (dispatch) => 
 
         dispatch({ type: ADMIN_FACILITIES_REQUEST })
 
-        const { data } = await API.get(`facility?type=1&page=${++page}&limit=${limit}`)
+        const { data } = await API.get(`facility?page=${++page}&limit=${limit}`)
 
         console.log(data)
         dispatch({

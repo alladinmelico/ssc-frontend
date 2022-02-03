@@ -13,6 +13,7 @@ const Subject = lazy(() => import('../pages/Subject'))
 const Facility = lazy(() => import('../pages/Facility'))
 const Course = lazy(() => import('../pages/Course'))
 const Classroom = lazy(() => import('../pages/Classroom'))
+const Section = lazy(() => import('../pages/Section'))
 const Home = lazy(() => import('../pages/Home/Home'))
 const DialogDemo = lazy(() => import('../pages/DialogDemo/DialogDemo'))
 const ToastDemo = lazy(() => import('../pages/ToastDemo/ToastDemo'))
@@ -96,6 +97,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Classroom />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/section',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Section />
       </AuthorizedRoute>
     ),
   },

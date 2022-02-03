@@ -4,27 +4,28 @@ import { useForm } from "react-hook-form";
 import TextField from '@mui/material/TextField';
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import { useDispatch, useSelector } from "react-redux"
-import { getAdminSubjects, newSubject, updateSubject, clearErrors } from "../../actions/subjectActions"
-import { NEW_SUBJECT_RESET, UPDATE_SUBJECT_RESET } from "../../constants/subjectConstants"
+import { getAdminSections, newSection, updateSection, clearErrors } from "../../actions/sectionActions"
+import { NEW_SECTION_RESET, UPDATE_SECTION_RESET } from "../../constants/sectionConstants"
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 
-export default function SubjectModal ({page, rowsPerPage, modalClosed, subject}) {
+export default function SectionModal ({page, rowsPerPage, modalClosed, section}) {
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
-  const { loading, error, success } = useSelector((state) => state.newSubject)
+  const { loading, error, success } = useSelector((state) => state.newSection)
   const {
     loading: updateLoading,
     error: updateError,
     isUpdated,
-  } = useSelector((state) => state.subject) 
+  } = useSelector((state) => state.section) 
   const { auth } = useAuth()
   const { enqueueSnackbar } = useSnackbar()
 
   const schema = yup.object({
     name: yup.string().required(),
-    code: yup.string().required(),
+    president_id: yup.string().required(),
+    faculty_id: yup.string().required(),
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
@@ -32,14 +33,15 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
   });
 
   const resetForm = () => {
-    reset({ name: '', code: ''})
+    reset({ name: '', president_id: 0, faculty_id: 0})
   }
 
   useEffect(() => {
-    if(subject.id && !openModal) {
+    if(section.id && !openModal) {
       setOpenModal(true)
-      setValue('name', subject.name)
-      setValue('code', subject.code)
+      setValue('name', section.name)
+      setValue('president_id', section.president_id)
+      setValue('faculty_id', section.faculty_id)
     }
 
     if (error || updateError) {
@@ -48,10 +50,10 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
 
     if (success) {
       resetForm()
-      dispatch({ type: NEW_SUBJECT_RESET })
-      dispatch(getAdminSubjects(page, rowsPerPage))
+      dispatch({ type: NEW_SECTION_RESET })
+      dispatch(getAdminSections(page, rowsPerPage))
       modalClosed()
-      enqueueSnackbar('Subject successfully added.', {
+      enqueueSnackbar('Section successfully added.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -63,9 +65,9 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
     if (isUpdated) {
       resetForm()     
       modalClosed() 
-      dispatch({ type: UPDATE_SUBJECT_RESET })
-      dispatch(getAdminSubjects())
-      enqueueSnackbar('Subject successfully updated.', {
+      dispatch({ type: UPDATE_SECTION_RESET })
+      dispatch(getAdminSections())
+      enqueueSnackbar('Section successfully updated.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -73,14 +75,14 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
         },
       })
     }
-  }, [dispatch, error, updateError, isUpdated, success, subject])
+  }, [dispatch, error, updateError, isUpdated, success, section])
 
   const onSubmit = async data => {
     console.log(data)
-    if (subject.id) {
-      dispatch(updateSubject(subject.id, data))
+    if (section.id) {
+      dispatch(updateSection(section.id, data))
     } else {
-      dispatch(newSubject(data))
+      dispatch(newSection(data))
     }
   };
 
@@ -88,7 +90,7 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
   return (
     <div>
       <FormModal
-        title={subject ? 'Edit Subject' : 'Add Subject'}
+        title={section ? 'Add Section' : 'Add Section'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
         loading={loading}
@@ -103,21 +105,34 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
           error={errors.name ? true : false}
           label="Name"
           variant="outlined"
-          defaultValue={subject ? subject.name : ''}
+          defaultValue={section ? section.name : ''}
           helperText={errors.name?.message}
           margin="normal"
           fullWidth
         />
 
         <TextField 
-          {...register("code", { required: true, min: 3 })}
-          error={errors.code ? true : false}
-          label="Code"
+          {...register("president_id", { required: true, min: 3 })}
+          error={errors.president_id ? true : false}
+          label="President"
           variant="outlined"
-          defaultValue={subject ? subject.code : ''}
-          helperText={errors.code?.message}
+          defaultValue={section ? section.president_id : ''}
+          helperText={errors.president_id?.message}
           margin="normal"
           fullWidth
+          type="number"
+        />
+
+      <TextField 
+          {...register("faculty_id", { required: true, min: 3 })}
+          error={errors.faculty_id ? true : false}
+          label="Faculty"
+          variant="outlined"
+          defaultValue={section ? section.faculty_id : ''}
+          helperText={errors.faculty_id?.message}
+          margin="normal"
+          fullWidth
+          type="number"
         />
       </FormModal>
     </div>

@@ -1,55 +1,55 @@
 import {
-  ALL_FACILITIES_REQUEST,
-  ALL_FACILITIES_SUCCESS,
-  ALL_FACILITIES_FAIL,
-  ADMIN_FACILITIES_REQUEST,
-  ADMIN_FACILITIES_SUCCESS,
-  ADMIN_FACILITIES_FAIL,
-  NEW_FACILITY_REQUEST,
-  NEW_FACILITY_SUCCESS,
-  NEW_FACILITY_RESET,
-  NEW_FACILITY_FAIL,
-  DELETE_FACILITY_REQUEST,
-  DELETE_FACILITY_SUCCESS,
-  DELETE_FACILITY_RESET,
-  DELETE_FACILITY_FAIL,
-  UPDATE_FACILITY_REQUEST,
-  UPDATE_FACILITY_SUCCESS,
-  UPDATE_FACILITY_RESET,
-  UPDATE_FACILITY_FAIL,
-  FACILITY_DETAILS_REQUEST,
-  FACILITY_DETAILS_SUCCESS,
-  FACILITY_DETAILS_FAIL,
+  ALL_SECTIONS_REQUEST,
+  ALL_SECTIONS_SUCCESS,
+  ALL_SECTIONS_FAIL,
+  ADMIN_SECTIONS_REQUEST,
+  ADMIN_SECTIONS_SUCCESS,
+  ADMIN_SECTIONS_FAIL,
+  NEW_SECTION_REQUEST,
+  NEW_SECTION_SUCCESS,
+  NEW_SECTION_RESET,
+  NEW_SECTION_FAIL,
+  DELETE_SECTION_REQUEST,
+  DELETE_SECTION_SUCCESS,
+  DELETE_SECTION_RESET,
+  DELETE_SECTION_FAIL,
+  UPDATE_SECTION_REQUEST,
+  UPDATE_SECTION_SUCCESS,
+  UPDATE_SECTION_RESET,
+  UPDATE_SECTION_FAIL,
+  SECTION_DETAILS_REQUEST,
+  SECTION_DETAILS_SUCCESS,
+  SECTION_DETAILS_FAIL,
   CLEAR_ERRORS,
-} from "../constants/facilityConstants"
+} from "../constants/sectionConstants"
 
-export const facilitiesReducer = (state = { facilities: [] }, action) => {
+export const sectionsReducer = (state = { sections: [] }, action) => {
   switch (action.type) {
-    case ALL_FACILITIES_REQUEST:
-    case ADMIN_FACILITIES_REQUEST:
+    case ALL_SECTIONS_REQUEST:
+    case ADMIN_SECTIONS_REQUEST:
       return {
         loading: true,
-        facilities: [],
+        sections: [],
       }
 
-    case ALL_FACILITIES_SUCCESS:
+    case ALL_SECTIONS_SUCCESS:
       return {
         loading: false,
-        facilities: action.payload.facilities,
-        facilitiesCount: action.payload.facilitiesCount,
+        sections: action.payload.sections,
+        sectionsCount: action.payload.sectionsCount,
         resPerPage: action.payload.resPerPage,
-        filteredFacilitiesCount: action.payload.filteredFacilitiesCount,
+        filteredSectionsCount: action.payload.filteredSectionsCount,
       }
 
-    case ADMIN_FACILITIES_SUCCESS:
+    case ADMIN_SECTIONS_SUCCESS:
       return {
         loading: false,
-        facilities: action.payload.data,
+        sections: action.payload.data,
         count: action.payload.meta.total
       }
 
-    case ALL_FACILITIES_FAIL:
-    case ADMIN_FACILITIES_FAIL:
+    case ALL_SECTIONS_FAIL:
+    case ADMIN_SECTIONS_FAIL:
       return {
         loading: false,
         error: action.payload,
@@ -66,28 +66,28 @@ export const facilitiesReducer = (state = { facilities: [] }, action) => {
   }
 }
 
-export const newFacilityReducer = (state = { facility: {} }, action) => {
+export const newSectionReducer = (state = { section: {} }, action) => {
   switch (action.type) {
-    case NEW_FACILITY_REQUEST:
+    case NEW_SECTION_REQUEST:
       return {
         ...state,
         loading: true,
       }
 
-    case NEW_FACILITY_SUCCESS:
+    case NEW_SECTION_SUCCESS:
       return {
         loading: false,
         success: true,
-        facility: action.payload.data,
+        section: action.payload.data,
       }
 
-    case NEW_FACILITY_FAIL:
+    case NEW_SECTION_FAIL:
       return {
         ...state,
         error: action.payload,
       }
 
-    case NEW_FACILITY_RESET:
+    case NEW_SECTION_RESET:
       return {
         ...state,
         success: false,
@@ -104,43 +104,43 @@ export const newFacilityReducer = (state = { facility: {} }, action) => {
   }
 }
 
-export const facilityReducer = (state = {}, action) => {
+export const sectionReducer = (state = {}, action) => {
   switch (action.type) {
-    case DELETE_FACILITY_REQUEST:
-    case UPDATE_FACILITY_REQUEST:
+    case DELETE_SECTION_REQUEST:
+    case UPDATE_SECTION_REQUEST:
       return {
         ...state,
         loading: true,
       }
 
-    case DELETE_FACILITY_SUCCESS:
+    case DELETE_SECTION_SUCCESS:
       return {
         ...state,
         loading: false,
         isDeleted: action.payload,
       }
 
-    case UPDATE_FACILITY_SUCCESS:
+    case UPDATE_SECTION_SUCCESS:
       return {
         ...state,
         loading: false,
         isUpdated: action.payload,
       }
 
-    case DELETE_FACILITY_FAIL:
-    case UPDATE_FACILITY_FAIL:
+    case DELETE_SECTION_FAIL:
+    case UPDATE_SECTION_FAIL:
       return {
         ...state,
         error: action.payload,
       }
 
-    case DELETE_FACILITY_RESET:
+    case DELETE_SECTION_RESET:
       return {
         ...state,
         isDeleted: false,
       }
 
-    case UPDATE_FACILITY_RESET:
+    case UPDATE_SECTION_RESET:
       return {
         ...state,
         isUpdated: false,
@@ -157,21 +157,21 @@ export const facilityReducer = (state = {}, action) => {
   }
 }
 
-export const facilityDetailsReducer = (state = { facility: {} }, action) => {
+export const sectionDetailsReducer = (state = { section: {} }, action) => {
   switch (action.type) {
-    case FACILITY_DETAILS_REQUEST:
+    case SECTION_DETAILS_REQUEST:
       return {
         ...state,
         loading: true,
       }
 
-    case FACILITY_DETAILS_SUCCESS:
+    case SECTION_DETAILS_SUCCESS:
       return {
         loading: false,
-        facility: action.payload,
+        section: action.payload,
       }
 
-    case FACILITY_DETAILS_FAIL:
+    case SECTION_DETAILS_FAIL:
       return {
         ...state,
         error: action.payload,

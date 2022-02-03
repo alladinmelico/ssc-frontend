@@ -5,7 +5,7 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import SubjectForm from './SubjectForm'
+import SectionForm from './SectionForm'
 import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,26 +13,26 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
-  getAdminSubjects,
-  deleteSubject,
+  getAdminSections,
+  deleteSection,
   clearErrors,
-} from "../../actions/subjectActions"
-import { DELETE_SUBJECT_RESET } from "../../constants/subjectConstants"
+} from "../../actions/sectionActions"
+import { DELETE_SECTION_RESET } from "../../constants/sectionConstants"
 
-const Subject = ({history}) => {
+const Section = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [subject, setSubject] = useState({})
+  const [section, setSection] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
 
-  const { loading, subjects, count, error } = useSelector((state) => state.subjects)
-  const { error: deleteError, isDeleted } = useSelector((state) => state.subject)
+  const { loading, sections, count, error } = useSelector((state) => state.sections)
+  const { error: deleteError, isDeleted } = useSelector((state) => state.section)
 
   useEffect(() => {
-    dispatch(getAdminSubjects(page, rowsPerPage))
+    dispatch(getAdminSections(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
       console.log(history)
       history.push('/signin')
@@ -44,9 +44,9 @@ const Subject = ({history}) => {
     }
 
     if (isDeleted) {
-      dispatch({ type: DELETE_SUBJECT_RESET })
-      dispatch(getAdminSubjects())
-      enqueueSnackbar('Subject successfully added.', {
+      dispatch({ type: DELETE_SECTION_RESET })
+      dispatch(getAdminSections())
+      enqueueSnackbar('Section successfully Deleted.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -59,14 +59,15 @@ const Subject = ({history}) => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'code', headerName: 'Code', width: 300 },
+    { field: 'president_name', headerName: 'President', width: 300 },
+    { field: 'faculty_name', headerName: 'Faculty', width: 300 },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSubject(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSection(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -83,7 +84,7 @@ const Subject = ({history}) => {
               defaultMessage: 'YES, Delete',
             }),
             handleAction: (handleClose) => {
-              dispatch(deleteSubject(params.id))
+              dispatch(deleteSection(params.id))
               handleClose()
             },
           })
@@ -94,10 +95,10 @@ const Subject = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'subject', defaultMessage: 'Subject' })}
+      pageTitle={intl.formatMessage({ id: 'section', defaultMessage: 'Section' })}
     >
       <DataTable
-        rows={subjects}
+        rows={sections}
         columns={columns}
         count={count}
         loading={loading}
@@ -107,9 +108,9 @@ const Subject = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <SubjectForm subject={subject} modalClosed={() => setSubject({})} page={page} rowsPerPage={rowsPerPage} />
+        <SectionForm section={section} modalClosed={() => setSection({})} page={page} rowsPerPage={rowsPerPage} />
       </Box>
     </Page>
   );
 };
-export default Subject;
+export default Section;

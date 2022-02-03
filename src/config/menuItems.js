@@ -177,7 +177,7 @@ const getMenuItems = (props) => {
       primaryText: intl.formatMessage({ id: 'facility' }),
       leftIcon: <ApartmentOutlined />,
     },
-    {
+     {
       value: '/course',
       visible: true,
       primaryText: intl.formatMessage({ id: 'course' }),
@@ -188,6 +188,12 @@ const getMenuItems = (props) => {
       visible: true,
       primaryText: intl.formatMessage({ id: 'classroom' }),
       leftIcon: <GroupsOutlined />,
+    },
+    {
+      value: '/section',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'section' }),
+      leftIcon: <MenuBookOutlined />,
     },
     { divider: true },
     {

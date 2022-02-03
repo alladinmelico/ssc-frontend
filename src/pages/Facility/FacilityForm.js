@@ -25,9 +25,9 @@ export default function FacilityModal ({modalClosed, facility}) {
   const schema = yup.object({
     name: yup.string().required(),
     code: yup.string().required(),
-    type: yup.number().required(),
     capacity: yup.number().required(),
-    building_id: yup.string().required(),
+    type: yup.number().required(),
+    building_id: yup.number().required(),
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
@@ -35,7 +35,7 @@ export default function FacilityModal ({modalClosed, facility}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', code: '', type: '0', capacity:'0', building_id: ''})
+    reset({ name: '', code: '', capacity: 0, type: '', building_id: ''})
   }
 
   useEffect(() => {
@@ -44,8 +44,8 @@ export default function FacilityModal ({modalClosed, facility}) {
       setOpenModal(true)
       setValue('name', facility.name)
       setValue('code', facility.code)
-      setValue('type', facility.type)
       setValue('capacity', facility.capacity)
+      setValue('type', facility.type)
       setValue('building_id', facility.building_id)
     }
 
@@ -126,19 +126,6 @@ export default function FacilityModal ({modalClosed, facility}) {
           margin="normal"
           fullWidth
         />
-        
-        <TextField 
-          {...register("type", { required: true, min: 3 })}
-          error={errors.type ? true : false}
-          label="Type"
-          variant="outlined"
-          defaultValue={facility ? facility.type : ''}
-          helperText={errors.type?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
-
         <TextField 
           {...register("capacity", { required: true, min: 3 })}
           error={errors.capacity ? true : false}
@@ -152,16 +139,28 @@ export default function FacilityModal ({modalClosed, facility}) {
         />
 
         <TextField 
+          {...register("type", { required: true, min: 3 })}
+          error={errors.type ? true : false}
+          label="Type"
+          variant="outlined"
+          defaultValue={facility ? facility.type : ''}
+          helperText={errors.type?.message}
+          margin="normal"
+          fullWidth
+          type="number"
+        />
+
+        <TextField 
           {...register("building_id", { required: true, min: 3 })}
           error={errors.building_id ? true : false}
-          label="Building ID"
+          label="Building"
           variant="outlined"
           defaultValue={facility ? facility.building_id : ''}
           helperText={errors.building_id?.message}
           margin="normal"
           fullWidth
+          type="number"
         />
-
       </FormModal>
     </div>
   );

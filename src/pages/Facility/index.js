@@ -3,9 +3,11 @@ import { useIntl } from 'react-intl';
 import Page from 'material-ui-shell/lib/containers/Page';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
+import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import FacilityForm from './FacilityForm'
 import { useDispatch, useSelector } from "react-redux"
+import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
@@ -44,7 +46,7 @@ const Facility = ({history}) => {
     if (isDeleted) {
       dispatch({ type: DELETE_FACILITY_RESET })
       dispatch(getAdminFacilities())
-      enqueueSnackbar('Facility successfully deleted.', {
+      enqueueSnackbar('Facility successfully Deleted.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -57,16 +59,17 @@ const Facility = ({history}) => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'type', headerName: 'Type', width: 150 },
     { field: 'code', headerName: 'Code', width: 300 },
-    { field: 'capacity', headerName: 'Capacity', width: 300 },
+    { field: 'capacity', headerName: 'Capacity', width: 150 },
+    { field: 'type', headerName: 'Type', width: 150 },
+    { field: 'building', headerName: 'Building', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setFacility(params)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setFacility(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -107,7 +110,7 @@ const Facility = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <FacilityForm facility={facility} modalClosed={() => setFacility({})} />
+        <FacilityForm facility={facility} modalClosed={() => setFacility({})} page={page} rowsPerPage={rowsPerPage}/>
       </Box>
     </Page>
   );

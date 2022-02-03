@@ -31,6 +31,13 @@ import {
 } from "./reducers/classroomReducers"
 
 import {
+  sectionsReducer,
+  newSectionReducer,
+  sectionReducer,
+  sectionDetailsReducer,
+} from "./reducers/sectionReducers"
+
+import {
   schedulesReducer,
   newScheduleReducer,
   scheduleReducer,
@@ -57,25 +64,30 @@ const reducer = combineReducers({
   facilityDetails: facilityDetailsReducer,
   newFacility: newFacilityReducer,
   facility: facilityReducer,
- 
+
   // course
   courses: coursesReducer,
   courseDetails: courseDetailsReducer,
   newCourse: newCourseReducer,
   course: courseReducer,
-
-  // classroom
+  
+  // course
   classrooms: classroomsReducer,
   classroomDetails: classroomDetailsReducer,
   newClassroom: newClassroomReducer,
   classroom: classroomReducer,
+
+  // sections
+  sections: sectionsReducer,
+  sectionDetails: sectionDetailsReducer,
+  newSection: newSectionReducer,
+  section: sectionReducer,
 
   // schedules
   schedules: schedulesReducer,
   scheduleDetails: scheduleDetailsReducer,
   newSchedule: newScheduleReducer,
   schedule: scheduleReducer,
-
 
   auth: authReducer,
   user: userReducer,
