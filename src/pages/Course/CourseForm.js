@@ -124,7 +124,7 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
         
         <TextField 
           {...register("department_id", { required: true, min: 3 })}
-          error={errors.type ? true : false}
+          error={errors.department_id ? true : false}
           label="Department"
           variant="outlined"
           defaultValue={course ? course.department_id : ''}

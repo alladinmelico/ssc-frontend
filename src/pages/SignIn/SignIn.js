@@ -8,7 +8,8 @@ import { useTheme } from '@mui/material/styles'
 import CustomPaper from '../../components/CustomPaper'
 import { GoogleLogin } from 'react-google-login'
 import API from '../../config/api'
-
+import { Typography, Grid } from '@mui/material';
+import helloimage from '../../public/Hello-rafiki 1.png';
 
 const SignIn = ({ redirectTo = '/' }) => {
   const intl = useIntl()
@@ -56,27 +57,40 @@ const SignIn = ({ redirectTo = '/' }) => {
   }
 
   return (
-    <Page pageTitle={intl.formatMessage({ id: 'sign_in' })}>
-      <CustomPaper elevation={6}>
-        <div
-          sytle={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: `100%`,
-          }}
-        >
-          <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-            buttonText="Login"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}
-          />
-        </div>
-      </CustomPaper>
-    </Page>
+    <>
+    <Grid
+    container
+    spacing={0}
+    direction="column"
+    alignItems="center"
+    justifyContent="center"
+    >
+      <Grid Item paddingTop={8} maxWidth={500} align={'center'}>
+        <Typography 
+        style={{
+          fontFamily:"Roboto",
+          fontSize:20
+        }}>
+          Welcome to Safe and Smart Campus: A Scheduling and Monitoring System for Technological University of the Philippines - Taguig Campus
+        </Typography>
+      </Grid>
+
+      <Grid Item paddingTop={5} paddingBottom={0}>
+        <GoogleLogin
+        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+        buttonText="Sign In"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={'single_host_origin'}
+        />
+        </Grid>
+
+      <Grid Item paddingTop={0}>
+      <img src={helloimage} height={504} width={429} alt="HelloImage"/>
+      </Grid>
+
+    </Grid>
+    </>
   )
 }
 
