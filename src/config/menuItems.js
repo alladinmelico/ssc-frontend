@@ -19,7 +19,15 @@ import {
   Tab,
   ViewList,
   Web,
-  DashboardOutlined, SettingsOutlined, CalendarTodayOutlined, LibraryBooksOutlined, ApartmentOutlined, HistoryEduOutlined, GroupsOutlined
+  DashboardOutlined, 
+  SettingsOutlined, 
+  CalendarTodayOutlined, 
+  LibraryBooksOutlined, 
+  ApartmentOutlined, 
+  HistoryEduOutlined, 
+  GroupsOutlined, 
+  HomeWorkOutlined, 
+  CreditCardOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -156,50 +164,50 @@ const getMenuItems = (props) => {
     {
       value: '/about',
       visible: true,
-      primaryText: intl.formatMessage({ id: 'about' }),
+      primaryText: intl.formatMessage({ id: 'about', defaultMessage: 'About' }),
       leftIcon: <InfoOutlined />,
     },
     {
       value: '/schedule',
       visible: true,
-      primaryText: intl.formatMessage({ id: 'schedule' }),
+      primaryText: intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedules' }),
       leftIcon: <CalendarTodayOutlined />,
     },
     {
       value: '/subject',
       visible: true,
-      primaryText: intl.formatMessage({ id: 'subject' }),
+      primaryText: intl.formatMessage({ id: 'subject', defaultMessage: 'Subjects' }),
       leftIcon: <LibraryBooksOutlined />,
     },
     {
       value: '/facility',
       visible: true,
-      primaryText: intl.formatMessage({ id: 'facility' }),
+      primaryText: intl.formatMessage({ id: 'facility', defaultMessage: 'Facilties' }),
       leftIcon: <ApartmentOutlined />,
     },
      {
       value: '/course',
       visible: true,
-      primaryText: intl.formatMessage({ id: 'course' }),
+      primaryText: intl.formatMessage({ id: 'course', defaultMessage: 'Courses' }),
       leftIcon: <HistoryEduOutlined />,
     },
     {
       value: '/classroom',
       visible: true,
-      primaryText: intl.formatMessage({ id: 'classroom' }),
-      leftIcon: <GroupsOutlined />,
+      primaryText: intl.formatMessage({ id: 'classroom', defaultMessage: 'Classrooms' }),
+      leftIcon: <HomeWorkOutlined/>,
     },
     {
       value: '/section',
       visible: true,
-      primaryText: intl.formatMessage({ id: 'section' }),
-      leftIcon: <MenuBookOutlined />,
+      primaryText: intl.formatMessage({ id: 'section', defaultMessage: 'Sections' }),
+      leftIcon: <GroupsOutlined />,
     },
     {
       value: '/rfid',
       visible: true,
-      primaryText: intl.formatMessage({ id: 'rfid' }),
-      leftIcon: <MenuBookOutlined />,
+      primaryText: intl.formatMessage({ id: 'rfid', defaultMessage: 'RFIDs' }),
+      leftIcon: <CreditCardOutlined />,
     },
     { divider: true },
     {
