@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 
-export default function SectionModal ({modalClosed, section}) {
+export default function SectionModal ({page, rowsPerPage, modalClosed, section}) {
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newSection)
@@ -37,7 +37,6 @@ export default function SectionModal ({modalClosed, section}) {
   }
 
   useEffect(() => {
-    console.log(section)
     if(section.id && !openModal) {
       setOpenModal(true)
       setValue('name', section.name)
@@ -52,7 +51,7 @@ export default function SectionModal ({modalClosed, section}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_SECTION_RESET })
-      dispatch(getAdminSections())
+      dispatch(getAdminSections(page, rowsPerPage))
       modalClosed()
       enqueueSnackbar('Section successfully added.', {
         variant: 'success',

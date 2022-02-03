@@ -137,7 +137,7 @@ export const getAdminFacilities = (page = 1, limit = 10) => async (dispatch) => 
 
         dispatch({ type: ADMIN_FACILITIES_REQUEST })
 
-        const { data } = await API.get(`facility?type=1&page=${++page}&limit=${limit}`)
+        const { data } = await API.get(`facility?page=${++page}&limit=${limit}`)
 
         console.log(data)
         dispatch({

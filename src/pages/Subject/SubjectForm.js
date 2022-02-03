@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 
-export default function SubjectModal ({modalClosed, subject}) {
+export default function SubjectModal ({page, rowsPerPage, modalClosed, subject}) {
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newSubject)
@@ -36,7 +36,6 @@ export default function SubjectModal ({modalClosed, subject}) {
   }
 
   useEffect(() => {
-    console.log(subject)
     if(subject.id && !openModal) {
       setOpenModal(true)
       setValue('name', subject.name)
@@ -50,7 +49,7 @@ export default function SubjectModal ({modalClosed, subject}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_SUBJECT_RESET })
-      dispatch(getAdminSubjects())
+      dispatch(getAdminSubjects(page, rowsPerPage))
       modalClosed()
       enqueueSnackbar('Subject successfully added.', {
         variant: 'success',

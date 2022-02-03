@@ -66,7 +66,7 @@ const Subject = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSubject(params)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSubject(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -107,7 +107,7 @@ const Subject = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <SubjectForm subject={subject} modalClosed={() => setSubject({})} />
+        <SubjectForm subject={subject} modalClosed={() => setSubject({})} page={page} rowsPerPage={rowsPerPage} />
       </Box>
     </Page>
   );

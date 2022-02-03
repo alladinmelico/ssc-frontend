@@ -69,7 +69,7 @@ const Facility = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setFacility(params)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setFacility(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -110,7 +110,7 @@ const Facility = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <FacilityForm facility={facility} modalClosed={() => setFacility({})} />
+        <FacilityForm facility={facility} modalClosed={() => setFacility({})} page={page} rowsPerPage={rowsPerPage}/>
       </Box>
     </Page>
   );
