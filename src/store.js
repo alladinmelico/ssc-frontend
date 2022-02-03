@@ -23,24 +23,34 @@ import {
   courseDetailsReducer,
 } from "./reducers/courseReducers"
 
-import {
-  facilitiesReducer,
-  newFacilityReducer,
-  facilityReducer,
-  facilityDetailsReducer,
-} from "./reducers/facilityReducers"
+// import {
+//   facilitiesReducer,
+//   newFacilityReducer,
+//   facilityReducer,
+//   facilityDetailsReducer,
+// } from "./reducers/facilityReducers"
+
 import {
   sectionsReducer,
   newSectionReducer,
   sectionReducer,
   sectionDetailsReducer,
 } from "./reducers/sectionReducers"
+
 import {
   schedulesReducer,
   newScheduleReducer,
   scheduleReducer,
   scheduleDetailsReducer,
 } from "./reducers/scheduleReducers"
+
+import {
+  rfidsReducer,
+  newRfidReducer,
+  rfidReducer,
+  rfidDetailsReducer,
+} from "./reducers/rfidReducers"
+
 import {
   authReducer,
   userReducer,
@@ -81,7 +91,13 @@ const reducer = combineReducers({
   newSchedule: newScheduleReducer,
   schedule: scheduleReducer,
 
+  // rfid
+  rfids: rfidsReducer,
+  rfidDetails: rfidDetailsReducer,
+  newRfid: newRfidReducer,
+  rfid: rfidReducer,
 
+  //auth
   auth: authReducer,
   user: userReducer,
   allUsers: allUsersReducer,
