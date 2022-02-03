@@ -24,12 +24,6 @@ import {
 } from "./reducers/courseReducers"
 
 import {
-  facilitiesReducer,
-  newFacilityReducer,
-  facilityReducer,
-  facilityDetailsReducer,
-} from "./reducers/facilityReducers"
-import {
   sectionsReducer,
   newSectionReducer,
   sectionReducer,
