@@ -9,6 +9,7 @@ const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
 const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
 const Schedule = lazy(() => import('../pages/Schedule'))
+const Rfid = lazy(() => import('../pages/Rfid'))
 const Subject = lazy(() => import('../pages/Subject'))
 const Facility = lazy(() => import('../pages/Facility'))
 const Course = lazy(() => import('../pages/Course'))
@@ -106,6 +107,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Section />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/rfid',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Rfid />
       </AuthorizedRoute>
     ),
   },

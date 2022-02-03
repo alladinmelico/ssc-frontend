@@ -195,6 +195,12 @@ const getMenuItems = (props) => {
       primaryText: intl.formatMessage({ id: 'section' }),
       leftIcon: <MenuBookOutlined />,
     },
+    {
+      value: '/rfid',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'rfid' }),
+      leftIcon: <MenuBookOutlined />,
+    },
     { divider: true },
     {
       primaryText: intl.formatMessage({ id: 'settings' }),
