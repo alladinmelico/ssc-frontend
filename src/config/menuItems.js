@@ -19,7 +19,7 @@ import {
   Tab,
   ViewList,
   Web,
-  MenuBookOutlined
+  DashboardOutlined, SettingsOutlined, CalendarTodayOutlined, LibraryBooksOutlined, ApartmentOutlined, HistoryEduOutlined, GroupsOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -99,7 +99,7 @@ const getMenuItems = (props) => {
       value: '/home',
       visible: isAuthorised,
       primaryText: intl.formatMessage({ id: 'home' }),
-      leftIcon: <DashboardIcon />,
+      leftIcon: <DashboardOutlined />,
     },
     {
       primaryText: intl.formatMessage({ id: 'demos', defaultMessage: 'Demos' }),
@@ -163,31 +163,37 @@ const getMenuItems = (props) => {
       value: '/schedule',
       visible: true,
       primaryText: intl.formatMessage({ id: 'schedule' }),
-      leftIcon: <MenuBookOutlined />,
+      leftIcon: <CalendarTodayOutlined />,
     },
     {
       value: '/subject',
       visible: true,
       primaryText: intl.formatMessage({ id: 'subject' }),
-      leftIcon: <MenuBookOutlined />,
+      leftIcon: <LibraryBooksOutlined />,
     },
     {
       value: '/facility',
       visible: true,
       primaryText: intl.formatMessage({ id: 'facility' }),
-      leftIcon: <MenuBookOutlined />,
+      leftIcon: <ApartmentOutlined />,
     },
     {
       value: '/course',
       visible: true,
       primaryText: intl.formatMessage({ id: 'course' }),
-      leftIcon: <MenuBookOutlined />,
+      leftIcon: <HistoryEduOutlined />,
+    },
+    {
+      value: '/classroom',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'classroom' }),
+      leftIcon: <GroupsOutlined />,
     },
     { divider: true },
     {
       primaryText: intl.formatMessage({ id: 'settings' }),
       primaryTogglesNestedList: true,
-      leftIcon: <SettingsIcon />,
+      leftIcon: <SettingsOutlined />,
       nestedItems: [
         {
           primaryText: intl.formatMessage({ id: 'theme' }),
