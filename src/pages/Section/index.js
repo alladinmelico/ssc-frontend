@@ -67,7 +67,7 @@ const Section = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSection(params)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSection(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -108,7 +108,7 @@ const Section = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <SectionForm section={section} modalClosed={() => setSection({})} />
+        <SectionForm section={section} modalClosed={() => setSection({})} page={page} rowsPerPage={rowsPerPage} />
       </Box>
     </Page>
   );

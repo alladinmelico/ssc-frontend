@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 
-export default function CourseModal ({modalClosed, course}) {
+export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newCourse)
@@ -37,7 +37,6 @@ export default function CourseModal ({modalClosed, course}) {
   }
 
   useEffect(() => {
-    console.log(course)
     if(course.id && !openModal) {
       setOpenModal(true)
       setValue('name', course.name)
@@ -52,7 +51,7 @@ export default function CourseModal ({modalClosed, course}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_COURSE_RESET })
-      dispatch(getAdminCourses())
+      dispatch(getAdminCourses(page, rowsPerPage))
       modalClosed()
       enqueueSnackbar('Course successfully added.', {
         variant: 'success',
@@ -125,7 +124,7 @@ export default function CourseModal ({modalClosed, course}) {
         
         <TextField 
           {...register("department_id", { required: true, min: 3 })}
-          error={errors.type ? true : false}
+          error={errors.department_id ? true : false}
           label="Department"
           variant="outlined"
           defaultValue={course ? course.department_id : ''}

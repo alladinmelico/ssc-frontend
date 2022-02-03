@@ -65,7 +65,7 @@ const Course = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setCourse(params)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setCourse(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -106,7 +106,7 @@ const Course = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <CourseForm course={course} modalClosed={() => setCourse({})} />
+        <CourseForm course={course} modalClosed={() => setCourse({})} page={page} rowsPerPage={rowsPerPage} />
       </Box>
     </Page>
   );

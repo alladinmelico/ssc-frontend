@@ -13,6 +13,7 @@ const Rfid = lazy(() => import('../pages/Rfid'))
 const Subject = lazy(() => import('../pages/Subject'))
 const Facility = lazy(() => import('../pages/Facility'))
 const Course = lazy(() => import('../pages/Course'))
+const Classroom = lazy(() => import('../pages/Classroom'))
 const Section = lazy(() => import('../pages/Section'))
 const Home = lazy(() => import('../pages/Home/Home'))
 const DialogDemo = lazy(() => import('../pages/DialogDemo/DialogDemo'))
@@ -88,6 +89,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Course />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/classroom',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Classroom />
       </AuthorizedRoute>
     ),
   },

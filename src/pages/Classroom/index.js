@@ -3,36 +3,34 @@ import { useIntl } from 'react-intl';
 import Page from 'material-ui-shell/lib/containers/Page';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
-import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import SubjectForm from './SubjectForm'
+import ClassroomForm from './ClassroomForm'
 import { useDispatch, useSelector } from "react-redux"
-import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
-  getAdminSubjects,
-  deleteSubject,
+  getAdminClassrooms,
+  deleteClassroom,
   clearErrors,
-} from "../../actions/subjectActions"
-import { DELETE_SUBJECT_RESET } from "../../constants/subjectConstants"
+} from "../../actions/classroomActions"
+import { DELETE_CLASSROOM_RESET } from "../../constants/classroomConstants"
 
-const Subject = ({history}) => {
+const Classroom = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [subject, setSubject] = useState({})
+  const [classroom, setClassroom] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
 
-  const { loading, subjects, count, error } = useSelector((state) => state.subjects)
-  const { error: deleteError, isDeleted } = useSelector((state) => state.subject)
+  const { loading, classrooms, count, error } = useSelector((state) => state.classrooms)
+  const { error: deleteError, isDeleted } = useSelector((state) => state.classroom)
 
   useEffect(() => {
-    dispatch(getAdminSubjects(page, rowsPerPage))
+    dispatch(getAdminClassrooms(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
       console.log(history)
       history.push('/signin')
@@ -44,9 +42,9 @@ const Subject = ({history}) => {
     }
 
     if (isDeleted) {
-      dispatch({ type: DELETE_SUBJECT_RESET })
-      dispatch(getAdminSubjects())
-      enqueueSnackbar('Subject successfully added.', {
+      dispatch({ type: DELETE_CLASSROOM_RESET })
+      dispatch(getAdminClassrooms())
+      enqueueSnackbar('Classroom successfully deleted.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -59,14 +57,18 @@ const Subject = ({history}) => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'code', headerName: 'Code', width: 300 },
+    { field: 'description_heading', headerName: 'Description Heading', width: 300 },
+    { field: 'description', headerName: 'Description', width: 150 },
+    { field: 'google_classroom_id', headerName: 'Google Classroom ID', width: 150 },
+    { field: 'section', headerName: 'Section', width: 150 },
+    { field: 'subject_id', headerName: 'Subject ID', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSubject(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setClassroom(params)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -83,7 +85,7 @@ const Subject = ({history}) => {
               defaultMessage: 'YES, Delete',
             }),
             handleAction: (handleClose) => {
-              dispatch(deleteSubject(params.id))
+              dispatch(deleteClassroom(params.id))
               handleClose()
             },
           })
@@ -94,10 +96,10 @@ const Subject = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'subject', defaultMessage: 'Subject' })}
+      pageTitle={intl.formatMessage({ id: 'classroom', defaultMessage: 'Classroom' })}
     >
       <DataTable
-        rows={subjects}
+        rows={classrooms}
         columns={columns}
         count={count}
         loading={loading}
@@ -107,9 +109,9 @@ const Subject = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <SubjectForm subject={subject} modalClosed={() => setSubject({})} page={page} rowsPerPage={rowsPerPage} />
+        <ClassroomForm classroom={classroom} modalClosed={() => setClassroom({})} />
       </Box>
     </Page>
   );
 };
-export default Subject;
+export default Classroom;

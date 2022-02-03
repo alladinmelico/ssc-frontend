@@ -23,12 +23,12 @@ import {
   courseDetailsReducer,
 } from "./reducers/courseReducers"
 
-// import {
-//   facilitiesReducer,
-//   newFacilityReducer,
-//   facilityReducer,
-//   facilityDetailsReducer,
-// } from "./reducers/facilityReducers"
+import {
+  classroomsReducer,
+  newClassroomReducer,
+  classroomReducer,
+  classroomDetailsReducer,
+} from "./reducers/classroomReducers"
 
 import {
   sectionsReducer,
@@ -78,6 +78,12 @@ const reducer = combineReducers({
   courseDetails: courseDetailsReducer,
   newCourse: newCourseReducer,
   course: courseReducer,
+  
+  // course
+  classrooms: classroomsReducer,
+  classroomDetails: classroomDetailsReducer,
+  newClassroom: newClassroomReducer,
+  classroom: classroomReducer,
 
   // sections
   sections: sectionsReducer,
