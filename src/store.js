@@ -52,6 +52,13 @@ import {
 } from "./reducers/rfidReducers"
 
 import {
+  temperaturesReducer,
+  newTemperatureReducer,
+  temperatureReducer,
+  temperatureDetailsReducer,
+} from "./reducers/temperatureReducers"
+
+import {
   authReducer,
   userReducer,
   forgotPasswordReducer,
@@ -102,6 +109,12 @@ const reducer = combineReducers({
   rfidDetails: rfidDetailsReducer,
   newRfid: newRfidReducer,
   rfid: rfidReducer,
+
+  // temperature
+  temperatures: temperaturesReducer,
+  temperatureDetails: temperatureDetailsReducer,
+  newTemperature: newTemperatureReducer,
+  temperature: temperatureReducer,
 
   //auth
   auth: authReducer,
