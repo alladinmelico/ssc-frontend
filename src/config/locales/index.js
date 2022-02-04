@@ -14,6 +14,11 @@ const locales = [
     messages: import('./de'),
     //loadData: import(`@formatjs/intl-relativetimeformat/dist/locale-data/de`),
   },
+  {
+    locale: 'fil',
+    messages: import('./fil'),
+    //loadData: import(`@formatjs/intl-relativetimeformat/dist/locale-data/fil`),
+  },
 ]
 
 export default locales
