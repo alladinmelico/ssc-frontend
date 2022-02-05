@@ -20,6 +20,7 @@ import {
   clearErrors,
 } from "../../actions/scheduleActions"
 import { DELETE_SCHEDULE_RESET } from "../../constants/scheduleConstants"
+import { Link } from "react-router-dom"
 
 const Schedule = ({history}) => {
   const [page, setPage] = useState(0)
@@ -95,7 +96,7 @@ const Schedule = ({history}) => {
   ];
 
   const handleOpen = () => {
-  
+    history.push('/schedule/create')
   }
 
   return (
@@ -113,9 +114,11 @@ const Schedule = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <Fab onClick={handleOpen} color="primary" aria-label="add" className="fabIcon">
-          <AddIcon />
-        </Fab>
+        <Link to="/schedule/create">
+          <Fab onClick={handleOpen} color="primary" aria-label="add" className="fabIcon">
+            <AddIcon />
+          </Fab>
+        </Link>
       </Box>
     </Page>
   );

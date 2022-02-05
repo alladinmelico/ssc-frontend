@@ -9,9 +9,15 @@ import { NEW_FACILITY_RESET, UPDATE_FACILITY_RESET } from "../../constants/facil
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
-export default function FacilityModal ({modalClosed, facility}) {
+
+export default function FacilityModal ({page, rowsPerPage, modalClosed, facility}) {
   const [openModal, setOpenModal] = useState(false)
+  const [buildings, setBuildings] = useState([])
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newFacility)
   const {
@@ -39,7 +45,7 @@ export default function FacilityModal ({modalClosed, facility}) {
   }
 
   useEffect(() => {
-    console.log(facility)
+    console.log('facility', facility);
     if(facility.id && !openModal) {
       setOpenModal(true)
       setValue('name', facility.name)
@@ -56,7 +62,7 @@ export default function FacilityModal ({modalClosed, facility}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_FACILITY_RESET })
-      dispatch(getAdminFacilities())
+      dispatch(getAdminFacilities(page, rowsPerPage))
       modalClosed()
       enqueueSnackbar('Facility successfully added.', {
         variant: 'success',
@@ -149,6 +155,25 @@ export default function FacilityModal ({modalClosed, facility}) {
           fullWidth
           type="number"
         />
+
+        <FormControl fullWidth required>
+          <InputLabel id="building-select-label">Building</InputLabel>
+          <Select
+            {...register("building_id", { required: true, min: 3 })}
+            labelId="building-select-label"
+            id="building-select"
+            error={errors.building_id ? true : false}
+            value={facility ? facility.building_id : ''}
+            label="Building"
+            required
+            fullWidth
+            margin="normal"
+          >
+            {buildings.map(item => (
+              <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <TextField 
           {...register("building_id", { required: true, min: 3 })}
