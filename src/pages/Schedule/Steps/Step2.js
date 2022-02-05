@@ -74,18 +74,6 @@ export default function Step2({history, activeStep, setActiveStep}) {
 
   const submit = (event) => {
     event.preventDefault()
-    console.log({
-        ...schedule,
-        facility_id: facility,
-        start_at: startTime,
-        end_at: endTime,
-        start_date: startDate,
-        end_date: endDate,
-        is_recurring: isRecurring,
-        is_end_of_sem: isEndOfSem,
-        days_of_week: daysOfWeek,
-        repeat_by: repeatBy
-      });
     dispatch({
       type: NEW_SCHEDULE_REQUEST,
       payload: {
