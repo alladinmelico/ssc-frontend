@@ -27,7 +27,10 @@ import {
   HistoryEduOutlined, 
   GroupsOutlined, 
   HomeWorkOutlined, 
-  CreditCardOutlined
+  CreditCardOutlined,
+  DevicesOutlined,
+  ThermostatOutlined,
+  PersonOutlineOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -174,6 +177,12 @@ const getMenuItems = (props) => {
       leftIcon: <CalendarTodayOutlined />,
     },
     {
+      value: '/user',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'user', defaultMessage: 'Users' }),
+      leftIcon: <PersonOutlineOutlined />,
+    },
+    {
       value: '/subject',
       visible: true,
       primaryText: intl.formatMessage({ id: 'subject', defaultMessage: 'Subjects' }),
@@ -204,10 +213,23 @@ const getMenuItems = (props) => {
       leftIcon: <GroupsOutlined />,
     },
     {
-      value: '/rfid',
-      visible: true,
-      primaryText: intl.formatMessage({ id: 'rfid', defaultMessage: 'RFIDs' }),
-      leftIcon: <CreditCardOutlined />,
+      primaryText: intl.formatMessage({ id: 'hardware', defaultMessage: 'Hardware' }),
+      primaryTogglesNestedList: true,
+      leftIcon: <DevicesOutlined />,
+      nestedItems: [
+        {
+          value: '/rfid',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({ id: 'rfid', defaultMessage: 'RFIDs' }),
+          leftIcon: <CreditCardOutlined />,
+        },
+        {
+          value: '/temperature',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({ id: 'temperature', defaultMessage: 'Temperature' }),
+          leftIcon: <ThermostatOutlined />,
+        },
+      ],
     },
     { divider: true },
     {

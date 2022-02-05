@@ -52,11 +52,20 @@ import {
 } from "./reducers/rfidReducers"
 
 import {
+  temperaturesReducer,
+  newTemperatureReducer,
+  temperatureReducer,
+  temperatureDetailsReducer,
+} from "./reducers/temperatureReducers"
+
+import {
   authReducer,
   userReducer,
   forgotPasswordReducer,
   allUsersReducer,
   userDetailsReducer,
+  newUserReducer,
+  usersReducer
 } from "./reducers/userReducers"
 
 const reducer = combineReducers({
@@ -103,12 +112,20 @@ const reducer = combineReducers({
   newRfid: newRfidReducer,
   rfid: rfidReducer,
 
+  // temperature
+  temperatures: temperaturesReducer,
+  temperatureDetails: temperatureDetailsReducer,
+  newTemperature: newTemperatureReducer,
+  temperature: temperatureReducer,
+
   //auth
   auth: authReducer,
   user: userReducer,
   allUsers: allUsersReducer,
   userDetails: userDetailsReducer,
-  forgotPassword: forgotPasswordReducer
+  forgotPassword: forgotPasswordReducer,
+  newUser: newUserReducer,
+  users: usersReducer,
 })
 
 const middleware = [thunk]

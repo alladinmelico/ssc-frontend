@@ -10,7 +10,9 @@ const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
 const Schedule = lazy(() => import('../pages/Schedule'))
 const ScheduleCreate = lazy(() => import('../pages/Schedule/ScheduleCreate'))
+const User = lazy(() => import('../pages/User'))
 const Rfid = lazy(() => import('../pages/Rfid'))
+const Temperature = lazy(() => import('../pages/Temperature'))
 const Subject = lazy(() => import('../pages/Subject'))
 const Facility = lazy(() => import('../pages/Facility'))
 const Course = lazy(() => import('../pages/Course'))
@@ -76,6 +78,15 @@ const routes = [
     ),
   },
   {
+    path: '/user',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <User />
+      </AuthorizedRoute>
+    ),
+  },
+  {
     path: '/subject',
     exact: true,
     element: (
@@ -126,6 +137,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Rfid />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/temperature',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Temperature />
       </AuthorizedRoute>
     ),
   },

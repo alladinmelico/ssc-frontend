@@ -21,6 +21,7 @@ const messages = defineMessages({
   en: 'Englisch',
   de: 'Deutsch',
   ru: 'Russisch',
+  fil: 'Philippinisch',
   menu: 'Menü',
   menu_mini_mode: 'Mini-Menü',
   offline: 'Offline',
