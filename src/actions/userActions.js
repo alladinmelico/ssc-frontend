@@ -1,4 +1,4 @@
-import axios from 'axios'
+import API from '../config/api'
 import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
@@ -39,7 +39,10 @@ import {
     GOOGLE_SIGN_IN_REQUEST,
     GOOGLE_SIGN_IN_SUCCESS,
     GOOGLE_SIGN_IN_FAIL
+
 } from '../constants/userConstants'
+
+
 
 // Login
 export const login = (email, password) => async (dispatch) => {
@@ -47,13 +50,9 @@ export const login = (email, password) => async (dispatch) => {
 
         dispatch({ type: LOGIN_REQUEST })
 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
+     
 
-        const { data } = await axios.post('/api/v1/login', { email, password }, config)
+        const { data } = await API.post('/login', { email, password })
 
         console.log('user', data)
         localStorage.setItem('token', data.token)
@@ -79,13 +78,8 @@ export const register = (userData) => async (dispatch) => {
 
         dispatch({ type: REGISTER_USER_REQUEST })
 
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
 
-        const { data } = await axios.post('/api/v1/register', userData, config)
+        const { data } = await API.post('/register', userData)
 
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
@@ -118,7 +112,7 @@ export const loadUser = () => async (dispatch) => {
           return
         }
 
-        const { data } = await axios.get('/api/v1/me')
+        const { data } = await API.get('/me')
 
         localStorage.setItem('user', JSON.stringify(data.user))
 
@@ -158,13 +152,7 @@ export const updateProfile = (userData) => async (dispatch) => {
 
         dispatch({ type: UPDATE_PROFILE_REQUEST })
 
-        const config = {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-
-        const { data } = await axios.put('/api/v1/me/update', userData, config)
+        const { data } = await API.put('/me/update', userData)
 
         dispatch({
             type: UPDATE_PROFILE_SUCCESS,
@@ -185,13 +173,7 @@ export const updatePassword = (passwords) => async (dispatch) => {
 
         dispatch({ type: UPDATE_PASSWORD_REQUEST })
 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        const { data } = await axios.put('/api/v1/password/update', passwords, config)
+        const { data } = await API.put('/password/update', passwords)
 
         dispatch({
             type: UPDATE_PASSWORD_SUCCESS,
@@ -212,13 +194,8 @@ export const forgotPassword = (email) => async (dispatch) => {
 
         dispatch({ type: FORGOT_PASSWORD_REQUEST })
 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
 
-        const { data } = await axios.post('/api/v1/password/forgot', email, config)
+        const { data } = await API.post('/password/forgot', email)
 
         dispatch({
             type: FORGOT_PASSWORD_SUCCESS,
@@ -239,13 +216,7 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
 
         dispatch({ type: NEW_PASSWORD_REQUEST })
 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        const { data } = await axios.put(`/api/v1/password/reset/${token}`, passwords, config)
+        const { data } = await API.put(`/password/reset/${token}`, passwords)
 
         dispatch({
             type: NEW_PASSWORD_SUCCESS,
@@ -264,7 +235,7 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
     try {
 
-        await axios.get('/api/v1/logout')
+        await API.get('/logout')
 
         localStorage.removeItem('user')
         localStorage.removeItem('token')
@@ -287,11 +258,12 @@ export const allUsers = () => async (dispatch) => {
 
         dispatch({ type: ALL_USERS_REQUEST })
 
-        const { data } = await axios.get('/api/v1/admin/users')
+        const { data } = await API.get('/user')
+        await console.log(data)
 
         dispatch({
             type: ALL_USERS_SUCCESS,
-            payload: data.users
+            payload: data.data
         })
 
     } catch (error) {
@@ -308,13 +280,9 @@ export const updateUser = (id, userData) => async (dispatch) => {
 
         dispatch({ type: UPDATE_USER_REQUEST })
 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
+     
 
-        const { data } = await axios.put(`/api/v1/admin/user/${id}`, userData, config)
+        const { data } = await API.put(`/admin/user/${id}`, userData)
 
         dispatch({
             type: UPDATE_USER_SUCCESS,
@@ -336,7 +304,7 @@ export const getUserDetails = (id) => async (dispatch) => {
         dispatch({ type: USER_DETAILS_REQUEST })
 
 
-        const { data } = await axios.get(`/api/v1/admin/user/${id}`)
+        const { data } = await API.get(`/admin/user/${id}`)
 
         dispatch({
             type: USER_DETAILS_SUCCESS,
@@ -357,7 +325,7 @@ export const deleteUser = (id) => async (dispatch) => {
 
         dispatch({ type: DELETE_USER_REQUEST })
 
-        const { data } = await axios.delete(`/api/v1/admin/user/${id}`)
+        const { data } = await API.delete(`/admin/user/${id}`)
 
         dispatch({
             type: DELETE_USER_SUCCESS,
@@ -378,13 +346,8 @@ export const googleSignIn = (payload) => async (dispatch) => {
 
         dispatch({ type: GOOGLE_SIGN_IN_REQUEST })
 
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
 
-        const { data } = await axios.post('/api/v1/auth/google', payload, config)
+        const { data } = await API.post('/auth/google', payload)
 
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
