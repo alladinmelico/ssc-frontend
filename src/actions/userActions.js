@@ -1,3 +1,6 @@
+
+import axios from 'axios'
+
 import API from '../config/api'
 import {
     LOGIN_REQUEST,
@@ -38,7 +41,16 @@ import {
     CLEAR_ERRORS,
     GOOGLE_SIGN_IN_REQUEST,
     GOOGLE_SIGN_IN_SUCCESS,
-    GOOGLE_SIGN_IN_FAIL
+    GOOGLE_SIGN_IN_FAIL,
+    NEW_USER_REQUEST,
+    NEW_USER_SUCCESS,
+    NEW_USER_FAIL,
+    ADMIN_USERS_REQUEST,
+    ADMIN_USERS_SUCCESS,
+    ADMIN_USERS_FAIL,
+    GET_USERS_REQUEST,
+    GET_USERS_SUCCESS,
+    GET_USERS_FAIL,
 
 } from '../constants/userConstants'
 
@@ -280,9 +292,7 @@ export const updateUser = (id, userData) => async (dispatch) => {
 
         dispatch({ type: UPDATE_USER_REQUEST })
 
-     
-
-        const { data } = await API.put(`/admin/user/${id}`, userData)
+        const { data } = await API.put(`user/${id}`, userData)   
 
         dispatch({
             type: UPDATE_USER_SUCCESS,
@@ -292,7 +302,10 @@ export const updateUser = (id, userData) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: UPDATE_USER_FAIL,
-            payload: error.response.data.message
+            payload: { 
+              message: error.response.data.message ?? error.response.data.errMessage,
+              status: error.response.status
+            }
         })
     }
 }
@@ -303,8 +316,7 @@ export const getUserDetails = (id) => async (dispatch) => {
 
         dispatch({ type: USER_DETAILS_REQUEST })
 
-
-        const { data } = await API.get(`/admin/user/${id}`)
+        const { data } = await API.get(`user/${id}`)
 
         dispatch({
             type: USER_DETAILS_SUCCESS,
@@ -325,7 +337,7 @@ export const deleteUser = (id) => async (dispatch) => {
 
         dispatch({ type: DELETE_USER_REQUEST })
 
-        const { data } = await API.delete(`/admin/user/${id}`)
+        const { data } = await API.delete(`user/${id}`)
 
         dispatch({
             type: DELETE_USER_SUCCESS,
@@ -366,6 +378,72 @@ export const googleSignIn = (payload) => async (dispatch) => {
     }
 }
 
+// Create User (Admin)
+export const newUser = (userData) => async (dispatch) => {
+    try {
+
+        dispatch({ type: NEW_USER_REQUEST })
+
+        const { data } = await API.post(`user`, userData)
+
+        dispatch({
+            type: NEW_USER_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: NEW_USER_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getUsers = (keyword = '', currentPage = 1) => async (dispatch) => {
+    try {
+
+        dispatch({ type: GET_USERS_REQUEST })
+
+        let link = `user?page=${currentPage}`
+
+        const { data } = await API.get(link)
+
+        dispatch({
+            type: GET_USERS_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: GET_USERS_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
+
+export const getAdminUsers = (page = 1, limit = 10) => async (dispatch) => {
+    try {
+
+        dispatch({ type: ADMIN_USERS_REQUEST })
+
+        const { data } = await API.get(`user?page=${++page}&limit=${limit}`)
+
+        console.log(data)
+        dispatch({
+            type: ADMIN_USERS_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        if (error.response.status === 401) {
+          // localStorage.setItem('auth', JSON.stringify({isAuthenticated: false}))
+        }
+        dispatch({
+            type: ADMIN_USERS_FAIL,
+            payload: error.response.data.message
+        })
+    }
+}
 
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
