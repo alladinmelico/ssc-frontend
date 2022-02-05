@@ -28,7 +28,7 @@ export const getClassrooms = (keyword = '', currentPage = 1) => async (dispatch)
 
         dispatch({ type: ALL_CLASSROOMS_REQUEST })
 
-        let link = `classroom?type=1&${currentPage}`
+        let link = `classroom?${currentPage}`
 
         const { data } = await API.get(link)
 

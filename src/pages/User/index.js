@@ -5,7 +5,7 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import SubjectForm from './SubjectForm'
+import UserForm from './UserForm'
 import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -13,26 +13,26 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
-  getAdminSubjects,
-  deleteSubject,
+  getAdminUsers,
+  deleteUser,
   clearErrors,
-} from "../../actions/subjectActions"
-import { DELETE_SUBJECT_RESET } from "../../constants/subjectConstants"
+} from "../../actions/userActions"
+import { DELETE_USER_RESET } from "../../constants/userConstants"
 
-const Subject = ({history}) => {
+const User = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [subject, setSubject] = useState({})
+  const [user, setUser] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
 
-  const { loading, subjects, count, error } = useSelector((state) => state.subjects)
-  const { error: deleteError, isDeleted } = useSelector((state) => state.subject)
+  const { loading, users, count, error } = useSelector((state) => state.users)
+  const { error: deleteError, isDeleted } = useSelector((state) => state.user)
 
   useEffect(() => {
-    dispatch(getAdminSubjects(page, rowsPerPage))
+    dispatch(getAdminUsers(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
       console.log(history)
       history.push('/signin')
@@ -44,9 +44,9 @@ const Subject = ({history}) => {
     }
 
     if (isDeleted) {
-      dispatch({ type: DELETE_SUBJECT_RESET })
-      dispatch(getAdminSubjects(page, rowsPerPage))
-      enqueueSnackbar('Subject successfully added.', {
+      dispatch({ type: DELETE_USER_RESET })
+      dispatch(getAdminUsers(page, rowsPerPage))
+      enqueueSnackbar('User successfully deleted.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -59,14 +59,19 @@ const Subject = ({history}) => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'code', headerName: 'Code', width: 300 },
+    { field: 'email', headerName: 'Email', width: 150 },
+    { field: 'year', headerName: 'Year', width: 150 },
+    { field: 'section', headerName: 'Section', width: 150 },
+    { field: 'school_id', headerName: 'School ID', width: 150 },
+    { field: 'role_id', headerName: 'Role ID', width: 150 },
+    { field: 'course_id', headerName: 'Course ID', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSubject(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setUser(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -83,7 +88,7 @@ const Subject = ({history}) => {
               defaultMessage: 'YES, Delete',
             }),
             handleAction: (handleClose) => {
-              dispatch(deleteSubject(params.id))
+              dispatch(deleteUser(params.id))
               handleClose()
             },
           })
@@ -94,10 +99,10 @@ const Subject = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'subject', defaultMessage: 'Subject' })}
+      pageTitle={intl.formatMessage({ id: 'user', defaultMessage: 'User' })}
     >
       <DataTable
-        rows={subjects}
+        rows={users}
         columns={columns}
         count={count}
         loading={loading}
@@ -106,10 +111,11 @@ const Subject = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
+
       <Box>
-        <SubjectForm subject={subject} modalClosed={() => setSubject({})} page={page} rowsPerPage={rowsPerPage} />
+        <UserForm user={user} modalClosed={() => setUser({})} page={page} rowsPerPage={rowsPerPage} />
       </Box>
     </Page>
   );
 };
-export default Subject;
+export default User;

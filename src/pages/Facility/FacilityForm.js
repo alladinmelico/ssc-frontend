@@ -1,3 +1,4 @@
+import API from '../../config/api'
 import React, { useState, useEffect } from 'react'
 import FormModal from '../../components/Modal/FormModal'
 import { useForm } from "react-hook-form";
@@ -9,9 +10,16 @@ import { NEW_FACILITY_RESET, UPDATE_FACILITY_RESET } from "../../constants/facil
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
-export default function FacilityModal ({modalClosed, facility}) {
+
+export default function FacilityModal ({page, rowsPerPage, modalClosed, facility}) {
   const [openModal, setOpenModal] = useState(false)
+  const [buildings, setBuildings] = useState([])
+  const [types, setfacilityTypes] = useState([])
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newFacility)
   const {
@@ -38,8 +46,36 @@ export default function FacilityModal ({modalClosed, facility}) {
     reset({ name: '', code: '', capacity: 0, type: '', building_id: ''})
   }
 
-  useEffect(() => {
-    console.log(facility)
+  const getBuildings = async () => {
+    try {
+
+      const { data }  = await API.get('/buildings')
+      await console.log(data)
+      await setBuildings(data)
+
+
+    } catch (error) {
+        console.log(error)
+     }
+  }
+  
+  const getfacilityTypes = async () => {
+    try {
+
+      const { data }  = await API.get('/facility-types')
+      await console.log(data)
+      await setfacilityTypes(data)
+
+
+    } catch (error) {
+        console.log(error)
+     }
+  }
+
+  useEffect(( ) => {
+    getBuildings()
+    getfacilityTypes()
+    console.log('facility', facility);
     if(facility.id && !openModal) {
       setOpenModal(true)
       setValue('name', facility.name)
@@ -56,7 +92,7 @@ export default function FacilityModal ({modalClosed, facility}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_FACILITY_RESET })
-      dispatch(getAdminFacilities())
+      dispatch(getAdminFacilities(page, rowsPerPage))
       modalClosed()
       enqueueSnackbar('Facility successfully added.', {
         variant: 'success',
@@ -138,29 +174,39 @@ export default function FacilityModal ({modalClosed, facility}) {
           type="number"
         />
 
-        <TextField 
+      <FormControl fullWidth required margin="normal">
+        <InputLabel id="types-select-label">Facility</InputLabel>
+        <Select
           {...register("type", { required: true, min: 3 })}
           error={errors.type ? true : false}
-          label="Type"
-          variant="outlined"
+          labelId="types-select-label"
+          id="types-select"
+          label="types"
           defaultValue={facility ? facility.type : ''}
-          helperText={errors.type?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
+         
+        >
+          {types.map(types => (
+            <MenuItem value={types.id}>{types.value}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
-        <TextField 
+         <FormControl fullWidth required margin="normal">
+        <InputLabel id="building-select-label">Building</InputLabel>
+        <Select
           {...register("building_id", { required: true, min: 3 })}
           error={errors.building_id ? true : false}
-          label="Building"
-          variant="outlined"
+          labelId="building-select-label"
+          id="building-select"
+          label="building"
           defaultValue={facility ? facility.building_id : ''}
-          helperText={errors.building_id?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
+         
+        >
+          {buildings.map(building => (
+            <MenuItem value={building.id}>{building.value}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       </FormModal>
     </div>
   );

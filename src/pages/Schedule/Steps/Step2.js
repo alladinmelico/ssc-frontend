@@ -1,0 +1,314 @@
+import React, { useEffect, useState } from 'react';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import TimePicker from '@mui/lab/TimePicker';
+import DateTimePicker from '@mui/lab/DateTimePicker'
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateAdapter from '@mui/lab/AdapterDayjs';
+import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import { useDispatch, useSelector } from "react-redux"
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import Chip from '@mui/material/Chip';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Skeleton from '@mui/material/Skeleton';
+import {
+  getAdminFacilities,
+  clearErrors,
+} from "../../../actions/facilityActions"
+import {
+  getAdminSubjects
+} from "../../../actions/subjectActions"
+const dayjs = require('dayjs')
+
+export default function Step2({history}) {
+  const [type, setType] = useState('');
+  const [facility, setFacility] = useState('');
+  const [subject, setSubject] = useState('');
+  const [classroom, setClassroom] = useState({});
+  const [classrooms, setClassrooms] = useState([]);
+  const [startTime, setStartTime] = useState(dayjs(new Date(0, 0, 0, 7, 0)));
+  const [endTime, setEndTime] = useState(startTime.add(8, 'hour'));
+  const [startDate, setStartDate] = useState(dayjs(new Date()));
+  const [endDate, setEndDate] = useState(startDate.add(1, 'day'));
+  const [isRecurring, setIsRecurring] = useState(false);
+  const [isEndOfSem, setIsEndOfSem] = useState(false);
+  const [daysOfWeek, setDaysOfWeek] = useState([]);
+  const [repeatBy, setRepeatBy] = useState('');
+
+  const dispatch = useDispatch()
+
+  const { loading, facilities, count, error } = useSelector((state) => state.facilities)
+  const { loading: loadingSubjects, subjects, count: countSubjects, error: errorSubjects } = useSelector((state) => state.subjects)
+
+  const types = ['Classroom', 'Office', 'Others']
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
+  const maxTime = () => {
+    const max = dayjs(new Date(0, 0, 0, 22, 0))
+
+    if (endTime.isAfter(max) || startTime.add(8, 'hour').isAfter(max)) {
+      return max
+    }
+    
+    return startTime.add(8, 'hour')
+  }
+
+  const oneDayDiff = () => {
+    if (endDate.diff(startDate, 'day') <= 1) {
+      setIsRecurring(false)
+    }
+  }
+
+  useEffect(() => {
+    dispatch(getAdminFacilities(0, 100))
+    dispatch(getAdminSubjects(0, 100))
+    if (error === 'Unauthenticated.') {
+      history.push('/signin')
+    }
+  }, [dispatch, history, error, errorSubjects ])
+
+  return (
+    <Box sx={{ minWidth: 120 }}>
+      <FormControl fullWidth required sx={{ my: 2 }}>
+        <InputLabel id="type-select-label">Type</InputLabel>
+        <Select
+          labelId="type-select-label"
+          id="type-select"
+          value={type}
+          label="Type"
+          onChange={(e) => setType(e.target.value)}
+        >
+          {types.map((type, index) => (
+            <MenuItem value={++index} key={index}>{type}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    
+      <LocalizationProvider dateAdapter={DateAdapter}>
+        <Grid container rowSpacing={3} spacing={2}>
+
+          {countSubjects ? (
+            <Grid item xs={subject ? 9:12}>
+              <FormControl fullWidth required>
+                <InputLabel id="type-select-label">Subject</InputLabel>
+                <Select
+                  labelId="type-select-label"
+                  id="type-select"
+                  value={subject}
+                  label="Subject"
+                  onChange={(e) => setSubject(e.target.value)}
+                >
+                  {subjects.map(item => (
+                    <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          ) : (
+            <Grid item xs={12}>
+              <Skeleton animation="wave" height={100} />
+            </Grid>
+          )}
+          {subject && (
+            <Grid item xs={3}>
+              <TextField
+                id="outlined-basic"
+                label="Code"
+                variant="outlined"
+                fullWidth
+                disabled
+                value={subjects.find(item => item.id === subject).code}
+              />
+            </Grid>
+          )}
+
+          {count ? (
+            <Grid item xs={facility ? 9:12}>
+              {type && (
+                <FormControl fullWidth required>
+                  <InputLabel id="facility-select-label">Facility</InputLabel>
+                  <Select
+                    labelId="facility-select-label"
+                    id="facility-select"
+                    value={facility}
+                    label="Type"
+                    onChange={(e) => setFacility(e.target.value)}
+                    required
+                  >
+                    {type ? facilities.filter(item => item.type.toLowerCase() === types[type - 1].toLowerCase()).map(item => (
+                      <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
+                    )) : ''}
+                  </Select>
+                </FormControl>
+              )}
+            </Grid>
+          ) : (
+            <Grid item xs={12}>
+              <Skeleton animation="wave" height={100} />
+            </Grid>
+          )}
+          {facility && (
+            <Grid item xs={3}>
+              <TextField
+                id="outlined-basic"
+                label="Capacity"
+                variant="outlined"
+                fullWidth
+                disabled
+                value={facilities.find(item => item.id === facility).capacity}
+              />
+            </Grid>
+          )}
+          
+          <Grid item xs={6}>
+            <TimePicker
+              label="Start Time"
+              minTime={dayjs(new Date(0, 0, 0, 7, 0))}
+              maxTime={dayjs(new Date(0, 0, 0, 21, 0))}
+              value={startTime}
+              onChange={(val) => setStartTime(val)}
+              helper
+              renderInput={(params) => <TextField helperText="Earliest time to set is 7:00 A.M." required fullWidth {...params} />}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TimePicker
+              label="End Time"
+              minTime={startTime}
+              maxTime={maxTime()}
+              value={endTime}
+              onChange={(val) => setEndTime(val)}
+              renderInput={(params) => <TextField helperText="Maximum time rage is 8 hours. Maximum time to set is 10:00 P.M." required fullWidth {...params} />}
+            />
+          </Grid>
+          <Grid item xs={isRecurring ? 6 : 12}>
+            <FormControlLabel control={<Switch 
+              checked={isRecurring}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  setEndDate(startDate.add(3, 'day'))
+                }
+                return setIsRecurring(e.target.checked) 
+              }}
+            />} label="Recurring" />
+          </Grid>
+          {isRecurring && (
+            <Grid item xs={6}>
+              <FormControlLabel control={<Switch 
+                checked={isEndOfSem}
+                onChange={(e) => setIsEndOfSem(e.target.checked) }
+              />} label="Until the end of Semester" />
+            </Grid>
+          )}
+          <Grid item xs={6}>
+            <MobileDatePicker
+              label="Start Date"
+              inputFormat="MM/D/YYYY"
+              minDate={dayjs(new Date())}
+              maxDate={endDate}
+              value={startDate}
+              onChange={(val) => {
+                oneDayDiff()
+                return setStartDate(val)
+              }}
+              renderInput={(params) => <TextField required fullWidth {...params} />}
+            />
+          </Grid>
+          {(isRecurring && !isEndOfSem) && (
+            <Grid item xs={6}>
+              <MobileDatePicker
+                label="End Date"
+                inputFormat="MM/D/YYYY"
+                minDate={startDate}
+                value={endDate}
+                onChange={(val) => {
+                  oneDayDiff()
+                  setEndDate(val)
+                }}
+                renderInput={(params) => <TextField required fullWidth {...params} />}
+                required={isRecurring}
+              />
+            </Grid>          
+          )}
+          {isRecurring && (
+            <Grid item xs={6}>
+              <FormControl fullWidth required>
+                <InputLabel id="repeatBy-select-label">Repeat by</InputLabel>
+                <Select
+                  labelId="repeatBy-select-label"
+                  id="repeatBy-select"
+                  value={repeatBy}
+                  label="Repeat by"
+                  onChange={(e) => setRepeatBy(e.target.value)}
+                  required={isRecurring}
+                >
+                  {['daily', 'weekly', 'monthly'].filter(item => {
+                    if (endDate.diff(startDate, 'month') < 1) {
+                      if (endDate.diff(startDate, 'week') < 1) {
+                        return item === 'daily'
+                      }
+                      return item !== 'monthly'
+                    }
+                    return true
+                  }).map(item => (
+                    <MenuItem value={item} key={item}>
+                      {item.replace(/(^|\s)\S/g, letter => letter.toUpperCase())}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>     
+          )}
+          {isRecurring && (
+            <Grid item xs={6}>
+              <FormControl required={isRecurring} fullWidth>
+                <InputLabel id="daysOfWeek-select-label">Days of Week</InputLabel>
+                <Select
+                  labelId="daysOfWeek-select-label"
+                  id="daysOfWeek-select-label"
+                  multiple
+                  value={daysOfWeek}
+                  onChange={(e) => setDaysOfWeek(e.target.value)}
+                  input={<OutlinedInput id="select-multiple-chip" label="Days of Week" />}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} color="primary" />
+                      ))}
+                    </Box>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {['monday', 'tuesday', 'wednesday', 'thursday', 'friday'].map((name) => (
+                    <MenuItem
+                      key={name}
+                      value={name}
+                    >
+                      {name.replace(/(^|\s)\S/g, letter => letter.toUpperCase())}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>        
+          )}
+          
+        </Grid>
+      </LocalizationProvider>
+    </Box>
+  );
+}

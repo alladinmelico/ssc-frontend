@@ -11,20 +11,18 @@ import { NEW_SCHEDULE_RESET, UPDATE_SCHEDULE_RESET } from "../../constants/sched
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
+import ScheduleStepper from 'components/ScheduleStepper';
+import Step1 from './Steps/Step1';
+import Step2 from './Steps/Step2';
 
-export default function ScheduleForm ({match}) {
+export default function ScheduleCreate ({match}) {
   const intl = useIntl();
+  const [activeStep, setActiveStep] = useState(0);
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
   
-  const { schedule } = useSelector((state) => state.scheduleDetails)
-
   const { loading, error, success } = useSelector((state) => state.newSchedule)
-  const {
-    loading: updateLoading,
-    error: updateError,
-    isUpdated,
-  } = useSelector((state) => state.schedule) 
+
   const { auth } = useAuth()
   const { enqueueSnackbar } = useSnackbar()
 
@@ -42,14 +40,7 @@ export default function ScheduleForm ({match}) {
   }
 
   useEffect(() => {
-    console.log(schedule)
-    if(schedule.id && !openModal) {
-      setOpenModal(true)
-      setValue('name', schedule.name)
-      setValue('code', schedule.code)
-    }
-
-    if (error || updateError) {
+    if (error) {
       dispatch(clearErrors())
     }
 
@@ -65,28 +56,10 @@ export default function ScheduleForm ({match}) {
         },
       })
     }
-
-    if (isUpdated) {
-      resetForm()     
-      dispatch({ type: UPDATE_SCHEDULE_RESET })
-      dispatch(getAdminSchedules())
-      enqueueSnackbar('Schedule successfully updated.', {
-        variant: 'success',
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'center',
-        },
-      })
-    }
-  }, [dispatch, error, updateError, isUpdated, success, schedule])
+  }, [dispatch, error, success, enqueueSnackbar])
 
   const onSubmit = async data => {
-    console.log(data)
-    if (schedule.id) {
-      dispatch(updateSchedule(schedule.id, data))
-    } else {
-      dispatch(newSchedule(data))
-    }
+    dispatch(newSchedule(data))
   };
 
 
@@ -94,31 +67,12 @@ export default function ScheduleForm ({match}) {
     <Page
       pageTitle={intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedule' })}
     >
-      <div>
+      <ScheduleStepper activeStep={activeStep} setActiveStep={setActiveStep}>
         <form onSubmit={onSubmit}>
-          <TextField 
-            {...register("name", { required: true, min: 3 })}
-            error={errors.name ? true : false}
-            label="Name"
-            variant="outlined"
-            defaultValue={schedule ? schedule.name : ''}
-            helperText={errors.name?.message}
-            margin="normal"
-            fullWidth
-          />
-
-          <TextField 
-            {...register("code", { required: true, min: 3 })}
-            error={errors.code ? true : false}
-            label="Code"
-            variant="outlined"
-            defaultValue={schedule ? schedule.code : ''}
-            helperText={errors.code?.message}
-            margin="normal"
-            fullWidth
-          />
+          {activeStep === 0 && <Step1 />}
+          {activeStep === 1 && <Step2 />}
         </form>
-      </div>
+      </ScheduleStepper>
     </Page>
   );
 }

@@ -29,7 +29,8 @@ import {
   HomeWorkOutlined, 
   CreditCardOutlined,
   DevicesOutlined,
-  ThermostatOutlined
+  ThermostatOutlined,
+  PersonOutlineOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -174,6 +175,12 @@ const getMenuItems = (props) => {
       visible: true,
       primaryText: intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedules' }),
       leftIcon: <CalendarTodayOutlined />,
+    },
+    {
+      value: '/user',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'user', defaultMessage: 'Users' }),
+      leftIcon: <PersonOutlineOutlined />,
     },
     {
       value: '/subject',

@@ -9,6 +9,15 @@ import { NEW_SECTION_RESET, UPDATE_SECTION_RESET } from "../../constants/section
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import {
+  allUsers
+} from "../../actions/userActions"
+
 
 export default function SectionModal ({page, rowsPerPage, modalClosed, section}) {
   const [openModal, setOpenModal] = useState(false)
@@ -36,13 +45,17 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
     reset({ name: '', president_id: 0, faculty_id: 0})
   }
 
-  useEffect(() => {
+  const { users } = useSelector((state) => state.allUsers)
+
+  useEffect(() => {  
+    dispatch(allUsers())
     if(section.id && !openModal) {
       setOpenModal(true)
       setValue('name', section.name)
       setValue('president_id', section.president_id)
       setValue('faculty_id', section.faculty_id)
     }
+   
 
     if (error || updateError) {
       dispatch(clearErrors())
@@ -111,30 +124,42 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
           fullWidth
         />
 
-        <TextField 
+         <FormControl fullWidth required margin="normal">
+          <InputLabel id="president-select-label">President</InputLabel>
+           <Select
           {...register("president_id", { required: true, min: 3 })}
           error={errors.president_id ? true : false}
-          label="President"
-          variant="outlined"
+          labelId="president-select-label"
+          id="president-select"
+          label="president"
           defaultValue={section ? section.president_id : ''}
-          helperText={errors.president_id?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
+         
+        >
+          {users.filter(item => item.role_id === 3 ).map(president => (
+            <MenuItem value={president.id}>{president.name}</MenuItem>
+          ))}
+        </Select>
+         </FormControl>
 
-      <TextField 
+         <FormControl fullWidth required margin="normal">
+          <InputLabel id="faculty-select-label">Faculty</InputLabel>
+          <Select
           {...register("faculty_id", { required: true, min: 3 })}
           error={errors.faculty_id ? true : false}
-          label="Faculty"
-          variant="outlined"
+          labelId="faculty-select-label"
+          id="faculty-select"
+          label="faculty"
           defaultValue={section ? section.faculty_id : ''}
-          helperText={errors.faculty_id?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
+         
+        >
+          {users.filter(item => item.role_id === 2 ).map(faculty => (
+            <MenuItem value={faculty.id}>{faculty.name}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       </FormModal>
+      
+     
     </div>
   );
 }

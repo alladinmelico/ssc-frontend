@@ -41,7 +41,17 @@ import {
     CLEAR_ERRORS,
     GOOGLE_SIGN_IN_REQUEST,
     GOOGLE_SIGN_IN_SUCCESS,
-    GOOGLE_SIGN_IN_FAIL
+    GOOGLE_SIGN_IN_FAIL,
+    NEW_USER_REQUEST,
+    NEW_USER_SUCCESS,
+    NEW_USER_RESET,
+    NEW_USER_FAIL,
+    GET_USERS_REQUEST,
+    GET_USERS_SUCCESS,
+    GET_USERS_FAIL,
+    ADMIN_USERS_REQUEST,
+    ADMIN_USERS_SUCCESS,
+    ADMIN_USERS_FAIL,
 } from '../constants/userConstants'
 
 export const authReducer = (state = { user: {} }, action) => {
@@ -283,3 +293,84 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
             return state;
     }
 }
+
+export const newUserReducer = (state = { user: {} }, action) => {
+    switch (action.type) {
+      case NEW_USER_REQUEST:
+        return {
+          ...state,
+          loading: true,
+        }
+  
+      case NEW_USER_SUCCESS:
+        return {
+          loading: false,
+          success: true,
+          user: action.payload.data,
+        }
+  
+      case NEW_USER_FAIL:
+        return {
+          ...state,
+          error: action.payload,
+        }
+  
+      case NEW_USER_RESET:
+        return {
+          ...state,
+          success: false,
+        }
+  
+      case CLEAR_ERRORS:
+        return {
+          ...state,
+          error: null,
+        }
+  
+      default:
+        return state
+    }
+  }
+
+  export const usersReducer = (state = { users: [] }, action) => {
+    switch (action.type) {
+      case GET_USERS_REQUEST:
+      case ADMIN_USERS_REQUEST:
+        return {
+          loading: true,
+          users: [],
+        }
+  
+      case GET_USERS_SUCCESS:
+        return {
+          loading: false,
+          users: action.payload.users,
+          usersCount: action.payload.usersCount,
+          resPerPage: action.payload.resPerPage,
+          filteredUsersCount: action.payload.filteredUsersCount,
+        }
+  
+      case ADMIN_USERS_SUCCESS:
+        return {
+          loading: false,
+          users: action.payload.data,
+          count: action.payload.meta.total
+        }
+  
+      case GET_USERS_FAIL:
+      case ADMIN_USERS_FAIL:
+        return {
+          loading: false,
+          error: action.payload,
+        }
+  
+      case CLEAR_ERRORS:
+        return {
+          ...state,
+          error: null,
+        }
+  
+      default:
+        return state
+    }
+  }

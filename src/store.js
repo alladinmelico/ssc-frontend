@@ -64,6 +64,8 @@ import {
   forgotPasswordReducer,
   allUsersReducer,
   userDetailsReducer,
+  newUserReducer,
+  usersReducer
 } from "./reducers/userReducers"
 
 const reducer = combineReducers({
@@ -121,7 +123,9 @@ const reducer = combineReducers({
   user: userReducer,
   allUsers: allUsersReducer,
   userDetails: userDetailsReducer,
-  forgotPassword: forgotPasswordReducer
+  forgotPassword: forgotPasswordReducer,
+  newUser: newUserReducer,
+  users: usersReducer,
 })
 
 const middleware = [thunk]
