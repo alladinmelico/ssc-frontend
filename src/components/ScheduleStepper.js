@@ -13,15 +13,7 @@ const steps = [
   'QR Code'
 ];
 
-export default function ScheduleStepper({activeStep, setActiveStep, children}) {
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
+export default function ScheduleStepper({activeStep}) {
   return (
     <Box sx={{ width: '100%' }} p={5}>
       <Stepper activeStep={activeStep} alternativeLabel>
@@ -30,29 +22,7 @@ export default function ScheduleStepper({activeStep, setActiveStep, children}) {
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
-      </Stepper>
-
-      <Box sx={{ maxWidth: 'sm' }} m="auto" mt={5}>
-        {children}
-      </Box>
-
-      <React.Fragment>
-        <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-          <Button
-            color="inherit"
-            disabled={activeStep === 0}
-            onClick={handleBack}
-            sx={{ mr: 1 }}
-          >
-            Back
-          </Button>
-          <Box sx={{ flex: '1 1 auto' }} />
-
-          <Button onClick={handleNext}>
-            {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-          </Button>
-        </Box>
-      </React.Fragment>
+      </Stepper>      
     </Box>
   );
 }
