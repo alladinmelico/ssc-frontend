@@ -399,12 +399,12 @@ export const newUser = (userData) => async (dispatch) => {
     }
 }
 
-export const getUsers = (keyword = '', currentPage = 1) => async (dispatch) => {
+export const getUsers = (classroom_id = '', currentPage = 1) => async (dispatch) => {
     try {
 
         dispatch({ type: GET_USERS_REQUEST })
 
-        let link = `user?page=${currentPage}`
+        let link = `user?classroom_id=${classroom_id}&page=${currentPage}`
 
         const { data } = await API.get(link)
 

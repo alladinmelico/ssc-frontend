@@ -33,7 +33,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
   const [startTime, setStartTime] = useState(dayjs(new Date(0, 0, 0, 7, 0)));
   const [endTime, setEndTime] = useState(startTime.add(8, 'hour'));
   const [startDate, setStartDate] = useState(dayjs(new Date()));
-  const [endDate, setEndDate] = useState(startDate.add(1, 'day'));
+  const [endDate, setEndDate] = useState(startDate.add(1, 'year'));
   const [isRecurring, setIsRecurring] = useState(false);
   const [isEndOfSem, setIsEndOfSem] = useState(false);
   const [daysOfWeek, setDaysOfWeek] = useState([]);
@@ -72,32 +72,58 @@ export default function Step2({history, activeStep, setActiveStep}) {
     }
   }
 
-  const submit = (event) => {
-    event.preventDefault()
+  const saveData = () => {
     dispatch({
       type: NEW_SCHEDULE_REQUEST,
       payload: {
         ...schedule,
+        facility_type: type,
         facility_id: facility,
-        start_at: startTime,
-        end_at: endTime,
-        start_date: startDate,
-        end_date: endDate,
+        start_at: startTime.format('HH:mm'),
+        end_at: endTime.format('HH:mm'),
+        start_date: startDate.format('YYYY-MM-DD'),
+        end_date: endDate.format('YYYY-MM-DD'),
         is_recurring: isRecurring,
         is_end_of_sem: isEndOfSem,
         days_of_week: daysOfWeek,
-        repeat_by: repeatBy
+        repeat_by: repeatBy,
+        facility_capacity: facility ? facilities.find(item => item.id === facility).capacity : 0
       }
     })
+  }
+
+  const submit = (event) => {
+    event.preventDefault()
+    saveData()
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
 
+  const fetchData = (schedule) => {
+    setType(schedule.facility_type ? schedule.facility_type : '')
+    setFacility(schedule.facility_id ? schedule.facility_id : '')
+    setStartTime(schedule.start_at ? dayjs(schedule.start_at) : dayjs(new Date(0, 0, 0, 7, 0)))
+    setEndTime(schedule.end_at ? dayjs(schedule.end_at) : startTime.add(8, 'hour'))
+    setStartDate(schedule.start_date ? dayjs(schedule.start_date) : dayjs(new Date()))
+    setEndDate(schedule.end_date ? dayjs(schedule.end_date) : startDate.add(1, 'year'))
+    setIsRecurring(schedule.is_recurring ? schedule.is_recurring : false)
+    setIsEndOfSem(schedule.is_end_of_sem? schedule.is_end_of_sem : false)
+    setDaysOfWeek(schedule.days_of_week ? schedule.days_of_week : [])
+    setRepeatBy(schedule.repeat_by ? schedule.repeat_by : '')
+  }
+
   useEffect(() => {
-    dispatch(getAdminFacilities(0, 100))
+    if (!count) {
+      dispatch(getAdminFacilities(0, 100))
+    }
+
+    if (schedule) {
+      fetchData(schedule)
+    }
+
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
-  }, [dispatch, history, error ])
+  }, [dispatch, history, error, schedule])
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -293,7 +319,10 @@ export default function Step2({history, activeStep, setActiveStep}) {
           </Grid>
         </LocalizationProvider>
 
-        <PrevNextButtons setActiveStep={setActiveStep} isActive={true} text="Next" />
+        <PrevNextButtons handleBack={() => {
+          saveData()
+          setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        }} isActive={true} text="Next" />
       </form>
     </Box>
   );

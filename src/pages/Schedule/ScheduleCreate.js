@@ -12,6 +12,8 @@ import * as yup from "yup"
 import ScheduleStepper from 'components/ScheduleStepper';
 import Step1 from './Steps/Step1';
 import Step2 from './Steps/Step2';
+import Step3 from './Steps/Step3';
+import Step4 from './Steps/Step4';
 
 export default function ScheduleCreate () {
   const intl = useIntl();
@@ -60,9 +62,11 @@ export default function ScheduleCreate () {
     >
       <ScheduleStepper activeStep={activeStep} />
 
-      <Box sx={{ maxWidth: 'sm' }} m="auto" mt={5}>
+      <Box sx={{ maxWidth: activeStep === 2 ? 'md' : 'sm' }} m="auto" mt={5}>
         {activeStep === 0 && <Step1 activeStep={activeStep} setActiveStep={setActiveStep} />}
         {activeStep === 1 && <Step2 activeStep={activeStep} setActiveStep={setActiveStep} />}
+        {activeStep === 2 && <Step3 activeStep={activeStep} setActiveStep={setActiveStep} />}
+        {activeStep === 3 && <Step4 activeStep={activeStep} setActiveStep={setActiveStep} />}
       </Box>
     </Page>
   );

@@ -31,6 +31,7 @@
     "react-intl": "5.x",
     "react-ios-pwa-prompt": "1.x",
     "react-markdown": "7.x",
+    "react-mui-fileuploader": "^0.1.2",
     "react-redux": "^7.2.6",
     "react-router-dom": "6.x",
     "react-scripts": "5.0.0",

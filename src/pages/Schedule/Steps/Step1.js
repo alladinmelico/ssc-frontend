@@ -11,7 +11,7 @@ import Skeleton from '@mui/material/Skeleton';
 import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
 import {
-  getAdminClassrooms,
+  getClassrooms,
   clearErrors,
 } from "../../../actions/classroomActions"
 import { NEW_SCHEDULE_REQUEST } from "../../../constants/scheduleConstants"
@@ -46,15 +46,27 @@ export default function Step1({history, activeStep, setActiveStep}) {
     event.preventDefault()
     dispatch({
       type: NEW_SCHEDULE_REQUEST,
-      payload: {...schedule, type, classroom_id: classroom }
+      payload: {
+        ...schedule,
+        type,
+        classroom_id: classroom,
+        classroom_name: classrooms.find(item => item.id === classroom).name,
+        user_id: 1
+      }
     })
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
   
 
   useEffect(() => {
-    dispatch(getAdminClassrooms(0, 1000))
-  }, [dispatch, history])
+    if (!count) {
+      dispatch(getClassrooms())
+    }
+    if (schedule) {
+      setType(schedule.type)
+      setClassroom(schedule.classroom_id)
+    }
+  }, [dispatch, history, schedule, count])
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -86,8 +98,8 @@ export default function Step1({history, activeStep, setActiveStep}) {
               onChange={(event) => setClassroom(event.target.value)}
               m={2}
             >
-              {classrooms.map(classroom => (
-                <MenuItem value={classroom.id}>{classroom.name}</MenuItem>
+              {classrooms.map(item => (
+                <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -95,7 +107,7 @@ export default function Step1({history, activeStep, setActiveStep}) {
           <Skeleton animation="wave" height={100} />
         )}
 
-        <PrevNextButtons setActiveStep={setActiveStep} isActive={true} text="Next" />
+        <PrevNextButtons setActiveStep={setActiveStep} isActive={false} text="Next" />
       </form>
     </Box>
   );

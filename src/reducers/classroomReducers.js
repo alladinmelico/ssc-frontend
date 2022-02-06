@@ -33,14 +33,6 @@ export const classroomsReducer = (state = { classrooms: [] }, action) => {
       }
 
     case ALL_CLASSROOMS_SUCCESS:
-      return {
-        loading: false,
-        classrooms: action.payload.classrooms,
-        classroomsCount: action.payload.classroomsCount,
-        resPerPage: action.payload.resPerPage,
-        filteredSubjectsCount: action.payload.filteredSubjectsCount,
-      }
-
     case ADMIN_CLASSROOMS_SUCCESS:
       return {
         loading: false,

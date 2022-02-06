@@ -23,14 +23,12 @@ import {
 
 } from '../constants/classroomConstants'
 
-export const getClassrooms = (keyword = '', currentPage = 1) => async (dispatch) => {
+export const getClassrooms = () => async (dispatch) => {
     try {
 
         dispatch({ type: ALL_CLASSROOMS_REQUEST })
 
-        let link = `classroom?${currentPage}`
-
-        const { data } = await API.get(link)
+        const { data } = await API.get(`classroom?user_id=1`)
 
         dispatch({
             type: ALL_CLASSROOMS_SUCCESS,
@@ -137,7 +135,7 @@ export const getAdminClassrooms = (page = 1, limit = 10) => async (dispatch) => 
 
         dispatch({ type: ADMIN_CLASSROOMS_REQUEST })
 
-        const { data } = await API.get(`classroom?type=1&page=${++page}&limit=${limit}`)
+        const { data } = await API.get(`classroom?page=${++page}&limit=${limit}`)
 
         console.log(data)
         dispatch({
