@@ -28,7 +28,6 @@ export default function UserModal ({page, rowsPerPage, modalClosed, user}) {
     section: yup.string().required(),
     school_id: yup.string().required(),
     year: yup.number().required(),
-    role_id: yup.number().required(),
     course_id: yup.number().required(),
   }).required();
 
@@ -37,7 +36,7 @@ export default function UserModal ({page, rowsPerPage, modalClosed, user}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', email: '', section: '', school_id: '', year: 0, role_id: 0, course_id: 0})
+    reset({ name: '', email: '', section: '', school_id: '', year: 0, course_id: 0})
   }
 
   useEffect(() => {
@@ -48,7 +47,6 @@ export default function UserModal ({page, rowsPerPage, modalClosed, user}) {
       setValue('section', user.section)
       setValue('year', user.year)
       setValue('school_id', user.school_id)
-      setValue('role_id', user.role_id)
       setValue('course_id', user.course_id)
     }
 
@@ -151,18 +149,6 @@ export default function UserModal ({page, rowsPerPage, modalClosed, user}) {
           helperText={errors.section?.message}
           margin="normal"
           fullWidth
-        />
-
-        <TextField 
-          {...register("role_id", { required: true, min: 3 })}
-          error={errors.role_id ? true : false}
-          label="Role ID"
-          variant="outlined"
-          defaultValue={user ? user.role_id : ''}
-          helperText={errors.role_id?.message}
-          margin="normal"
-          fullWidth
-          type="number"
         />
 
         <TextField 

@@ -6,8 +6,8 @@ import {
   Dashboard as DashboardIcon,
   ExitToApp as ExitToAppIcon,
   FilterList,
-  FormatTextdirectionRToL as RTLIcon,
-  FormatTextdirectionLToR as LTRIcon,
+  FormatTextdirectionRToLOutlined as RTLIcon,
+  FormatTextdirectionLToROutlined as LTRIcon,
   GetApp,
   InfoOutlined,
   Language as LanguageIcon,
@@ -18,7 +18,7 @@ import {
   Style as StyleIcon,
   Tab,
   ViewList,
-  Web,
+  WebOutlined,
   DashboardOutlined, 
   SettingsOutlined, 
   CalendarTodayOutlined, 
@@ -28,7 +28,8 @@ import {
   GroupsOutlined, 
   HomeWorkOutlined, 
   CreditCardOutlined,
-  PersonOutlineOutlined
+  PersonOutlineOutlined,
+  StyleOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -105,68 +106,16 @@ const getMenuItems = (props) => {
   }
   return [
     {
-      value: '/home',
+      value: '/landing_page',
       visible: isAuthorised,
-      primaryText: intl.formatMessage({ id: 'home' }),
+      primaryText: intl.formatMessage({ id: 'landing_page', defaultMessage: 'Landing Page' }),
+      leftIcon: <WebOutlined />,
+    },
+    {
+      value: '/dashboard',
+      visible: isAuthorised,
+      primaryText: intl.formatMessage({ id: 'dashboard', defaultMessage: 'Dashboard' }),
       leftIcon: <DashboardOutlined />,
-    },
-    {
-      primaryText: intl.formatMessage({ id: 'demos', defaultMessage: 'Demos' }),
-      primaryTogglesNestedList: true,
-      leftIcon: <Web />,
-      nestedItems: [
-        {
-          value: '/dialog_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'dialog_demo',
-            defaultMessage: 'Dialog',
-          }),
-          leftIcon: <ChatBubble />,
-        },
-        {
-          value: '/toast_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'toast_demo',
-            defaultMessage: 'Toast',
-          }),
-          leftIcon: <QuestionAnswer />,
-        },
-        {
-          value: '/filter_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'filter_demo',
-            defaultMessage: 'Filter',
-          }),
-          leftIcon: <FilterList />,
-        },
-        {
-          value: '/list_page_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'list_page_demo_menu',
-            defaultMessage: 'List Page',
-          }),
-          leftIcon: <ViewList />,
-        },
-        {
-          value: '/tabs_demo',
-          visible: isAuthorised,
-          primaryText: intl.formatMessage({
-            id: 'tabs_demo',
-            defaultMessage: 'Tabs Page',
-          }),
-          leftIcon: <Tab />,
-        },
-      ],
-    },
-    {
-      value: '/about',
-      visible: true,
-      primaryText: intl.formatMessage({ id: 'about', defaultMessage: 'About' }),
-      leftIcon: <InfoOutlined />,
     },
     {
       value: '/schedule',
@@ -226,7 +175,7 @@ const getMenuItems = (props) => {
           primaryText: intl.formatMessage({ id: 'theme' }),
           secondaryText: intl.formatMessage({ id: themeID }),
           primaryTogglesNestedList: true,
-          leftIcon: <StyleIcon />,
+          leftIcon: <StyleOutlined />,
           nestedItems: themeItems,
         },
         {
@@ -246,19 +195,25 @@ const getMenuItems = (props) => {
           }),
           leftIcon: isMiniSwitchVisibility ? (
             <MenuOpenIcon />
-          ) : (
-            <ChromeReaderMode />
-          ),
+            ) : (
+              <ChromeReaderMode />
+              ),
+            },
+            {
+              onClick: () => {
+                toggleThisTheme('isRTL')
+              },
+              primaryText: `${isRTL ? 'LTR' : 'RTL'} mode`,
+              leftIcon: isRTL ? <LTRIcon /> : <RTLIcon />,
+            },
+          ],
         },
         {
-          onClick: () => {
-            toggleThisTheme('isRTL')
-          },
-          primaryText: `${isRTL ? 'LTR' : 'RTL'} mode`,
-          leftIcon: isRTL ? <LTRIcon /> : <RTLIcon />,
+          value: '/about',
+          visible: true,
+          primaryText: intl.formatMessage({ id: 'about', defaultMessage: 'About' }),
+          leftIcon: <InfoOutlined />,
         },
-      ],
-    },
     {
       value: null,
       visible: isAppInstallable && !isAppInstalled,
