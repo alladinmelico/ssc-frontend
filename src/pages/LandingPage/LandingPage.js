@@ -12,6 +12,7 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import { makeStyles } from '@mui/styles';
 import helloimage from '../../public/Hello-rafiki 1.png';
+import Button from '@mui/material/Button';
 
 // Feature Icons
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
@@ -173,6 +174,9 @@ const LandingPage = () => {
             neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
             quasi quidem quibusdam.
           </Typography>
+          <Link to="/home" >
+            <Button color="primary" fullWidth variant="contained">Sign In</Button>
+          </Link>
         </Grid>
         <Grid item xs={6}>
           <img src={helloimage} height={504} width={429} alt="HelloImage"/>
