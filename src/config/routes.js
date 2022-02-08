@@ -9,7 +9,10 @@ const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
 const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
 const Schedule = lazy(() => import('../pages/Schedule'))
+const ScheduleForm = lazy(() => import('../pages/Schedule/ScheduleForm'))
+const User = lazy(() => import('../pages/User'))
 const Rfid = lazy(() => import('../pages/Rfid'))
+const Temperature = lazy(() => import('../pages/Temperature'))
 const Subject = lazy(() => import('../pages/Subject'))
 const Facility = lazy(() => import('../pages/Facility'))
 const Course = lazy(() => import('../pages/Course'))
@@ -66,6 +69,33 @@ const routes = [
     ),
   },
   {
+    path: '/schedule/create',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <ScheduleForm />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/schedule/:id/edit',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <ScheduleForm />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/user',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <User />
+      </AuthorizedRoute>
+    ),
+  },
+  {
     path: '/subject',
     exact: true,
     element: (
@@ -116,6 +146,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Rfid />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/temperature',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Temperature />
       </AuthorizedRoute>
     ),
   },

@@ -5,37 +5,34 @@ import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import ScheduleForm from './ScheduleForm'
+import UserForm from './UserForm'
 import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
-  getAdminSchedules,
-  deleteSchedule,
+  getAdminUsers,
+  deleteUser,
   clearErrors,
-} from "../../actions/scheduleActions"
-import { DELETE_SCHEDULE_RESET } from "../../constants/scheduleConstants"
-import { Link } from "react-router-dom"
+} from "../../actions/userActions"
+import { DELETE_USER_RESET } from "../../constants/userConstants"
 
-const Schedule = ({history}) => {
+const User = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [schedule, setSchedule] = useState({})
+  const [user, setUser] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
 
-  const { loading, schedules, count, error } = useSelector((state) => state.schedules)
-  const { error: deleteError, isDeleted } = useSelector((state) => state.schedule)
+  const { loading, users, count, error } = useSelector((state) => state.users)
+  const { error: deleteError, isDeleted } = useSelector((state) => state.user)
 
   useEffect(() => {
-    dispatch(getAdminSchedules(page, rowsPerPage))
+    dispatch(getAdminUsers(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
       console.log(history)
       history.push('/signin')
@@ -47,9 +44,9 @@ const Schedule = ({history}) => {
     }
 
     if (isDeleted) {
-      dispatch({ type: DELETE_SCHEDULE_RESET })
-      dispatch(getAdminSchedules())
-      enqueueSnackbar('Schedule successfully added.', {
+      dispatch({ type: DELETE_USER_RESET })
+      dispatch(getAdminUsers(page, rowsPerPage))
+      enqueueSnackbar('User successfully deleted.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',
@@ -61,19 +58,20 @@ const Schedule = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'title', headerName: 'Title', width: 150 },
-    { field: 'code', headerName: 'Code', width: 300 },
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'email', headerName: 'Email', width: 150 },
+    { field: 'year', headerName: 'Year', width: 150 },
+    { field: 'section', headerName: 'Section', width: 150 },
+    { field: 'school_id', headerName: 'School ID', width: 150 },
+    { field: 'role_id', headerName: 'Role ID', width: 150 },
+    { field: 'course_id', headerName: 'Course ID', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={
-          <Link to={`/schedule/${params.row.id}/edit`}>
-            <EditIcon color="primary" />
-          </Link>
-        } label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setUser(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -90,7 +88,7 @@ const Schedule = ({history}) => {
               defaultMessage: 'YES, Delete',
             }),
             handleAction: (handleClose) => {
-              dispatch(deleteSchedule(params.id))
+              dispatch(deleteUser(params.id))
               handleClose()
             },
           })
@@ -99,16 +97,12 @@ const Schedule = ({history}) => {
     },
   ];
 
-  const handleOpen = () => {
-    history.push('/schedule/create')
-  }
-
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedule' })}
+      pageTitle={intl.formatMessage({ id: 'user', defaultMessage: 'User' })}
     >
       <DataTable
-        rows={schedules}
+        rows={users}
         columns={columns}
         count={count}
         loading={loading}
@@ -117,14 +111,11 @@ const Schedule = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
+
       <Box>
-        <Link to="/schedule/create">
-          <Fab onClick={handleOpen} color="primary" aria-label="add" className="fabIcon">
-            <AddIcon />
-          </Fab>
-        </Link>
+        <UserForm user={user} modalClosed={() => setUser({})} page={page} rowsPerPage={rowsPerPage} />
       </Box>
     </Page>
   );
 };
-export default Schedule;
+export default User;

@@ -121,7 +121,7 @@ export const getScheduleDetails = (id) => async (dispatch) => {
 
         dispatch({
             type: SCHEDULE_DETAILS_SUCCESS,
-            payload: data.schedule
+            payload: data.data
         })
 
     } catch (error) {
