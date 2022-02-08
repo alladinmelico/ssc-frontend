@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 
-export default function ClassroomModal ({modalClosed, classroom}) {
+export default function ClassroomModal ({page, rowsPerPage, modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newClassroom)
@@ -60,7 +60,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_CLASSROOM_RESET })
-      dispatch(getAdminClassrooms())
+      dispatch(getAdminClassrooms(page, rowsPerPage))
       modalClosed()
       enqueueSnackbar('Classroom successfully added.', {
         variant: 'success',
@@ -75,7 +75,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
       resetForm()     
       modalClosed() 
       dispatch({ type: UPDATE_CLASSROOM_RESET })
-      dispatch(getAdminClassrooms())
+      dispatch(getAdminClassrooms(page, rowsPerPage))
       enqueueSnackbar('Classroom successfully updated.', {
         variant: 'success',
         anchorOrigin: {

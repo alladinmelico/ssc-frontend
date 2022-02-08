@@ -190,7 +190,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                   label="Capacity"
                   fullWidth
                   disabled
-                  defaultValue={facilities.find(item => item.id === facility)?.capacity}
+                  value={facilities.find(item => item.id === facility)?.capacity}
                 />
               </Grid>
             )}

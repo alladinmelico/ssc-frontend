@@ -158,7 +158,7 @@ export default function Step3({history, activeStep, setActiveStep}) {
             <Autocomplete
               disablePortal
               id="add-user-search"
-              value={toAddUser}
+              value={toAddUser || {name: ''}}
               getOptionLabel={(item) => item.name}
               onChange={(event, newVal) => setToAddUser(newVal)}
               options={users}
