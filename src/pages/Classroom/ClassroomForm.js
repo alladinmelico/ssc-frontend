@@ -5,13 +5,23 @@ import TextField from '@mui/material/TextField';
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import { useDispatch, useSelector } from "react-redux"
 import { getAdminClassrooms, newClassroom, updateClassroom, clearErrors } from "../../actions/classroomActions"
+import { getAdminSubjects } from "../../actions/subjectActions"
+import { getAdminUsers } from "../../actions/userActions"
 import { NEW_CLASSROOM_RESET, UPDATE_CLASSROOM_RESET } from "../../constants/classroomConstants"
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function ClassroomModal ({modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { subjects, count} = useSelector((state) => state.subjects)
+  const { users} = useSelector((state) => state.users)
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newClassroom)
   const {
@@ -37,10 +47,12 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', description_heading: '', description: '', section: '', subject_id: '0', google_classroom_id: '', users: ['0']})
+    reset({ name: '', description_heading: '', description: '', section: '', subject_id: '', google_classroom_id: '', users: ['0']})
   }
 
   useEffect(() => {
+    dispatch(getAdminSubjects(page, rowsPerPage))
+    dispatch(getAdminUsers(page, rowsPerPage))
     console.log(classroom)
     if(classroom.id && !openModal) {
       setOpenModal(true)
@@ -152,18 +164,23 @@ export default function ClassroomModal ({modalClosed, classroom}) {
           margin="normal"
           fullWidth
         />
-        
-        <TextField 
+
+        <FormControl fullWidth required margin="normal">
+        <InputLabel id="subject-select-label">Subject</InputLabel>
+        <Select
           {...register("subject_id", { required: true, min: 3 })}
           error={errors.subject_id ? true : false}
-          label="Subject ID"
-          variant="outlined"
+          labelId="subject-select-label"
+          id="subject-select"
+          label="subject"
           defaultValue={classroom ? classroom.subject_id : ''}
-          helperText={errors.subject_id?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
+         
+        >
+          {subjects.map(subject => (
+            <MenuItem value={subject.id}>{subject.name}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
         <TextField 
           {...register("google_classroom_id", { required: true, min: 3 })}
