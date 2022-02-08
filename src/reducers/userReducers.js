@@ -342,14 +342,6 @@ export const newUserReducer = (state = { user: {} }, action) => {
         }
   
       case GET_USERS_SUCCESS:
-        return {
-          loading: false,
-          users: action.payload.users,
-          usersCount: action.payload.usersCount,
-          resPerPage: action.payload.resPerPage,
-          filteredUsersCount: action.payload.filteredUsersCount,
-        }
-  
       case ADMIN_USERS_SUCCESS:
         return {
           loading: false,

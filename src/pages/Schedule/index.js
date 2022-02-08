@@ -61,7 +61,7 @@ const Schedule = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'title', headerName: 'Title', width: 150 },
     { field: 'code', headerName: 'Code', width: 300 },
     {
       field: 'actions',
@@ -69,7 +69,11 @@ const Schedule = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setSchedule(params)} label="Edit" />,
+        <GridActionsCellItem icon={
+          <Link to={`/schedule/${params.row.id}/edit`}>
+            <EditIcon color="primary" />
+          </Link>
+        } label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({

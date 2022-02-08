@@ -1,36 +1,63 @@
-import { green, red, pink, teal, blueGrey } from '@mui/material/colors'
+import { green, red, pink, teal, blueGrey, cyan } from '@mui/material/colors'
+const primary ={
+500: '#00838f',
+A400: '#00838f',
+}
+const secondary = {
+500: '#7edeea',
+A400: '#7edeea',
+}
+const light = {
+  500: '#b2ffff',
+  A400: '#b2ffff',
+}
+const dark = {
+  500: '#48acb8',
+  A400: '#48acb8',
+}
 
 const themes = [
   {
     id: 'default',
-    color: '#80deea',
+    color: '#005662',
     source: {
       palette: {
-        primary: teal,
-        secondary: blueGrey,
-        error: red,
+        primary: primary,
+        secondary: secondary,
+        error: cyan,
       },
     },
   },
   {
-    id: 'red',
-    color: red[500],
+    id: 'Sussie',
+    color: '#4fb3bf',
     source: {
       palette: {
-        primary: red,
-        secondary: pink,
-        error: red,
+        primary: dark,
+        secondary: dark,
+        error: cyan,
       },
     },
   },
   {
-    id: 'green',
-    color: green[500],
+    id: 'Verditer Blue',
+    color: '#48acb8',
     source: {
       palette: {
-        primary: green,
-        secondary: red,
-        error: red,
+        primary: secondary,
+        secondary: secondary,
+        error: cyan,
+      },
+    },
+  },
+  {
+    id: 'Celeste',
+    color: '#b2ffff',
+    source: {
+      palette: {
+        primary: light,
+        secondary: light,
+        error: cyan,
       },
     },
   },

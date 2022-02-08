@@ -28,8 +28,10 @@ import {
   GroupsOutlined, 
   HomeWorkOutlined, 
   CreditCardOutlined,
-  PersonOutlineOutlined,
-  StyleOutlined
+  StyleOutlined,
+  DevicesOutlined,
+  ThermostatOutlined,
+  PersonOutlineOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -160,10 +162,23 @@ const getMenuItems = (props) => {
       leftIcon: <GroupsOutlined />,
     },
     {
-      value: '/rfid',
-      visible: true,
-      primaryText: intl.formatMessage({ id: 'rfid', defaultMessage: 'RFIDs' }),
-      leftIcon: <CreditCardOutlined />,
+      primaryText: intl.formatMessage({ id: 'hardware', defaultMessage: 'Hardware' }),
+      primaryTogglesNestedList: true,
+      leftIcon: <DevicesOutlined />,
+      nestedItems: [
+        {
+          value: '/rfid',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({ id: 'rfid', defaultMessage: 'RFIDs' }),
+          leftIcon: <CreditCardOutlined />,
+        },
+        {
+          value: '/temperature',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({ id: 'temperature', defaultMessage: 'Temperature' }),
+          leftIcon: <ThermostatOutlined />,
+        },
+      ],
     },
     { divider: true },
     {

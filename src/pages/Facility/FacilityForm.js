@@ -1,3 +1,4 @@
+import API from '../../config/api'
 import React, { useState, useEffect } from 'react'
 import FormModal from '../../components/Modal/FormModal'
 import { useForm } from "react-hook-form";
@@ -18,6 +19,7 @@ import MenuItem from '@mui/material/MenuItem';
 export default function FacilityModal ({page, rowsPerPage, modalClosed, facility}) {
   const [openModal, setOpenModal] = useState(false)
   const [buildings, setBuildings] = useState([])
+  const [types, setfacilityTypes] = useState([])
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newFacility)
   const {
@@ -44,7 +46,35 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
     reset({ name: '', code: '', capacity: 0, type: '', building_id: ''})
   }
 
-  useEffect(() => {
+  const getBuildings = async () => {
+    try {
+
+      const { data }  = await API.get('/buildings')
+      await console.log(data)
+      await setBuildings(data)
+
+
+    } catch (error) {
+        console.log(error)
+     }
+  }
+  
+  const getfacilityTypes = async () => {
+    try {
+
+      const { data }  = await API.get('/facility-types')
+      await console.log(data)
+      await setfacilityTypes(data)
+
+
+    } catch (error) {
+        console.log(error)
+     }
+  }
+
+  useEffect(( ) => {
+    getBuildings()
+    getfacilityTypes()
     console.log('facility', facility);
     if(facility.id && !openModal) {
       setOpenModal(true)
@@ -144,48 +174,39 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
           type="number"
         />
 
-        <TextField 
+      <FormControl fullWidth required margin="normal">
+        <InputLabel id="types-select-label">Facility</InputLabel>
+        <Select
           {...register("type", { required: true, min: 3 })}
           error={errors.type ? true : false}
-          label="Type"
-          variant="outlined"
+          labelId="types-select-label"
+          id="types-select"
+          label="types"
           defaultValue={facility ? facility.type : ''}
-          helperText={errors.type?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
+         
+        >
+          {types.map(types => (
+            <MenuItem value={types.id}>{types.value}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
-        <FormControl fullWidth required>
-          <InputLabel id="building-select-label">Building</InputLabel>
-          <Select
-            {...register("building_id", { required: true, min: 3 })}
-            labelId="building-select-label"
-            id="building-select"
-            error={errors.building_id ? true : false}
-            value={facility ? facility.building_id : ''}
-            label="Building"
-            required
-            fullWidth
-            margin="normal"
-          >
-            {buildings.map(item => (
-              <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <TextField 
+         <FormControl fullWidth required margin="normal">
+        <InputLabel id="building-select-label">Building</InputLabel>
+        <Select
           {...register("building_id", { required: true, min: 3 })}
           error={errors.building_id ? true : false}
-          label="Building"
-          variant="outlined"
+          labelId="building-select-label"
+          id="building-select"
+          label="building"
           defaultValue={facility ? facility.building_id : ''}
-          helperText={errors.building_id?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
+         
+        >
+          {buildings.map(building => (
+            <MenuItem value={building.id}>{building.value}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       </FormModal>
     </div>
   );
