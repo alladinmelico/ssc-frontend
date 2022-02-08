@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from "react-redux"
 import Skeleton from '@mui/material/Skeleton';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -18,6 +19,7 @@ import { NEW_SCHEDULE_REQUEST } from "../../../constants/scheduleConstants"
 import PrevNextButtons from './PrevNextButtons';
 
 export default function Step1({history, activeStep, setActiveStep}) {
+  const [title, setTitle] = useState('');
   const [type, setType] = useState('');
   const [classroom, setClassroom] = useState({});
   const [error, setError] = useState({});
@@ -51,6 +53,7 @@ export default function Step1({history, activeStep, setActiveStep}) {
         type,
         classroom_id: classroom,
         classroom_name: classrooms.find(item => item.id === classroom).name,
+        title,
         user_id: 1
       }
     })
@@ -63,6 +66,7 @@ export default function Step1({history, activeStep, setActiveStep}) {
       dispatch(getClassrooms())
     }
     if (schedule) {
+      setTitle(schedule.title)
       setType(schedule.type)
       setClassroom(schedule.classroom_id)
     }
@@ -71,6 +75,15 @@ export default function Step1({history, activeStep, setActiveStep}) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <form onSubmit={submit}>
+        <TextField
+          id="outlined-basic"
+          label="Title"
+          variant="outlined"
+          fullWidth
+          value={title}
+          required
+          onChange={(e) => setTitle(e.target.value)}
+        />
         <FormControl fullWidth required margin="normal">
           <InputLabel id="type-select-label">Type</InputLabel>
           <Select
@@ -81,7 +94,7 @@ export default function Step1({history, activeStep, setActiveStep}) {
             onChange={(event) => setType(event.target.value)}
           >
             {types.map(type => (
-              <MenuItem value={type.value}>{type.label}</MenuItem>
+              <MenuItem value={type.value} key={type.value}>{type.label}</MenuItem>
             ))}
           </Select>
           <FormHelperText>{error.type}</FormHelperText>

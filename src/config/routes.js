@@ -9,7 +9,7 @@ const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
 const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
 const Schedule = lazy(() => import('../pages/Schedule'))
-const ScheduleCreate = lazy(() => import('../pages/Schedule/ScheduleCreate'))
+const ScheduleForm = lazy(() => import('../pages/Schedule/ScheduleForm'))
 const User = lazy(() => import('../pages/User'))
 const Rfid = lazy(() => import('../pages/Rfid'))
 const Temperature = lazy(() => import('../pages/Temperature'))
@@ -73,7 +73,16 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <ScheduleCreate />
+        <ScheduleForm />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/schedule/:id/edit',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <ScheduleForm />
       </AuthorizedRoute>
     ),
   },

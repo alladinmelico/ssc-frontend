@@ -30,8 +30,17 @@ export default function Step4({history, activeStep, setActiveStep}) {
   }
   const submit = (event) => {
     event.preventDefault()
-    saveData()
-    dispatch(newSchedule(schedule))
+    const formData = new FormData()
+    Object.entries(schedule).map(([key, value]) => {
+      if (key.includes('is_')) {
+        return formData.append(key, (value ? 1 : 0))
+      }
+      return formData.append(key, value)
+    })
+    
+    formData.append('attachment', attachment)
+    formData.append('note', note)
+    dispatch(newSchedule(formData))
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
   
@@ -40,7 +49,14 @@ export default function Step4({history, activeStep, setActiveStep}) {
   }
   
   const handleFilesChange = (files) => {
-    setAttachment(files.pop())
+    const file = files.pop()
+
+    fetch(file.path)
+    .then(res => res.blob())
+    .then(blob => {
+      const fileObj = new File([blob], file.name,{ type: file.contentType })
+      setAttachment(fileObj)
+    })
   }
 
   useEffect(() => {
@@ -79,14 +95,14 @@ export default function Step4({history, activeStep, setActiveStep}) {
           onFilesChange={handleFilesChange}
           onError={handleFileUploadError}
           imageSrc={'/logo192.png'}
-          bannerProps={{ elevation: 8, variant: "outlined", sx: {background: '#005662'} }}
+          bannerProps={{ elevation: 0, variant: "outlined", sx: {background: '#005662'} }}
           containerProps={{ elevation: 0, variant: "outlined" }}
         />
 
         <PrevNextButtons handleBack={() => {
           saveData()
           setActiveStep((prevActiveStep) => prevActiveStep - 1);
-        }} isActive={true} text="Next" />
+        }} isActive={true} text="Save" />
       </form>
     </Box>
   );

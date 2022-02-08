@@ -23,7 +23,7 @@ const themes = [
     source: {
       palette: {
         primary: primary,
-        secondary: primary,
+        secondary: secondary,
         error: cyan,
       },
     },
