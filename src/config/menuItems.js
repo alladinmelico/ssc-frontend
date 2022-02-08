@@ -106,8 +106,8 @@ const getMenuItems = (props) => {
   }
   return [
     {
-      value: '/landing_page',
-      visible: isAuthorised,
+      value: '/',
+      visible: true,
       primaryText: intl.formatMessage({ id: 'landing_page', defaultMessage: 'Landing Page' }),
       leftIcon: <WebOutlined />,
     },
