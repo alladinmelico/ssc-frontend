@@ -8,7 +8,8 @@ const HomePage = () => {
 
   return (
     <Page pageTitle={intl.formatMessage({ id: 'home' })} >
-      <Typography>{intl.formatMessage({ id: 'home' })}</Typography>
+      {/* <Typography>{intl.formatMessage({ id: 'home' })}</Typography> */}
+     
     </Page>
   )
 }

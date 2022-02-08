@@ -17,3 +17,19 @@
   background-color: white;
   border-radius: 0.5rem;
 }
+
+body{
+  margin: 0;
+}
+
+.card-media{
+padding: 1rem;
+}
+
+/* image{
+  border-radius: 1rem;
+} */
+
+#member-image{
+  border-radius: 8px;
+}
