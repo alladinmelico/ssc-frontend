@@ -15,6 +15,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import { Autocomplete, Box, Chip, OutlinedInput } from '@mui/material';
 
 export default function ClassroomModal ({modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
@@ -22,6 +23,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { subjects, count} = useSelector((state) => state.subjects)
   const { users} = useSelector((state) => state.users)
+  const [toAddUser, setToAddUser] = useState('');
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newClassroom)
   const {
@@ -31,6 +33,21 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   } = useSelector((state) => state.classroom) 
   const { auth } = useAuth()
   const { enqueueSnackbar } = useSnackbar()
+
+  const [values, setValues] = useState({
+    users: [],
+})
+  const handleUsers = (event, value, reason) => {
+    event.preventDefault();
+    let usr = [];
+    for (let i=0; i<value.length; i++) {
+        usr.push({
+            id : value[i].id,
+            name : value[i].name
+        })
+    }
+    setValues({...values, 'users' : usr})
+}
 
   const schema = yup.object({
     name: yup.string().required(),
@@ -193,17 +210,24 @@ export default function ClassroomModal ({modalClosed, classroom}) {
           fullWidth
         />
         
-        <TextField 
-          {...register("users", { required: true, min: 3 })}
-          error={errors.users ? true : false}
-          label="Users ID"
-          variant="outlined"
-          defaultValue={classroom ? classroom.users : ''}
-          helperText={errors.users?.message}
-          margin="normal"
-          fullWidth
-        />
-        
+        <FormControl fullWidth required margin="normal">
+        <Autocomplete
+          multiple={true}
+          id="users-list"
+          name="users"
+          options={users}
+          getOptionLabel={((option) => option.name)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="standard"
+              label="Users"
+              placeholder="User"
+              />
+              )}
+              onChange={handleUsers}
+              />
+        </FormControl>
 
       </FormModal>
     </div>
