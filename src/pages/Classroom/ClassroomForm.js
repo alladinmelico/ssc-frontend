@@ -17,13 +17,11 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Autocomplete, Box, Chip, OutlinedInput } from '@mui/material';
 
-export default function ClassroomModal ({modalClosed, classroom}) {
+export default function ClassroomModal ({page, rowsPerPage, modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const { subjects, count} = useSelector((state) => state.subjects)
-  const { users} = useSelector((state) => state.users)
-  const [toAddUser, setToAddUser] = useState('');
+  const { users } = useSelector((state) => state.users)
+  const [toAddUsers, setToAddUsers] = useState([]);
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newClassroom)
   const {
@@ -36,18 +34,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
 
   const [values, setValues] = useState({
     users: [],
-})
-  const handleUsers = (event, value, reason) => {
-    event.preventDefault();
-    let usr = [];
-    for (let i=0; i<value.length; i++) {
-        usr.push({
-            id : value[i].id,
-            name : value[i].name
-        })
-    }
-    setValues({...values, 'users' : usr})
-}
+  })
 
   const schema = yup.object({
     name: yup.string().required(),
@@ -55,8 +42,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
     description: yup.string().required(),
     section: yup.string().required(),
     subject_id: yup.number().required(),
-    google_classroom_id: yup.string(),
-    users: yup.array().required()
+    google_classroom_id: yup.string()
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
@@ -64,22 +50,23 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', description_heading: '', description: '', section: '', subject_id: '', google_classroom_id: '', users: ['0']})
+    reset({ name: '', description_heading: '', description: '', section: '', subject_id: '', google_classroom_id: ''})
   }
 
   useEffect(() => {
-    dispatch(getAdminSubjects(page, rowsPerPage))
-    dispatch(getAdminUsers(page, rowsPerPage))
-    console.log(classroom)
+    dispatch(getAdminSubjects(0, 1000))
+    dispatch(getAdminUsers(0, 1000))
+
     if(classroom.id && !openModal) {
       setOpenModal(true)
+      console.log('classroom', classroom)
       setValue('name', classroom.name)
       setValue('description_heading', classroom.description_heading)
       setValue('description', classroom.description)
       setValue('section', classroom.section)
       setValue('subject_id', classroom.subject_id)
       setValue('google_classroom_id', classroom.google_classroom_id)
-      setValue('users', classroom.users)
+      setToAddUsers(classroom.users)
     }
 
     if (error || updateError) {
@@ -89,7 +76,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_CLASSROOM_RESET })
-      dispatch(getAdminClassrooms())
+      dispatch(getAdminClassrooms(page, rowsPerPage))
       modalClosed()
       enqueueSnackbar('Classroom successfully added.', {
         variant: 'success',
@@ -104,7 +91,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
       resetForm()     
       modalClosed() 
       dispatch({ type: UPDATE_CLASSROOM_RESET })
-      dispatch(getAdminClassrooms())
+      dispatch(getAdminClassrooms(page, rowsPerPage))
       enqueueSnackbar('Classroom successfully updated.', {
         variant: 'success',
         anchorOrigin: {
@@ -116,7 +103,9 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   }, [dispatch, error, updateError, isUpdated, success, classroom])
 
   const onSubmit = async data => {
-    console.log(data)
+    if (toAddUsers.length) {
+      data.users = toAddUsers.map(item => item.id)
+    }
     if (classroom.id) {
       dispatch(updateClassroom(classroom.id, data))
     } else {
@@ -128,7 +117,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   return (
     <div>
       <FormModal
-        title={classroom ? 'Add Classroom' : 'Edit Classroom'}
+        title={classroom && classroom.id ? 'Edit Classroom' : 'Add Classroom'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
         loading={loading}
@@ -183,21 +172,21 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         />
 
         <FormControl fullWidth required margin="normal">
-        <InputLabel id="subject-select-label">Subject</InputLabel>
-        <Select
-          {...register("subject_id", { required: true, min: 3 })}
-          error={errors.subject_id ? true : false}
-          labelId="subject-select-label"
-          id="subject-select"
-          label="subject"
-          defaultValue={classroom ? classroom.subject_id : ''}
-         
-        >
-          {subjects.map(subject => (
-            <MenuItem value={subject.id}>{subject.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <InputLabel id="subject-select-label">Subject</InputLabel>
+          <Select
+            {...register("subject_id", { required: true, min: 3 })}
+            error={errors.subject_id ? true : false}
+            labelId="subject-select-label"
+            id="subject-select"
+            label="subject"
+            defaultValue={classroom ? classroom.subject_id : ''}
+          
+          >
+            {subjects.map(subject => (
+              <MenuItem value={subject.id}>{subject.name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         <TextField 
           {...register("google_classroom_id", { required: true, min: 3 })}
@@ -211,22 +200,22 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         />
         
         <FormControl fullWidth required margin="normal">
-        <Autocomplete
-          multiple={true}
-          id="users-list"
-          name="users"
-          options={users}
-          getOptionLabel={((option) => option.name)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="standard"
-              label="Users"
-              placeholder="User"
+          <Autocomplete
+            multiple={true}
+            id="users-list"
+            name="users"
+            options={users}
+            value={toAddUsers}
+            getOptionLabel={((option) => option.name)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Users"
+                placeholder="User"
               />
-              )}
-              onChange={handleUsers}
-              />
+            )}
+            onChange={(event, newVal) => setToAddUsers(newVal)}
+          />
         </FormControl>
 
       </FormModal>

@@ -68,7 +68,7 @@ const Classroom = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setClassroom(params)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setClassroom(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -109,7 +109,7 @@ const Classroom = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <ClassroomForm classroom={classroom} modalClosed={() => setClassroom({})} />
+        <ClassroomForm classroom={classroom} modalClosed={() => setClassroom({})} page={page} rowsPerPage={rowsPerPage} />
       </Box>
     </Page>
   );
