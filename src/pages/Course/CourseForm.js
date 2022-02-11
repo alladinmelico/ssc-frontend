@@ -1,3 +1,4 @@
+import API from '../../config/api'
 import React, { useState, useEffect } from 'react'
 import FormModal from '../../components/Modal/FormModal'
 import { useForm } from "react-hook-form";
@@ -9,9 +10,14 @@ import { NEW_COURSE_RESET, UPDATE_COURSE_RESET } from "../../constants/courseCon
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
   const [openModal, setOpenModal] = useState(false)
+  const [departments, setcourseDepartments] = useState([])
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newCourse)
   const {
@@ -33,10 +39,24 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', code: '', department_id: '0'})
+    reset({ name: '', code: '', department_id: ''})
+  }
+
+  const getcourseDepartments = async () => {
+    try {
+
+      const { data }  = await API.get('/departments')
+      await console.log(data)
+      await setcourseDepartments(data)
+
+
+    } catch (error) {
+        console.log(error)
+     }
   }
 
   useEffect(() => {
+    getcourseDepartments()
     if(course.id && !openModal) {
       setOpenModal(true)
       setValue('name', course.name)
@@ -121,19 +141,23 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
           margin="normal"
           fullWidth
         />
-        
-        <TextField 
+
+      <FormControl fullWidth required margin="normal">
+        <InputLabel id="departments-select-label">Department</InputLabel>
+        <Select
           {...register("department_id", { required: true, min: 3 })}
           error={errors.department_id ? true : false}
-          label="Department"
-          variant="outlined"
+          labelId="departments-select-label"
+          id="departments-select"
+          label="departments"
           defaultValue={course ? course.department_id : ''}
-          helperText={errors.department_id?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
-
+         
+        >
+          {departments.map(departments => (
+            <MenuItem value={departments.id}>{departments.value}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       </FormModal>
     </div>
   );

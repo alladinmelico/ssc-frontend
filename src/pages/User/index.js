@@ -64,7 +64,7 @@ const User = ({history}) => {
     { field: 'section', headerName: 'Section', width: 150 },
     { field: 'school_id', headerName: 'School ID', width: 150 },
     { field: 'role_id', headerName: 'Role ID', width: 150 },
-    { field: 'course_id', headerName: 'Course ID', width: 150 },
+    { field: 'course_name', headerName: 'Course', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',

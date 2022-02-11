@@ -61,7 +61,7 @@ const Classroom = ({history}) => {
     { field: 'description', headerName: 'Description', width: 150 },
     { field: 'google_classroom_id', headerName: 'Google Classroom ID', width: 150 },
     { field: 'section', headerName: 'Section', width: 150 },
-    { field: 'subject_id', headerName: 'Subject ID', width: 150 },
+    { field: 'subject_name', headerName: 'Subject', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',

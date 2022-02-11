@@ -1,3 +1,4 @@
+import API from '../../config/api'
 import React, { useState, useEffect } from 'react'
 import FormModal from '../../components/Modal/FormModal'
 import { useForm } from "react-hook-form";
@@ -9,9 +10,17 @@ import { NEW_USER_RESET, UPDATE_USER_RESET } from "../../constants/userConstants
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import { getAdminCourses } from 'actions/courseActions';
 
-export default function UserModal ({page, rowsPerPage, modalClosed, user}) {
+export default function UserModal ({modalClosed, user}) {
   const [openModal, setOpenModal] = useState(false)
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const { courses, count} = useSelector((state) => state.courses)
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newUser)
   const {
@@ -40,6 +49,7 @@ export default function UserModal ({page, rowsPerPage, modalClosed, user}) {
   }
 
   useEffect(() => {
+    dispatch(getAdminCourses(page, rowsPerPage))
     if(user.id && !openModal) {
       setOpenModal(true)
       setValue('name', user.name)
@@ -151,17 +161,22 @@ export default function UserModal ({page, rowsPerPage, modalClosed, user}) {
           fullWidth
         />
 
-        <TextField 
+        <FormControl fullWidth required margin="normal">
+        <InputLabel id="course-select-label">Course</InputLabel>
+        <Select
           {...register("course_id", { required: true, min: 3 })}
           error={errors.course_id ? true : false}
-          label="Course ID"
-          variant="outlined"
+          labelId="course-select-label"
+          id="course-select"
+          label="course"
           defaultValue={user ? user.course_id : ''}
-          helperText={errors.course_id?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
+         
+        >
+          {courses.map(course => (
+            <MenuItem value={course.id}>{course.name}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
 
         <TextField 
           {...register("school_id", { required: true, min: 3 })}
