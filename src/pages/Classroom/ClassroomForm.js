@@ -206,7 +206,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
             name="users"
             options={users}
             value={toAddUsers}
-            getOptionLabel={((option) => option.name)}
+            getOptionLabel={((option) => option.email)}
             renderInput={(params) => (
               <TextField
                 {...params}
