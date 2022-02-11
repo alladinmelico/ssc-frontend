@@ -98,15 +98,28 @@ export default function Step2({history, activeStep, setActiveStep}) {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
 
+  function getTimeMin (time) {
+    const tempDate = new Date()
+    const timeSplit = time.split(':')
+    tempDate.setHours(parseInt(timeSplit[0]))
+    tempDate.setMinutes(parseInt(timeSplit[1]))
+    return tempDate
+  }
+
   const fetchData = (schedule) => {
-    setType(schedule.facility_type ? schedule.facility_type : '')
-    setFacility(schedule.facility_id ? schedule.facility_id : '')
-    setStartTime(schedule.start_at ? dayjs(schedule.start_at) : dayjs(new Date(0, 0, 0, 7, 0)))
-    setEndTime(schedule.end_at ? dayjs(schedule.end_at) : startTime.add(8, 'hour'))
+    if (schedule.facility) {
+      setType(schedule.facility ? (types.findIndex(item => item === schedule.facility.type) + 1) : '')
+      setFacility(schedule.facility ? schedule.facility.id : '')
+    } else {
+      setType(schedule.facility_type ? schedule.facility_type : '')
+      setFacility(schedule.facility_id ? schedule.facility_id : '')
+    }
+    setStartTime(schedule.start_at ? dayjs(getTimeMin(schedule.start_at)) : dayjs(new Date(0, 0, 0, 7, 0)))
+    setEndTime(schedule.end_at ? dayjs(getTimeMin(schedule.end_at)) : startTime.add(8, 'hour'))
     setStartDate(schedule.start_date ? dayjs(schedule.start_date) : dayjs(new Date()))
     setEndDate(schedule.end_date ? dayjs(schedule.end_date) : startDate.add(1, 'year'))
-    setIsRecurring(schedule.is_recurring ? schedule.is_recurring : false)
-    setIsEndOfSem(schedule.is_end_of_sem? schedule.is_end_of_sem : false)
+    setIsRecurring(schedule.is_recurring ? !!schedule.is_recurring : false)
+    setIsEndOfSem(schedule.is_end_of_sem? !!schedule.is_end_of_sem : false)
     setDaysOfWeek(schedule.days_of_week ? schedule.days_of_week : [])
     setRepeatBy(schedule.repeat_by ? schedule.repeat_by : '')
   }
@@ -154,7 +167,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                     <Select
                       labelId="facility-select-label"
                       id="facility-select"
-                      value={facility}
+                      value={facility || null}
                       label="Type"
                       onChange={(e) => setFacility(e.target.value)}
                       required
@@ -171,15 +184,13 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 <Skeleton animation="wave" height={100} />
               </Grid>
             )}
-            {facility && (
+            {(count && facility) && (
               <Grid item xs={3}>
                 <TextField
-                  id="outlined-basic"
                   label="Capacity"
-                  variant="outlined"
                   fullWidth
                   disabled
-                  value={facilities.find(item => item.id === facility).capacity}
+                  value={facilities.find(item => item.id === facility)?.capacity}
                 />
               </Grid>
             )}

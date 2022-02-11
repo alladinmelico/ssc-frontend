@@ -7,12 +7,15 @@ import FileUpload from "react-mui-fileuploader"
 import TextField from '@mui/material/TextField';
 import { NEW_SCHEDULE_REQUEST } from "../../../constants/scheduleConstants"
 import PrevNextButtons from './PrevNextButtons';
+import { Typography } from '@mui/material';
 import {
   newSchedule,
+  updateSchedule,
   clearErrors,
 } from "../../../actions/scheduleActions"
 
 export default function Step4({history, activeStep, setActiveStep}) {
+  const [oldAttachment, setOldAttachment] = useState('');
   const [attachment, setAttachment] = useState({});
   const [note, setNote] = useState('');
   const dispatch = useDispatch()
@@ -30,8 +33,25 @@ export default function Step4({history, activeStep, setActiveStep}) {
   }
   const submit = (event) => {
     event.preventDefault()
-    saveData()
-    dispatch(newSchedule(schedule))
+    const formData = new FormData()
+    Object.entries(schedule).map(([key, value]) => {
+      if (key.includes('is_')) {
+        return formData.append(key, (value ? 1 : 0))
+      }
+      return formData.append(key, value)
+    })
+    
+    if (attachment) {
+      formData.append('attachment', attachment)
+    }
+
+    formData.append('note', note)
+
+    if (schedule.id) {
+      dispatch(updateSchedule(schedule.id, formData))
+    } else {
+      dispatch(newSchedule(formData))
+    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
   
@@ -40,11 +60,24 @@ export default function Step4({history, activeStep, setActiveStep}) {
   }
   
   const handleFilesChange = (files) => {
-    setAttachment(files.pop())
+    if (files.length > 0) {
+      const file = files.pop()
+
+      if (file && file.path) {
+        fetch(file.path)
+        .then(res => res.blob())
+        .then(blob => {
+          const fileObj = new File([blob], file.name,{ type: file.contentType })
+          setAttachment(fileObj)
+        })
+      }    
+    }
   }
 
   useEffect(() => {
     if (schedule) {
+      setNote(schedule.note ? schedule.note : '')
+      setOldAttachment(schedule.attachment ? schedule.attachment : '')
     }
   }, [dispatch, history, schedule])
 
@@ -58,10 +91,17 @@ export default function Step4({history, activeStep, setActiveStep}) {
           rows={5}
           value={note}
           onChange={(event) => setNote(event.target.value)}
-          defaultValue="Notes..."
           fullWidth
           sx={{ mb: 5 }}
         />
+
+
+        {oldAttachment && (
+          <Box>
+            <Typography variant="overline" display="block">Current Attachment</Typography>
+            <img src={oldAttachment} alt="old attachment" />
+          </Box>
+        )}
 
         <FileUpload
           multiFile={true}
@@ -74,19 +114,19 @@ export default function Step4({history, activeStep, setActiveStep}) {
           maxFileSize={10}
           maxUploadFiles={0}
           maxFilesContainerHeight={357}
-          errorSizeMessage={'fill it or move it to use the default error message'}
+          errorSizeMessage={'File is too large.'}
           allowedExtensions={['jpg', 'jpeg', 'png', 'pdf']}
           onFilesChange={handleFilesChange}
           onError={handleFileUploadError}
           imageSrc={'/logo192.png'}
-          bannerProps={{ elevation: 8, variant: "outlined", sx: {background: '#005662'} }}
+          bannerProps={{ elevation: 0, variant: "outlined", sx: {background: '#005662'} }}
           containerProps={{ elevation: 0, variant: "outlined" }}
         />
 
         <PrevNextButtons handleBack={() => {
           saveData()
           setActiveStep((prevActiveStep) => prevActiveStep - 1);
-        }} isActive={true} text="Next" />
+        }} isActive={true} text="Save" />
       </form>
     </Box>
   );

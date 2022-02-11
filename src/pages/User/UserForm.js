@@ -37,7 +37,6 @@ export default function UserModal ({modalClosed, user}) {
     section: yup.string().required(),
     school_id: yup.string().required(),
     year: yup.number().required(),
-    role_id: yup.number().required(),
     course_id: yup.number().required(),
   }).required();
 
@@ -46,7 +45,7 @@ export default function UserModal ({modalClosed, user}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', email: '', section: '', school_id: '', year: 0, role_id: 0, course_id: ''})
+    reset({ name: '', email: '', section: '', school_id: '', year: 0, course_id: 0})
   }
 
   useEffect(() => {
@@ -58,7 +57,6 @@ export default function UserModal ({modalClosed, user}) {
       setValue('section', user.section)
       setValue('year', user.year)
       setValue('school_id', user.school_id)
-      setValue('role_id', user.role_id)
       setValue('course_id', user.course_id)
     }
 

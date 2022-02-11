@@ -1,60 +1,57 @@
 import React, { useState, useEffect } from 'react'
 import Page from 'material-ui-shell/lib/containers/Page';
 import { useIntl } from 'react-intl';
-import FormModal from '../../components/Modal/FormModal'
 import { useForm } from "react-hook-form";
-import TextField from '@mui/material/TextField';
-import { useAuth } from 'base-shell/lib/providers/Auth'
+import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from "react-redux"
-import { getAdminSchedules, newSchedule, updateSchedule, clearErrors } from "../../actions/scheduleActions"
-import { NEW_SCHEDULE_RESET, UPDATE_SCHEDULE_RESET } from "../../constants/scheduleConstants"
+import { getAdminSchedules, clearErrors } from "../../actions/scheduleActions"
+import { NEW_SCHEDULE_RESET } from "../../constants/scheduleConstants"
 import { useSnackbar } from 'notistack'
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup"
+import ScheduleStepper from 'components/ScheduleStepper';
+import Skeleton from '@mui/material/Skeleton';
+import { useParams } from "react-router-dom";
+import {
+  getScheduleDetails
+} from "../../actions/scheduleActions"
+import { NEW_SCHEDULE_REQUEST } from "../../constants/scheduleConstants"
+import Step1 from './Steps/Step1';
+import Step2 from './Steps/Step2';
+import Step3 from './Steps/Step3';
+import Step4 from './Steps/Step4';
+import Step5 from './Steps/Step5';
 
-export default function ScheduleForm ({match}) {
+export default function ScheduleForm ({ match }) {
   const intl = useIntl();
-  const [openModal, setOpenModal] = useState(false)
+  const [activeStep, setActiveStep] = useState(0);
   const dispatch = useDispatch()
   
-  const { schedule } = useSelector((state) => state.scheduleDetails)
+  const { id } = useParams();
+
+  const { loading: loadingDetails, schedule, error: errorDetails } = useSelector((state) => state.scheduleDetails)
 
   const { loading, error, success } = useSelector((state) => state.newSchedule)
-  const {
-    loading: updateLoading,
-    error: updateError,
-    isUpdated,
-  } = useSelector((state) => state.schedule) 
-  const { auth } = useAuth()
+
   const { enqueueSnackbar } = useSnackbar()
 
-  const schema = yup.object({
-    name: yup.string().required(),
-    code: yup.string().required(),
-  }).required();
-
-  const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
-    resolver: yupResolver(schema)
-  });
-
-  const resetForm = () => {
-    reset({ name: '', code: ''})
-  }
+  const scheduleId = schedule.id
 
   useEffect(() => {
-    console.log(schedule)
-    if(schedule.id && !openModal) {
-      setOpenModal(true)
-      setValue('name', schedule.name)
-      setValue('code', schedule.code)
-    }
-
-    if (error || updateError) {
+    if (error) {
       dispatch(clearErrors())
     }
 
+    if (scheduleId) {
+      dispatch({
+        type: NEW_SCHEDULE_REQUEST,
+        payload: {
+          ...schedule,
+        }
+      })
+    } else if (id && !loadingDetails) {
+      dispatch(getScheduleDetails(id))
+    }
+
     if (success) {
-      resetForm()
       dispatch({ type: NEW_SCHEDULE_RESET })
       dispatch(getAdminSchedules())
       enqueueSnackbar('Schedule successfully added.', {
@@ -65,60 +62,29 @@ export default function ScheduleForm ({match}) {
         },
       })
     }
-
-    if (isUpdated) {
-      resetForm()     
-      dispatch({ type: UPDATE_SCHEDULE_RESET })
-      dispatch(getAdminSchedules())
-      enqueueSnackbar('Schedule successfully updated.', {
-        variant: 'success',
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'center',
-        },
-      })
-    }
-  }, [dispatch, error, updateError, isUpdated, success, schedule])
-
-  const onSubmit = async data => {
-    console.log(data)
-    if (schedule.id) {
-      dispatch(updateSchedule(schedule.id, data))
-    } else {
-      dispatch(newSchedule(data))
-    }
-  };
-
+  }, [dispatch, error, success, enqueueSnackbar, id, scheduleId])
 
   return (
     <Page
       pageTitle={intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedule' })}
     >
-      <div>
-        <form onSubmit={onSubmit}>
-          <TextField 
-            {...register("name", { required: true, min: 3 })}
-            error={errors.name ? true : false}
-            label="Name"
-            variant="outlined"
-            defaultValue={schedule ? schedule.name : ''}
-            helperText={errors.name?.message}
-            margin="normal"
-            fullWidth
-          />
+      <ScheduleStepper activeStep={activeStep} />
 
-          <TextField 
-            {...register("code", { required: true, min: 3 })}
-            error={errors.code ? true : false}
-            label="Code"
-            variant="outlined"
-            defaultValue={schedule ? schedule.code : ''}
-            helperText={errors.code?.message}
-            margin="normal"
-            fullWidth
-          />
-        </form>
-      </div>
+      {loadingDetails ? (
+        <Box sx={{ maxWidth: 'sm' }} m="auto" mt={5}>
+          <Skeleton variant="rectangular" height={118} animation="wave" sx={{ my: 2  }} />
+          <Skeleton variant="rectangular" height={118} animation="wave" sx={{ my: 2  }} />
+          <Skeleton variant="rectangular" height={118} animation="wave" sx={{ my: 2  }} />
+        </Box>
+      ): (
+        <Box sx={{ maxWidth: activeStep === 2 ? 'md' : 'sm' }} m="auto" mt={5}>
+          {activeStep === 0 && <Step1 activeStep={activeStep} setActiveStep={setActiveStep} />}
+          {activeStep === 1 && <Step2 activeStep={activeStep} setActiveStep={setActiveStep} />}
+          {activeStep === 2 && <Step3 activeStep={activeStep} setActiveStep={setActiveStep} />}
+          {activeStep === 3 && <Step4 activeStep={activeStep} setActiveStep={setActiveStep} />}
+          {activeStep === 4 && <Step5 activeStep={activeStep} setActiveStep={setActiveStep} />}
+        </Box>
+      )}
     </Page>
   );
 }

@@ -22,6 +22,7 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   getUsers,
   getAdminUsers,
@@ -34,7 +35,7 @@ export default function Step3({history, activeStep, setActiveStep}) {
   const [hasUser, setHasUser] = useState(false);
   const [classroom, setClassroom] = useState('');
   const [facilityCapacity, setFacilityCapacity] = useState(0);
-  const [toAddUser, setToAddUser] = useState('');
+  const [toAddUser, setToAddUser] = useState({});
   const [batches, setBatches] = useState([]);
   const [error, setError] = useState({});
 
@@ -104,9 +105,17 @@ export default function Step3({history, activeStep, setActiveStep}) {
     }
   }
 
+  function removeItem(row, index) {
+    const tempArr = [...batches]
+    tempArr[row].splice(index, 1)
+    setBatches([...tempArr])
+  }
+
   useEffect(() => {
     if (count) {
-      if (schedule && schedule.type === 'whole_class') {
+      if (schedule.users) {
+        setBatches(sliceIntoChunks(schedule.users, facilityCapacity))
+      } else if (schedule && schedule.type === 'whole_class') {
         setBatches(sliceIntoChunks(users, facilityCapacity))
       }
     } else {
@@ -149,7 +158,7 @@ export default function Step3({history, activeStep, setActiveStep}) {
             <Autocomplete
               disablePortal
               id="add-user-search"
-              value={toAddUser}
+              value={toAddUser || {name: ''}}
               getOptionLabel={(item) => item.name}
               onChange={(event, newVal) => setToAddUser(newVal)}
               options={users}
@@ -177,7 +186,7 @@ export default function Step3({history, activeStep, setActiveStep}) {
         {hasUser && (
           <Grid container>
             {batches.map((batch, index) => (
-              <Grid item xs={6}>
+              <Grid item xs={6} key={index}>
               
                 <Box>
                   <List dense 
@@ -189,15 +198,6 @@ export default function Step3({history, activeStep, setActiveStep}) {
                   >
                     {batch.map((row, rowIndex) => (
                       <ListItem
-                        secondaryAction={
-                          <IconButton edge="end" aria-label="delete"
-                            onClick={() => moveItem(index, rowIndex)}
-                          >
-                            {(index + 1) === batches.length ? 
-                              (<ArrowBackIosOutlinedIcon />) :
-                              (<ArrowForwardIosOutlinedIcon />) } 
-                          </IconButton>
-                        }
                         key={row.id}
                       >
                         <ListItemAvatar>
@@ -207,6 +207,20 @@ export default function Step3({history, activeStep, setActiveStep}) {
                           primary={row.name}
                           secondary={row.school_id}
                         />
+                        <Box edge="end">
+                          {(batches.length !== 1) && (
+                            <IconButton edge="end" aria-label="delete"
+                              onClick={() => moveItem(index, rowIndex)}
+                            >
+                              {(index + 1) === batches.length ? 
+                                (<ArrowBackIosOutlinedIcon />) :
+                                (<ArrowForwardIosOutlinedIcon />) } 
+                            </IconButton>
+                          )}
+                          <IconButton edge="end" aria-label="delete" onClick={() => removeItem(index, rowIndex)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Box>
                       </ListItem>
                     ))}
                   </List>
