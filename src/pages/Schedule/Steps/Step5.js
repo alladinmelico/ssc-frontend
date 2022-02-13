@@ -80,8 +80,8 @@ export default function Step5({history}) {
           )}
 
         <Box sx={{ display: 'flex', flexDirection: 'row-reverse', mt: 3 }}>
-          <Link to="/schedule" >
-            <Button color="primary">Done</Button>
+          <Link to="/schedule" style={{ textDecoration: 'none' }} >
+            <Button color="primary" variant="contained">Done</Button>
           </Link>
         </Box>
     </Box>

@@ -16,7 +16,7 @@ import {
 
 export default function Step4({history, activeStep, setActiveStep}) {
   const [oldAttachment, setOldAttachment] = useState('');
-  const [attachment, setAttachment] = useState({});
+  const [attachment, setAttachment] = useState('');
   const [note, setNote] = useState('');
   const dispatch = useDispatch()
   const { schedule } = useSelector((state) => state.newSchedule)
@@ -34,7 +34,7 @@ export default function Step4({history, activeStep, setActiveStep}) {
   const submit = (event) => {
     event.preventDefault()
     const formData = new FormData()
-    Object.entries(schedule).map(([key, value]) => {
+    Object.entries(schedule).filter(([key, value]) => key !== 'attachment').map(([key, value]) => {
       if (key.includes('is_')) {
         return formData.append(key, (value ? 1 : 0))
       }
@@ -48,6 +48,7 @@ export default function Step4({history, activeStep, setActiveStep}) {
     formData.append('note', note)
 
     if (schedule.id) {
+      formData.append('_method', 'PUT')
       dispatch(updateSchedule(schedule.id, formData))
     } else {
       dispatch(newSchedule(formData))
