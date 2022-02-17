@@ -66,7 +66,6 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
       await console.log(data)
       await setfacilityTypes(data)
 
-
     } catch (error) {
         console.log(error)
      }
@@ -75,13 +74,12 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
   useEffect(( ) => {
     getBuildings()
     getfacilityTypes()
-    console.log('facility', facility);
     if(facility.id && !openModal) {
       setOpenModal(true)
       setValue('name', facility.name)
       setValue('code', facility.code)
       setValue('capacity', facility.capacity)
-      setValue('type', facility.type)
+      setValue('type', types.find(item => item.value === facility.type)?.id)
       setValue('building_id', facility.building_id)
     }
 
@@ -175,14 +173,14 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
         />
 
       <FormControl fullWidth required margin="normal">
-        <InputLabel id="types-select-label">Facility</InputLabel>
+        <InputLabel id="types-select-label">Type</InputLabel>
         <Select
           {...register("type", { required: true, min: 3 })}
           error={errors.type ? true : false}
           labelId="types-select-label"
           id="types-select"
           label="types"
-          defaultValue={facility ? facility.type : ''}
+          defaultValue={facility ? types.find(item => item.value === facility.type)?.id : ''}
          
         >
           {types.map(types => (
