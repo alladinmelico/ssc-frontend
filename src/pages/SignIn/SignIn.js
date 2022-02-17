@@ -75,15 +75,25 @@ const SignIn = ({ redirectTo = '/' }) => {
         </Typography>
       </Grid>
 
-      <Grid Item paddingTop={5} paddingBottom={0}>
+      <Grid Item paddingTop={5} paddingBottom={0} align={'center'}>
         <GoogleLogin
-        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-        buttonText="Sign In"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy={'single_host_origin'}
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          buttonText="Sign In"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          cookiePolicy={'single_host_origin'}
         />
-        </Grid>
+                
+        <Typography 
+          style={{
+            fontFamily:"Roboto",
+            fontSize:12,
+            marginTop: "1rem",
+            opacity: 0.8
+          }}>
+          By signing in, you agree to our <a href="/terms-of-service.pdf" target="_blank">terms of service</a> and <a href="/privacy-policy.pdf" target="_blank">privacy policy</a>.
+        </Typography>
+      </Grid>
 
       <Grid Item paddingTop={0}>
       <img src={helloimage} height={504} width={429} alt="HelloImage"/>
