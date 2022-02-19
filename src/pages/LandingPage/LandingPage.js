@@ -13,8 +13,8 @@ import IconButton from '@mui/material/IconButton';
 import { makeStyles } from '@mui/styles';
 import Carousel from 'react-material-ui-carousel'
 import helloimage from '../../public/Hello-rafiki 1.png';
-import { Paper, Button } from '@mui/material'
 
+import { Paper, Button } from '@mui/material'
 
 // Feature Icons
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
@@ -270,6 +270,7 @@ const LandingPage = () => {
             neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
             quasi quidem quibusdam.
           </Typography>
+
           </Box>
           <Box sx={{mt: "1rem", mx:"auto"}} className={classes.signInBtn} >
             <Link style={{ textDecoration: 'none' }} to="/signin"> 
@@ -278,6 +279,7 @@ const LandingPage = () => {
               </Typography>
             </Link>
           </Box>
+
         </Grid>
         
         <Grid item xs={12} sm={12} md={5} lg={6}>

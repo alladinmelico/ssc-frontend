@@ -58,7 +58,7 @@ const Course = ({history}) => {
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'name', headerName: 'Name', width: 150 },
     { field: 'code', headerName: 'Code', width: 300 },
-    { field: 'department', headerName: 'department', width: 150 },
+    { field: 'department', headerName: 'Department', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',

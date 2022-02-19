@@ -18,6 +18,7 @@ export default function Step5({history}) {
   const dispatch = useDispatch()
   const componentRef =  React.createRef();
   const { schedule } = useSelector((state) => state.newSchedule)
+  const { schedule: updatedSchedule, isUpdated } = useSelector((state) => state.schedule)
 
   const { auth } = useAuth();
   const {
@@ -28,10 +29,10 @@ export default function Step5({history}) {
 
 
   useEffect(() => {
-    if (schedule) {
-      setUrl(`https://safe-and-smart-campus.herokuapp.com/schedule/${schedule.id}`)
+    if (schedule || updatedSchedule) {
+      setUrl(`https://safe-and-smart-campus.herokuapp.com/schedule/${schedule ? schedule.id : updatedSchedule.id}`)
     }
-  }, [dispatch, history, schedule])
+  }, [dispatch, history, schedule, updatedSchedule])
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -79,8 +80,8 @@ export default function Step5({history}) {
           )}
 
         <Box sx={{ display: 'flex', flexDirection: 'row-reverse', mt: 3 }}>
-          <Link to="/schedule" >
-            <Button color="primary">Done</Button>
+          <Link to="/schedule" style={{ textDecoration: 'none' }} >
+            <Button color="primary" variant="contained">Done</Button>
           </Link>
         </Box>
     </Box>

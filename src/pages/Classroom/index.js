@@ -61,14 +61,14 @@ const Classroom = ({history}) => {
     { field: 'description', headerName: 'Description', width: 150 },
     { field: 'google_classroom_id', headerName: 'Google Classroom ID', width: 150 },
     { field: 'section', headerName: 'Section', width: 150 },
-    { field: 'subject_id', headerName: 'Subject ID', width: 150 },
+    { field: 'subject_name', headerName: 'Subject', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setClassroom(params)} label="Edit" />,
+        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setClassroom(params.row)} label="Edit" />,
         <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -109,7 +109,7 @@ const Classroom = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <ClassroomForm classroom={classroom} modalClosed={() => setClassroom({})} />
+        <ClassroomForm classroom={classroom} modalClosed={() => setClassroom({})} page={page} rowsPerPage={rowsPerPage} />
       </Box>
     </Page>
   );

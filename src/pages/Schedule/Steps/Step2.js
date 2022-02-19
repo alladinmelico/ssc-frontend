@@ -113,6 +113,9 @@ export default function Step2({history, activeStep, setActiveStep}) {
     } else {
       setType(schedule.facility_type ? schedule.facility_type : '')
       setFacility(schedule.facility_id ? schedule.facility_id : '')
+      // if (facility && type.length === 0) {
+      //   setType(facilities.find(item => item.id === facility)?.type)
+      // }
     }
     setStartTime(schedule.start_at ? dayjs(getTimeMin(schedule.start_at)) : dayjs(new Date(0, 0, 0, 7, 0)))
     setEndTime(schedule.end_at ? dayjs(getTimeMin(schedule.end_at)) : startTime.add(8, 'hour'))
@@ -120,7 +123,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
     setEndDate(schedule.end_date ? dayjs(schedule.end_date) : startDate.add(1, 'year'))
     setIsRecurring(schedule.is_recurring ? !!schedule.is_recurring : false)
     setIsEndOfSem(schedule.is_end_of_sem? !!schedule.is_end_of_sem : false)
-    setDaysOfWeek(schedule.days_of_week ? schedule.days_of_week : [])
+    setDaysOfWeek(schedule.days_of_week ? typeof schedule.days_of_week === 'string' ? (schedule.days_of_week).split(',') : schedule.days_of_week  : [])
     setRepeatBy(schedule.repeat_by ? schedule.repeat_by : '')
   }
 
@@ -136,7 +139,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
-  }, [dispatch, history, error, schedule])
+  }, [dispatch, history, error, schedule, count])
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -190,7 +193,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                   label="Capacity"
                   fullWidth
                   disabled
-                  defaultValue={facilities.find(item => item.id === facility)?.capacity}
+                  value={facilities.find(item => item.id === facility)?.capacity}
                 />
               </Grid>
             )}

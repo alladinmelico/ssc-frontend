@@ -7,13 +7,16 @@ import FileUpload from "react-mui-fileuploader"
 import TextField from '@mui/material/TextField';
 import { NEW_SCHEDULE_REQUEST } from "../../../constants/scheduleConstants"
 import PrevNextButtons from './PrevNextButtons';
+import { Typography } from '@mui/material';
 import {
   newSchedule,
+  updateSchedule,
   clearErrors,
 } from "../../../actions/scheduleActions"
 
 export default function Step4({history, activeStep, setActiveStep}) {
-  const [attachment, setAttachment] = useState({});
+  const [oldAttachment, setOldAttachment] = useState('');
+  const [attachment, setAttachment] = useState('');
   const [note, setNote] = useState('');
   const dispatch = useDispatch()
   const { schedule } = useSelector((state) => state.newSchedule)
@@ -31,16 +34,25 @@ export default function Step4({history, activeStep, setActiveStep}) {
   const submit = (event) => {
     event.preventDefault()
     const formData = new FormData()
-    Object.entries(schedule).map(([key, value]) => {
+    Object.entries(schedule).filter(([key, value]) => key !== 'attachment').map(([key, value]) => {
       if (key.includes('is_')) {
         return formData.append(key, (value ? 1 : 0))
       }
       return formData.append(key, value)
     })
     
-    formData.append('attachment', attachment)
+    if (attachment) {
+      formData.append('attachment', attachment)
+    }
+
     formData.append('note', note)
-    dispatch(newSchedule(formData))
+
+    if (schedule.id) {
+      formData.append('_method', 'PUT')
+      dispatch(updateSchedule(schedule.id, formData))
+    } else {
+      dispatch(newSchedule(formData))
+    }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
   
@@ -49,18 +61,24 @@ export default function Step4({history, activeStep, setActiveStep}) {
   }
   
   const handleFilesChange = (files) => {
-    const file = files.pop()
+    if (files.length > 0) {
+      const file = files.pop()
 
-    fetch(file.path)
-    .then(res => res.blob())
-    .then(blob => {
-      const fileObj = new File([blob], file.name,{ type: file.contentType })
-      setAttachment(fileObj)
-    })
+      if (file && file.path) {
+        fetch(file.path)
+        .then(res => res.blob())
+        .then(blob => {
+          const fileObj = new File([blob], file.name,{ type: file.contentType })
+          setAttachment(fileObj)
+        })
+      }    
+    }
   }
 
   useEffect(() => {
     if (schedule) {
+      setNote(schedule.note ? schedule.note : '')
+      setOldAttachment(schedule.attachment ? schedule.attachment : '')
     }
   }, [dispatch, history, schedule])
 
@@ -74,10 +92,17 @@ export default function Step4({history, activeStep, setActiveStep}) {
           rows={5}
           value={note}
           onChange={(event) => setNote(event.target.value)}
-          defaultValue="Notes..."
           fullWidth
           sx={{ mb: 5 }}
         />
+
+
+        {oldAttachment && (
+          <Box>
+            <Typography variant="overline" display="block">Current Attachment</Typography>
+            <img src={oldAttachment} alt="old attachment" />
+          </Box>
+        )}
 
         <FileUpload
           multiFile={true}
@@ -90,7 +115,7 @@ export default function Step4({history, activeStep, setActiveStep}) {
           maxFileSize={10}
           maxUploadFiles={0}
           maxFilesContainerHeight={357}
-          errorSizeMessage={'fill it or move it to use the default error message'}
+          errorSizeMessage={'File is too large.'}
           allowedExtensions={['jpg', 'jpeg', 'png', 'pdf']}
           onFilesChange={handleFilesChange}
           onError={handleFileUploadError}
