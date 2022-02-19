@@ -23,13 +23,60 @@ body{
 }
 
 .card-media{
-padding: 1rem;
+    padding: 1rem;
 }
-
-/* image{
-  border-radius: 1rem;
-} */
 
 #member-image{
   border-radius: 8px;
 }
+
+#tech-box{
+    max-width: none;
+   
+}
+
+/* .slider-container {
+    width: 100%;
+    height: 100%;
+} */
+
+/* techStackCard{
+    width: 200px;
+    height: 200px;
+} */
+
+/* #about-logo{
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 100% ;
+    max-width: 100%;
+    include
+} */
+
+
+.carousel-style {
+    height: 500px;
+   
+}
+
+.techstack {
+    max-height: 500px;
+    max-width: 100%;
+      @media (max-width: 1024px)
+      {
+        max-height: 350px;
+      }
+        /* @media (max-width:  576px)
+        {
+            max-height: 100%;
+        } */
+    }
+
+
+
+
+
+
+
+
+
