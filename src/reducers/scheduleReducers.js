@@ -72,6 +72,8 @@ export const newScheduleReducer = (state = { schedule: {} }, action) => {
       return {
         ...state,
         loading: true,
+        schedule: action.payload,
+        step: action.step
       }
 
     case NEW_SCHEDULE_SUCCESS:

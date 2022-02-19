@@ -45,7 +45,7 @@ const Section = ({history}) => {
 
     if (isDeleted) {
       dispatch({ type: DELETE_SECTION_RESET })
-      dispatch(getAdminSections())
+      dispatch(getAdminSections(page, rowsPerPage))
       enqueueSnackbar('Section successfully Deleted.', {
         variant: 'success',
         anchorOrigin: {

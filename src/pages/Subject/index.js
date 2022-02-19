@@ -45,7 +45,7 @@ const Subject = ({history}) => {
 
     if (isDeleted) {
       dispatch({ type: DELETE_SUBJECT_RESET })
-      dispatch(getAdminSubjects())
+      dispatch(getAdminSubjects(page, rowsPerPage))
       enqueueSnackbar('Subject successfully added.', {
         variant: 'success',
         anchorOrigin: {
