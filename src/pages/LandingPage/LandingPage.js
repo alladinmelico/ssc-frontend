@@ -273,9 +273,9 @@ const LandingPage = () => {
 
           </Box>
           <Box sx={{mt: "1rem", mx:"auto"}} className={classes.signInBtn} >
-            <Link style={{ textDecoration: 'none' }} to="/signin"> 
+            <Link style={{ textDecoration: 'none' }} to="/home"> 
               <Typography className={classes.whiteTextColor} sx={{pt:"5px", pb: "3px", textAlign: "center"}}  variant="subtitle1" gutterBottom>
-                Sigin
+                Signin
               </Typography>
             </Link>
           </Box>
@@ -382,7 +382,7 @@ const LandingPage = () => {
             </Box>
           </Grid>
           <Grid item xs={12} sm={12} md={6} lg={3}>
-            <Box onClick={() => setSelectedPrevention({label:"Step 3:Scans temperature and storing it in the database", 
+            <Box onClick={() => setSelectedPrevention({label:"Step 3: Scans temperature and storing it in the database", 
             image:"/temperature.png"})}
             sx={{cursor:"pointer", mb:"1rem", mx:"auto", mt:"1rem"}} className={classes.ourSysBox}>
               <img src="/temperature.png" height={200} width={200} alt="HelloImage"/>
@@ -512,7 +512,7 @@ const LandingPage = () => {
    {/* 5th Section: Tech Stack  */}
   <Container id="techstack" sx={{width:'400', maxWidth:"100%", mt:"4rem", pt: "1rem", pb:"1rem",  borderRadius: '30px',}}>
     <Typography sx={{mt:"1rem"}}  variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-     Teck Stack
+     Tech Stack
     </Typography>
     <Carousel 
       indicators={false}
@@ -681,28 +681,28 @@ const LandingPage = () => {
       }} 
       >
       <Typography sx={{mx:"1rem"}} ariant="caption" gutterBottom component="div">
-            <a href="https://google.com" target="_blank"
+            <a href="#" target="_blank"
             rel="noreferrer noopener" 
             style={{ textDecoration: 'none' }} 
             className={classes.whiteTextColor}>About Us
             </a>
           </Typography>
           <Typography sx={{mx:"1rem"}} ariant="caption" gutterBottom component="div">
-            <a href="https://google.com" target="_blank"
+            <a href="https://www.sscsystem.tech/terms-of-service.pdf" target="_blank"
             rel="noreferrer noopener" 
             style={{ textDecoration: 'none' }} 
-            className={classes.whiteTextColor}>Terms and Conditions
+            className={classes.whiteTextColor}>Terms of Service
             </a>
           </Typography>
           <Typography sx={{mx:"1rem"}} ariant="caption" gutterBottom component="div">
-            <a href="https://google.com" target="_blank"
+            <a href="https://www.sscsystem.tech/privacy-policy.pdf" target="_blank"
             rel="noreferrer noopener" 
             style={{ textDecoration: 'none' }} 
             className={classes.whiteTextColor}>Privacy Policy
             </a>
           </Typography>
           <Typography sx={{mx:"1rem"}} ariant="caption" gutterBottom component="div">
-            <a href="https://google.com" target="_blank"
+            <a href="#" target="_blank"
             rel="noreferrer noopener" 
             style={{ textDecoration: 'none' }} 
             className={classes.whiteTextColor}>Contact Us
@@ -717,8 +717,6 @@ const LandingPage = () => {
         </footer>
     </Box>
   </Box>
-
-     
 </Box>
 
   )}
