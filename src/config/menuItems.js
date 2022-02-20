@@ -92,6 +92,12 @@ const getMenuItems = (props) => {
         leftIcon: <AccountBoxIcon />,
       },
       {
+        value: '/',
+        visible: true,
+        primaryText: intl.formatMessage({ id: 'landing_page', defaultMessage: 'Landing Page' }),
+        leftIcon: <WebOutlined />,
+      },
+      {
         value: '/signin',
         onClick: isAuthorised
           ? () => {
