@@ -57,7 +57,9 @@ const SignIn = ({ redirectTo = '/' }) => {
   }
 
   return (
-    <>
+    <Page
+      pageTitle="Signin"
+    >
     <Grid
     container
     spacing={0}
@@ -91,7 +93,8 @@ const SignIn = ({ redirectTo = '/' }) => {
             marginTop: "1rem",
             opacity: 0.8
           }}>
-          By signing in, you agree to our <a href="/terms-of-service.pdf" target="_blank">terms of service</a> and <a href="/privacy-policy.pdf" target="_blank">privacy policy</a>.
+          By signing in, you agree to our <a style={{color:"#00838f", textDecoration:"none"}} href="/terms-of-service.pdf" target="_blank">terms of service</a> and 
+          <a style={{color:"#00838f", textDecoration:"none"}} href="/privacy-policy.pdf" target="_blank"> privacy policy</a>.
         </Typography>
       </Grid>
 
@@ -100,7 +103,7 @@ const SignIn = ({ redirectTo = '/' }) => {
       </Grid>
 
     </Grid>
-    </>
+    </Page>
   )
 }
 
