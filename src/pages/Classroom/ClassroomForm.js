@@ -15,7 +15,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { Autocomplete, Box, Chip, OutlinedInput } from '@mui/material';
+import { Autocomplete, Box, Chip, OutlinedInput, Skeleton } from '@mui/material';
 
 export default function ClassroomModal ({page, rowsPerPage, modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
@@ -171,6 +171,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
           fullWidth
         />
 
+      {count ? (
         <FormControl fullWidth required margin="normal">
           <InputLabel id="subject-select-label">Subject</InputLabel>
           <Select
@@ -187,6 +188,9 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
             ))}
           </Select>
         </FormControl>
+        ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
 
         <TextField 
           {...register("google_classroom_id", { required: true, min: 3 })}
