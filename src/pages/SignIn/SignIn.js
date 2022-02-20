@@ -8,8 +8,10 @@ import { useTheme } from '@mui/material/styles'
 import CustomPaper from '../../components/CustomPaper'
 import { GoogleLogin } from 'react-google-login'
 import API from '../../config/api'
-import { Typography, Grid } from '@mui/material';
+import { Typography, Grid, Backdrop, CircularProgress } from '@mui/material';
 import helloimage from '../../public/Hello-rafiki 1.png';
+import { Dashboard } from '@mui/icons-material'
+import HomePage from 'pages/Home/Home'
 
 const SignIn = ({ redirectTo = '/' }) => {
   const intl = useIntl()
@@ -18,8 +20,11 @@ const SignIn = ({ redirectTo = '/' }) => {
   const { toggleThis } = useMenu()
   const { setAuth } = useAuth()
 
+  const [loading, setLoading] = useState(false);
+
   const responseGoogle = async response => {
     if (!response.error) {
+      setLoading(true)
       await API.post(`auth`, {
           name: response.profileObj.name,
           email: response.profileObj.email,
@@ -27,7 +32,8 @@ const SignIn = ({ redirectTo = '/' }) => {
           avatar: response.profileObj.imageUrl,
           avatar_original: response.profileObj.imageUrl        
         }).then(res => {
-        authenticate({
+          setLoading(false)
+          authenticate({
           ...response.profileObj,
           displayName: response.profileObj.name,
           googleToken: response.accessToken,
@@ -60,6 +66,17 @@ const SignIn = ({ redirectTo = '/' }) => {
     <Page
       pageTitle="Signin"
     >
+    <div>
+      {loading ? (
+        <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={true}
+        onClick={false}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      ) : (<HomePage />) }
+      </div>
     <Grid
     container
     spacing={0}
@@ -101,9 +118,8 @@ const SignIn = ({ redirectTo = '/' }) => {
       <Grid Item paddingTop={0}>
       <img src={helloimage} height={504} width={429} alt="HelloImage"/>
       </Grid>
-
     </Grid>
-    </Page>
+  </Page>
   )
 }
 
