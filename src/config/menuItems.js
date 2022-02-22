@@ -120,7 +120,7 @@ const getMenuItems = (props) => {
       leftIcon: <WebOutlined />,
     },
     {
-      value: '/dashboard',
+      value: '/home',
       visible: isAuthorised,
       primaryText: intl.formatMessage({ id: 'dashboard', defaultMessage: 'Dashboard' }),
       leftIcon: <DashboardOutlined />,

@@ -132,12 +132,12 @@ export const getFacilityDetails = (id) => async (dispatch) => {
     }
 }
 
-export const getAdminFacilities = (page = 1, limit = 10) => async (dispatch) => {
+export const getAdminFacilities = (page = 1, limit = 10, query = '') => async (dispatch) => {
     try {
 
         dispatch({ type: ADMIN_FACILITIES_REQUEST })
 
-        const { data } = await API.get(`facility?page=${++page}&limit=${limit}`)
+        const { data } = await API.get(`facility?page=${++page}&limit=${limit}&${query}`)
 
         console.log(data)
         dispatch({
@@ -146,9 +146,6 @@ export const getAdminFacilities = (page = 1, limit = 10) => async (dispatch) => 
         })
 
     } catch (error) {
-        if (error.response.status === 401) {
-          // localStorage.setItem('auth', JSON.stringify({isAuthenticated: false}))
-        }
         dispatch({
             type: ADMIN_FACILITIES_FAIL,
             payload: error.response.data.message

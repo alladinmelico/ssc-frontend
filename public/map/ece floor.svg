@@ -1,0 +1,26 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+ <g id="Layer_1">
+  <title>Layer 1</title>
+  <rect x="67" id="svg_2" height="130" width="129" y="151.2" stroke="#000" fill="#fff"/>
+  <rect stroke="#000" x="196" id="svg_3" height="130" width="181.99999" y="151.2" fill="#fff"/>
+  <rect stroke="#000" x="378" id="svg_4" height="130" width="130" y="151.2" fill="#fff"/>
+  <rect stroke="#000" x="508" id="svg_5" height="130" width="130" y="151.2" fill="#fff"/>
+  <rect stroke="#000" x="638" id="svg_6" height="130" width="72" y="151" fill="#fff"/>
+  <rect stroke="#000" x="710" id="svg_7" height="130" width="72" y="151" fill="#fff"/>
+  <rect stroke="#000" x="510" id="svg_8" height="131" width="129" y="321.2" fill="#fff"/>
+  <rect stroke="#000" x="380" id="svg_9" height="131" width="130" y="321.2" fill="#fff"/>
+  <rect stroke="#000" x="197.99999" id="svg_10" height="131" width="128.00002" y="321.2" fill="#fff"/>
+  <rect stroke="#000" x="146" id="svg_13" height="131" width="52.00001" y="321" fill="#fff"/>
+  <rect id="svg_11" height="27" width="53" y="425.2" x="169.6" stroke="#000" fill="#fff"/>
+  <rect id="svg_12" height="1" width="0" y="348.2" x="913.6" stroke="#000" fill="#fff"/>
+  <rect stroke="#000" x="67" id="svg_14" height="131" width="79.00001" y="321" fill="#fff"/>
+  <line stroke="#000" id="svg_15" y2="452" x2="379" y1="452.2" x1="325.6" fill="none"/>
+  <line id="svg_16" y2="320.2" x2="781.6" y1="320.2" x1="638.6" stroke="#000" fill="none"/>
+  <line stroke="#000" id="svg_17" y2="320.2" x2="781.6" y1="281.2" x1="781.6" fill="none"/>
+  <line id="svg_18" y2="321.2" x2="67" y1="281.2" x1="67" stroke="#000" fill="none"/>
+  <line id="svg_21" y2="424.2" x2="351.6" y1="407.2" x1="352.6" stroke-dasharray="5,5" stroke="#000" fill="none"/>
+  <line id="svg_22" y2="303.2" x2="725.6" y1="302.2" x1="676.6" stroke-dasharray="5,5" stroke="#000" fill="none"/>
+  <line id="svg_23" y2="302.2" x2="677.6" y1="320.2" x1="676.6" stroke-dasharray="5,5" stroke="#000" fill="none"/>
+ </g>
+
+</svg>
