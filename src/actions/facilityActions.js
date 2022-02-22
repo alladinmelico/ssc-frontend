@@ -148,7 +148,7 @@ export const getAdminFacilities = (page = 1, limit = 10, query = '') => async (d
     } catch (error) {
         dispatch({
             type: ADMIN_FACILITIES_FAIL,
-            payload: error.response.data.message
+            payload: error
         })
     }
 }

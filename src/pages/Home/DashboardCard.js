@@ -4,14 +4,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
-const DashboardCard = ({number, title}) => {
+const DashboardCard = ({number, title, icon}) => {
   return (
     <Box sx={{ m: '1rem' }}>
       <Card variant="outlined">
         <CardContent>
-          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-            Word of the Day
-          </Typography>
+          {icon}
           <Typography variant="h2">
             {number}
           </Typography>

@@ -1,40 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const Civil = ({selected, setSelected}) => {
-  const facilities = {
-    svg_2: {
-      id: 1,
-      capacity: 10,
-      occupied: 9,
-      name: 'faculty 1'
-    },
-    svg_3: {
-      id: 2,
-      capacity: 30,
-      occupied: 22,
-      name: 'faculty 2'
-    },
-    svg_4: {
-      id: 3,
-      capacity: 20,
-      occupied: 3,
-      name: 'faculty 3'
-    },
-    svg_5: {
-      id: 4,
-      capacity: 49,
-      occupied: null,
-      name: 'faculty 4'
-    },
-  }
+const Civil = ({selected, setSelected, facilities}) => {
 
-  function getColor(facility) {
+  function getColor(facility, key) {
     if (selected !== '') {
-      if (selected !== facility.id) {
-        return '#fff'
-      } else {
+      if (selected === key) {
         return '#00838f'
-      }
+        
+      } 
+      return '#fff'
+    }
+
+    if (!facility) {
+      return '#fff'
     }
     
     const percentage = Math.trunc((facility.occupied/facility.capacity) * 100)
@@ -49,51 +27,43 @@ const Civil = ({selected, setSelected}) => {
   return (
     <svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
       <g id="Layer_1">
-        <title>{facilities.svg_2.name}</title>
-        <rect id="svg_2" height="85" width="86" y="395.2" x="145.6" className='rect' stroke="#000" onClick={() => setSelected(facilities.svg_2)} fill={getColor(facilities.svg_2)}/>
+        <title>{facilities.svg_2?.name}</title>
+        <rect id="svg_2" height="85" width="86" y="395.2" x="145.6" className='rect' stroke="#000" onClick={() => setSelected("svg_2")} fill={getColor(facilities.svg_2, "svg_2")}/>
       </g>
       <g>
-        <title>{facilities.svg_3.name}</title>
-        <rect stroke="#000" id="svg_3" height="85" width="170" y="395.2" x="232" className='rect' onClick={() => setSelected(facilities.svg_2)} fill={getColor(facilities.svg_3)}/>
-        <rect id="svg_4" height="1" width="0" y="314.2" x="582.6" stroke="#000" className='rect' fill={getColor(facilities.svg_4)}/>
-        <rect id="svg_5" height="127" width="51" y="268.2" x="401.6" stroke="#000" className='rect' fill={getColor(facilities.svg_5)}/>
-        <rect id="svg_6" height="1" width="2" y="266.2" x="927.6" stroke="#000" fill="#fff"/>
-        <rect stroke="#000" id="svg_7" height="33" width="51" y="395" x="401.6" fill="#fff"/>
-        <rect id="svg_8" height="98" width="172" y="106.2" x="486.6" stroke="#000" fill="#fff"/>
-        <rect stroke="#000" id="svg_9" height="119.00001" width="85" y="106.19999" x="659" fill="#fff"/>
-        <rect stroke="#000" id="svg_10" height="171" width="85" y="225" x="659" fill="#fff"/>
-        <rect stroke="#000" id="svg_11" height="85" width="257" y="395.2" x="486.6" fill="#fff"/>
+        <title>{facilities.svg_3?.name}</title>
+        <rect stroke="#000" id="svg_3" height="85" width="170" y="395.2" x="232" className='rect' onClick={() => setSelected("svg_3")} fill={getColor(facilities.svg_3, "svg_3")}/>
       </g>
       <g>
-        <title>{facilities.svg_3.name}</title>
+        <title>{facilities.svg_4?.name}</title>
         <rect id="svg_4" height="1" width="0" y="314.2" x="582.6" stroke="#000" className='rect' fill={getColor(facilities.svg_4)}/>
       </g>
       <g>
-        <title>{facilities.svg_3.name}</title>
+        <title>{facilities.svg_5?.name}</title>
         <rect id="svg_5" height="127" width="51" y="268.2" x="401.6" stroke="#000" className='rect' fill={getColor(facilities.svg_5)}/>
       </g>
       <g>
-        <title>{facilities.svg_3.name}</title>
+        <title>{facilities.svg_6?.name}</title>
         <rect id="svg_6" height="1" width="2" y="266.2" x="927.6" stroke="#000" fill="#fff"/>
       </g>
       <g>
-        <title>{facilities.svg_3.name}</title>
+        <title>{facilities.svg_7?.name}</title>
         <rect stroke="#000" id="svg_7" height="33" width="51" y="395" x="401.6" fill="#fff"/>
       </g>
       <g>
-        <title>{facilities.svg_3.name}</title>
+        <title>{facilities.svg_8?.name}</title>
         <rect id="svg_8" height="98" width="172" y="106.2" x="486.6" stroke="#000" fill="#fff"/>
       </g>
       <g>
-        <title>{facilities.svg_3.name}</title>
+        <title>{facilities.svg_9?.name}</title>
         <rect stroke="#000" id="svg_9" height="119.00001" width="85" y="106.19999" x="659" fill="#fff"/>
       </g>
       <g>
-        <title>{facilities.svg_3.name}</title>
+        <title>{facilities.svg_10?.name}</title>
         <rect stroke="#000" id="svg_10" height="171" width="85" y="225" x="659" fill="#fff"/>
       </g>
       <g>
-        <title>{facilities.svg_3.name}</title>
+        <title>{facilities.svg_11?.name}</title>
         <rect stroke="#000" id="svg_11" height="85" width="257" y="395.2" x="486.6" fill="#fff"/>
       </g>
 
