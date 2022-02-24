@@ -47,6 +47,7 @@ export default function FormModal ({title, onSubmit, success, loading, cancelled
         BackdropProps={{
           timeout: 500,
         }}
+        sx={{ overflow:'scroll' }}
       >
         <Fade in={openModal}>
           <Box className="formModal" style={{bgcolor: 'background.paper'}}>

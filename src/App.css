@@ -18,6 +18,10 @@
   border-radius: 0.5rem;
 }
 
+.rect {
+  cursor: pointer;
+}
+
 body{
   margin: 0;
 }

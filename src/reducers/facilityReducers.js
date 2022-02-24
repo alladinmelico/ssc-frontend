@@ -45,7 +45,7 @@ export const facilitiesReducer = (state = { facilities: [] }, action) => {
       return {
         loading: false,
         facilities: action.payload.data,
-        count: action.payload.meta.total
+        count: action.payload.meta?.total
       }
 
     case ALL_FACILITIES_FAIL:

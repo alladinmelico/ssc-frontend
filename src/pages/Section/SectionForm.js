@@ -103,7 +103,7 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
   return (
     <div>
       <FormModal
-        title={section ? 'Add Section' : 'Add Section'}
+        title={section.id ? 'Add Section' : 'Add Section'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
         loading={loading}
@@ -132,7 +132,7 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
           labelId="president-select-label"
           id="president-select"
           label="president"
-          defaultValue={section ? section.president_id : ''}
+          defaultValue={section ? section.president?.id : ''}
          
         >
           {users.filter(item => item.role_id === 3 ).map(president => (
@@ -149,7 +149,7 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
           labelId="faculty-select-label"
           id="faculty-select"
           label="faculty"
-          defaultValue={section ? section.faculty_id : ''}
+          defaultValue={section ? section.faculty?.id : ''}
          
         >
           {users.filter(item => item.role_id === 2 ).map(faculty => (
