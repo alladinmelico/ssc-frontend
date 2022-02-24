@@ -26,56 +26,56 @@ const Civil = ({selected, setSelected, facilities}) => {
 
   const rects = [
     {
-      id: "svg_2",
+      id: "civil1",
       height: "85",
       width: "86",
       y: "395.2", 
       x: "145.6",      
     },
     {
-      id: "svg_3",
+      id: "civil2",
       height: "85",
       width: "170",
       y: "395.2", 
       x: "232",      
     },
     {
-      id: "svg_5",
+      id: "civil3",
       height: "127",
       width: "51",
       y: "268.2", 
       x: "401.6",      
     },
     {
-      id: "svg_7",
+      id: "civil4",
       height: "33",
       width: "51",
       y: "395", 
       x: "401.6",      
     },
     {
-      id: "svg_8",
+      id: "civil5",
       height: "98",
       width: "172",
       y: "106.2", 
       x: "486.6",      
     },
     {
-      id: "svg_9",
+      id: "civil6",
       height: "119.00001",
       width: "85",
       y: "106.19999", 
       x: "659",      
     },
     {
-      id: "svg_10",
+      id: "civil7",
       height: "171",
       width: "85",
       y: "255", 
       x: "659",      
     },
     {
-      id: "svg_11",
+      id: "civil8",
       height: "85",
       width: "257",
       y: "395.2", 
@@ -84,7 +84,7 @@ const Civil = ({selected, setSelected, facilities}) => {
   ]
 
   return (
-    <svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+    <svg preserveAspectRatio="xMaxYMid meet" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
       {rects.map(rect => (
         <g id="Layer_1">
           <title>{facilities[rect.id]?.name}</title>
