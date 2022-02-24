@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import Beng from './Beng'
+import Bsad from './Bsad'
 import Civil from './Civil'
+import Mech from './Mech'
+import Electrical from './Electrical'
+import Electronics from './Electronics'
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
@@ -26,6 +31,7 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
     'Civil and Allied Department',
     'Electrical and Allied Department',
     'Mechanical and Allied Department',
+    'Italian Second Floor',
   ]
 
   function formatFacility () {
@@ -61,7 +67,32 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
       </Stack>
       {facilities.length ? (
         <Box>
+          {selectedDepartment === 1 && <Beng 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {selectedDepartment === 2 && <Bsad 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
           {selectedDepartment === 3 && <Civil 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {selectedDepartment === 4 && <Electrical 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {selectedDepartment === 5 && <Mech 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {selectedDepartment === 6 && <Electronics
             setSelected={setSelected}
             selected={selected}
             facilities={formatFacility()}
