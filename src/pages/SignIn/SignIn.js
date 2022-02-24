@@ -39,7 +39,8 @@ const SignIn = ({ redirectTo = '/' }) => {
           googleToken: response.accessToken,
           token: res.data.token,
           photoURL: response.profileObj.imageUrl,
-          hasProfile: res.data.hasProfile
+          hasProfile: res.data.hasProfile,
+          id: res.data.id
         })
       }).catch(err => {
         console.log(err)
@@ -66,7 +67,7 @@ const SignIn = ({ redirectTo = '/' }) => {
     <Page
       pageTitle="Signin"
     >
-    <div>
+    
       {loading ? (
         <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -76,7 +77,7 @@ const SignIn = ({ redirectTo = '/' }) => {
         <CircularProgress color="inherit" />
       </Backdrop>
       ) : (<HomePage />) }
-      </div>
+     
     <Grid
     container
     spacing={0}
@@ -116,7 +117,7 @@ const SignIn = ({ redirectTo = '/' }) => {
       </Grid>
 
       <Grid Item paddingTop={0}>
-      <img src={helloimage} height={504} width={429} alt="HelloImage"/>
+      <img src={helloimage} className="signin-image" alt="HelloImage"/>
       </Grid>
     </Grid>
   </Page>
