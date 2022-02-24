@@ -1,18 +1,24 @@
 import { Avatar, Fab, InputBase, Paper, Zoom, Typography } from '@mui/material';
 import { Camera, Delete, Save, Person as PersonIcon, Edit } from '@mui/icons-material';
 import Page from 'material-ui-shell/lib/containers/Page/Page';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from 'base-shell/lib/providers/Auth';
 import { useIntl } from 'react-intl';
+import API from '../../config/api'
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question';
 import ImgageUploadDialog from 'material-ui-shell/lib/containers/ImageUploadDialog';
+
 import ProfileForm from './ProfileForm'
+import Stack from '@mui/material/Stack';
+import Skeleton from '@mui/material/Skeleton';
 
 const MyAccount = () => {
   const intl = useIntl();
   const { openDialog } = useQuestions();
   const [isEditing, setIsEditing] = useState(false);
-
+  const [loading, setLoading] = useState(false)
+  const [user, setUser, count] = useState('')
+  
   const { auth, updateAuth, setAuth } = useAuth();
   const {
     photoURL: currentPhoroURL = '',
@@ -22,6 +28,7 @@ const MyAccount = () => {
   const [displayName, setDisplayName] = useState(currentDisplayName);
   const [photoURL, setPhotoURL] = useState(currentPhoroURL);
   const [isImageDialogOpen, setImageDialogOpen] = useState(false);
+  
 
   const hasChange =
     displayName !== currentDisplayName || photoURL !== currentPhoroURL;
@@ -58,13 +65,40 @@ const MyAccount = () => {
     handleClose();
   };
 
+  const getUser = async () => {
+    setLoading(true)
+    await API.get(`/user/${auth.id}`, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`
+        }
+      })
+      .then(res => {
+        console.log(res)
+        setUser(res.data.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  };
+  useEffect(() =>{
+    getUser()
+  },[])
+  
+
   return (
     <Page
       pageTitle={intl.formatMessage({
         id: 'my_account',
         defaultMessage: 'My Account',
       })}
-    >
+    > {!loading ? (
+      <Typography textAlign="center" sx={{fontWeight:"600", mt:"2rem"}} variant="h5">Hi, {user.name}</Typography> 
+      ) : (
+        <Skeleton sx={{mx:"auto"}} variant="text" animation="wave" width={500} height={100} />
+      )}
       <div
         style={{
           display: 'flex',
@@ -75,8 +109,14 @@ const MyAccount = () => {
       >
         {isEditing ?
           (
-            <ProfileForm onSubmitHandler={() => setIsEditing(false)} />
-          ) :           
+            <ProfileForm onSubmitHandler={() => {
+              setIsEditing(false)
+              getUser()
+            }}
+            user={user}
+            setIsEditing={setIsEditing} />
+          ) :  
+            
             <Paper 
                   elevation={3}
                   style={{
@@ -88,9 +128,10 @@ const MyAccount = () => {
                     alignItems: 'center',
                   }}
                 >
+              
               <Fab
                 size="medium"
-                style={{ position: 'absolute', bottom: 40, right: -16 }}
+                style={{ position: 'absolute', top: 50, marginRight: -90, zIndex: 99 }}
                 onClick={() => setIsEditing(true)}
                 color="primary"
                 aria-label="edit"
@@ -98,36 +139,22 @@ const MyAccount = () => {
                 <Edit />
               </Fab>
 
-              <Fab
-                onClick={() => setImageDialogOpen(true)}
-                style={{
-                  position: 'absolute',
-                  zIndex: 99,
-                  top: 50,
-                  marginRight: -60,
-                }}
-                color="primary"
-                aria-label="save"
-                size="small"
-              >
-                <Camera />
-              </Fab>
-
               {photoURL && (
                 <Avatar
-                  style={{ width: 120, height: 120, marginTop: -40 }}
+                  style={{ width: 130, height: 130, marginTop: -40 }}
                   alt="User Picture"
                   src={photoURL}
                 />
               )}
               {!photoURL && (
                 <Avatar
-                  style={{ width: 120, height: 120, marginTop: -40 }}
+                  style={{ width: 130, height: 130, marginTop: -40 }}
                   alt="User Picture"
                 >
                   {displayName ? displayName[0].toUpperCase() : <PersonIcon />}
                 </Avatar>
               )}
+              {!loading ? (
               <div
                 style={{
                   display: 'flex',
@@ -137,25 +164,41 @@ const MyAccount = () => {
                   marginBottom: 18,
                 }}
               >
-                <InputBase
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  inputProps={{
-                    'aria-label': 'naked',
-                    style: {
-                      fontSize: 26,
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                    },
-                  }}
-                />
-                <Typography variant="h6">{email}</Typography>
+              <Stack
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                marginRight="1rem"
+                marginLeft="1rem"
+            >
+                <Typography sx={{fontWeight:"600", mt:"1rem"}} variant="h5">{user.name}</Typography>
+                <Typography style={{mt:"14px"}} variant="body1">{user.course_name}</Typography>
+                <Typography style={{mt:"14px"}}  variant="body1">{user.year}{user.section}</Typography>
+                <Typography sx={{mt:"1rem"}} variant="body2">{user.email}</Typography>
+                </Stack>
               </div>
+               ) : (
+                <Stack
+                direction="column"
+                justifyContent="center"
+                alignItems="center"
+                marginRight="1rem"
+                marginLeft="1rem"
+                marginTop="1rem"
+                >
+                <Skeleton animation="wave" variant="text" width={400} />
+                <Skeleton animation="wave" variant="text" width={500} />
+                <Skeleton animation="wave" variant="text" width={100} />
+                <Skeleton animation="wave" variant="text" width={200} />
+                </Stack>
+              )}  
+                
+
 
               <Zoom in={hasChange}>
                 <Fab
                   onClick={handleSave}
-                  style={{ marginBottom: -20 }}
+                  style={{ marginBottom: -20, marginTop:"1rem" }}
                   color="primary"
                   aria-label="save"
                 >
@@ -165,11 +208,6 @@ const MyAccount = () => {
             </Paper>
         }
       </div>
-      <ImgageUploadDialog
-        isOpen={isImageDialogOpen}
-        handleClose={() => setImageDialogOpen(false)}
-        handleCropSubmit={handleImageChange}
-      />
     </Page >
   )
 }

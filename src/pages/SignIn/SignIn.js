@@ -35,14 +35,16 @@ const SignIn = ({ redirectTo = '/' }) => {
         }).then(res => {
           setLoading(false)
           authenticate({
-            ...response.profileObj,
-            displayName: response.profileObj.name,
-            googleToken: response.accessToken,
-            token: res.data.token,
-            photoURL: response.profileObj.imageUrl,
-            hasProfile: res.data.hasProfile
-          })
+          ...response.profileObj,
+          displayName: response.profileObj.name,
+          googleToken: response.accessToken,
+          token: res.data.token,
+          photoURL: response.profileObj.imageUrl,
+          hasProfile: res.data.hasProfile,
+          id: res.data.id
+        })
           window.location.reload();
+
       }).catch(err => {
         console.log(err)
       })
@@ -68,6 +70,7 @@ const SignIn = ({ redirectTo = '/' }) => {
     <Page
       pageTitle="Signin"
     >
+
       {loading ? (
         <Container sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center', width: '100%', height: '100%' }}>
           <Box sx={{ display: 'block', mx:"auto", my: "auto" }} >
@@ -114,10 +117,10 @@ const SignIn = ({ redirectTo = '/' }) => {
           </Grid>
 
           <Grid Item paddingTop={0}>
-          <img src={helloimage} height={504} width={429} alt="HelloImage"/>
+          <img src={helloimage} className="signin-image" alt="HelloImage"/>
           </Grid>
-        </Grid>      
-      ) }    
+      </Grid>   
+      )}    
   </Page>
   )
 }

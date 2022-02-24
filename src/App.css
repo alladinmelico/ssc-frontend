@@ -30,9 +30,15 @@ body{
     padding: 1rem;
 }
 
-#member-image{
+.member-image{
   border-radius: 8px;
+  width: 100%;
 }
+
+.signin-image{
+  width: 100%;
+}
+
 
 #tech-box{
     max-width: none;
