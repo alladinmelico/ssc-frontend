@@ -54,7 +54,7 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
             onChange={(event) => setSelectedDepartment(event.target.value)}    
           >
             {departments.map((department, index) => (
-              <MenuItem value={++index}>{department}</MenuItem>
+              <MenuItem value={++index} key={index}>{department}</MenuItem>
             ))}
           </Select>
         </FormControl>
