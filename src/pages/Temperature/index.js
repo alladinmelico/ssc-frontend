@@ -14,7 +14,7 @@ import { DELETE_TEMPERATURE_RESET } from "../../constants/temperatureConstants"
 
 const Temperature = ({history}) => {
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [temperature, setTemperature] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
