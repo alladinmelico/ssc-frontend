@@ -21,7 +21,7 @@ import {
 import { DELETE_USER_RESET } from "../../constants/userConstants"
 import API from 'config/api';
 
-const User = ({history, changes_verified}) => {
+const User = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [user, setUser] = useState({})
