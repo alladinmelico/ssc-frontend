@@ -58,9 +58,9 @@ const Section = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'president_name', headerName: 'President', width: 300 },
-    { field: 'faculty_name', headerName: 'Faculty', width: 300 },
+    { field: 'name', headerName: 'Name', flex: 0.3 , minWidth: 150 },
+    { field: 'president_name', headerName: 'President', flex: 0.3 , minWidth: 300 },
+    { field: 'faculty_name', headerName: 'Faculty', flex: 0.3 , minWidth: 300 },
     {
       field: 'actions',
       headerName: 'Actions',
