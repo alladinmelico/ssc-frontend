@@ -4,8 +4,8 @@ const primary ={
 A400: '#00838f',
 }
 const secondary = {
-500: '#7edeea',
-A400: '#7edeea',
+500: '#FF0000',
+A400: '#FF0000',
 }
 const light = {
   500: '#b2ffff',
@@ -34,7 +34,7 @@ const themes = [
     source: {
       palette: {
         primary: dark,
-        secondary: dark,
+        secondary: secondary,
         error: cyan,
       },
     },
@@ -44,7 +44,7 @@ const themes = [
     color: '#48acb8',
     source: {
       palette: {
-        primary: secondary,
+        primary: primary,
         secondary: secondary,
         error: cyan,
       },
@@ -56,7 +56,7 @@ const themes = [
     source: {
       palette: {
         primary: light,
-        secondary: light,
+        secondary: secondary,
         error: cyan,
       },
     },

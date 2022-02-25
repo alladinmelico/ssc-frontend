@@ -8,10 +8,11 @@ import { useTheme } from '@mui/material/styles'
 import CustomPaper from '../../components/CustomPaper'
 import { GoogleLogin } from 'react-google-login'
 import API from '../../config/api'
-import { Typography, Grid, Backdrop, CircularProgress } from '@mui/material';
+import { Typography, Grid, Backdrop, CircularProgress, Box } from '@mui/material';
 import helloimage from '../../public/Hello-rafiki 1.png';
 import { Dashboard } from '@mui/icons-material'
 import HomePage from 'pages/Home/Home'
+import Container from '@mui/material/Container';
 
 const SignIn = ({ redirectTo = '/' }) => {
   const intl = useIntl()
@@ -39,8 +40,11 @@ const SignIn = ({ redirectTo = '/' }) => {
           googleToken: response.accessToken,
           token: res.data.token,
           photoURL: response.profileObj.imageUrl,
-          hasProfile: res.data.hasProfile
+          hasProfile: res.data.hasProfile,
+          id: res.data.id
         })
+          window.location.reload();
+
       }).catch(err => {
         console.log(err)
       })
@@ -63,50 +67,61 @@ const SignIn = ({ redirectTo = '/' }) => {
   }
 
   return (
-    <>
-    <div>
-      {loading ? (
-        <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={true}
-        onClick={false}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop>
-      ) : (<HomePage />) }</div>
-    <Grid
-    container
-    spacing={0}
-    direction="column"
-    alignItems="center"
-    justifyContent="center"
+    <Page
+      pageTitle="Signin"
     >
-      <Grid Item paddingTop={8} maxWidth={500} align={'center'}>
-        <Typography 
-        style={{
-          fontFamily:"Roboto",
-          fontSize:20
-        }}>
-          Welcome to Safe and Smart Campus: A Scheduling and Monitoring System for Technological University of the Philippines - Taguig Campus
-        </Typography>
-      </Grid>
 
-      <Grid Item paddingTop={5} paddingBottom={0}>
-        <GoogleLogin
-        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-        buttonText="Sign In"
-        onSuccess={responseGoogle}
-        onFailure={responseGoogle}
-        cookiePolicy={'single_host_origin'}
-        />
-        </Grid>
+      {loading ? (
+        <Container sx={{ display: 'flex', justifyContent: 'center', alignContent: 'center', width: '100%', height: '100%' }}>
+          <Box sx={{ display: 'block', mx:"auto", my: "auto" }} >
+            <img src="loading.gif" alt="Loading GIF"/>
+          </Box>
+        </Container>
+      ) : (
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Grid Item paddingTop={8} maxWidth={500} align={'center'}>
+            <Typography 
+            style={{
+              fontFamily:"Roboto",
+              fontSize:20
+            }}>
+              Welcome to Safe and Smart Campus: A Scheduling and Monitoring System for Technological University of the Philippines - Taguig Campus
+            </Typography>
+          </Grid>
 
-      <Grid Item paddingTop={0}>
-      <img src={helloimage} height={504} width={429} alt="HelloImage"/>
-      </Grid>
+          <Grid Item paddingTop={5} paddingBottom={0} align={'center'}>
+            <GoogleLogin
+              clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+              buttonText="Sign In"
+              onSuccess={responseGoogle}
+              onFailure={responseGoogle}
+              cookiePolicy={'single_host_origin'}
+            />
+                    
+            <Typography 
+              style={{
+                fontFamily:"Roboto",
+                fontSize:12,
+                marginTop: "1rem",
+                opacity: 0.8
+              }}>
+              By signing in, you agree to our <a style={{color:"#00838f", textDecoration:"none"}} href="/terms-of-service.pdf" target="_blank">terms of service</a> and 
+              <a style={{color:"#00838f", textDecoration:"none"}} href="/privacy-policy.pdf" target="_blank"> privacy policy</a>.
+            </Typography>
+          </Grid>
 
-    </Grid>
-    </>
+          <Grid Item paddingTop={0}>
+          <img src={helloimage} className="signin-image" alt="HelloImage"/>
+          </Grid>
+      </Grid>   
+      )}    
+  </Page>
   )
 }
 

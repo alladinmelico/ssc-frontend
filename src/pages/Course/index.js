@@ -6,8 +6,8 @@ import DataTable from '../../components/DataTable';
 import Box from '@mui/material/Box';
 import CourseForm from './CourseForm'
 import { useDispatch, useSelector } from "react-redux"
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
@@ -19,7 +19,7 @@ import { DELETE_COURSE_RESET } from "../../constants/courseConstants"
 
 const Course = ({history}) => {
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [course, setCourse] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
@@ -65,8 +65,8 @@ const Course = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditIcon color="primary" />} onClick={() => setCourse(params.row)} label="Edit" />,
-        <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
+        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => setCourse(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
               id: 'dialog_title',

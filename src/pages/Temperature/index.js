@@ -14,7 +14,7 @@ import { DELETE_TEMPERATURE_RESET } from "../../constants/temperatureConstants"
 
 const Temperature = ({history}) => {
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [temperature, setTemperature] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
@@ -40,8 +40,9 @@ const Temperature = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'temperature', headerName: 'Temperature', width: 150 },
     { field: 'user_id', headerName: 'User ID', width: 150 },
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'temperature', headerName: 'Temperature', width: 150 },
   ];
 
   return (

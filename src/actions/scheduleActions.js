@@ -94,7 +94,7 @@ export const updateSchedule = (id, scheduleData) => async (dispatch) => {
 
         dispatch({ type: UPDATE_SCHEDULE_REQUEST })
 
-        const { data } = await API.put(`schedule/${id}`, scheduleData)   
+        const { data } = await API.post(`schedule/${id}`, scheduleData)   
 
         dispatch({
             type: UPDATE_SCHEDULE_SUCCESS,
