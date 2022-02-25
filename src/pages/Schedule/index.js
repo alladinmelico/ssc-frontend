@@ -8,8 +8,8 @@ import Box from '@mui/material/Box';
 import ScheduleForm from './ScheduleForm'
 import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
@@ -24,7 +24,7 @@ import { Link } from "react-router-dom"
 
 const Schedule = ({history}) => {
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [schedule, setSchedule] = useState({})
   const intl = useIntl();
   const dispatch = useDispatch()
@@ -71,10 +71,10 @@ const Schedule = ({history}) => {
       getActions: (params) => [
         <GridActionsCellItem icon={
           <Link to={`/schedule/${params.row.id}/edit`}>
-            <EditIcon color="primary" />
+            <EditOutlinedIcon color="primary" />
           </Link>
         } label="Edit" />,
-        <GridActionsCellItem icon={<DeleteIcon color="secondary" />} onClick={() => 
+        <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
               id: 'dialog_title',
