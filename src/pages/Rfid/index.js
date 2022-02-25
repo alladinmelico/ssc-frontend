@@ -58,7 +58,7 @@ const Rfid = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'user_name', headerName: 'Name', width: 200},
+    { field: 'user_name', headerName: 'Name',flex: 1 ,minWidth: 200},
     { field: 'value', headerName: 'Value', width: 150 },
     { field: 'is_logged', headerName: 'Logged', width: 300 },
     {

@@ -71,8 +71,8 @@ const User = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'email', headerName: 'Email', width: 150 },
+    { field: 'name', headerName: 'Name', flex: 0.5 , minWidth: 150 },
+    { field: 'email', headerName: 'Email', flex: 0.5 , minWidth: 150 },
     { field: 'year', headerName: 'Year', width: 150 },
     { field: 'section', headerName: 'Section', width: 150 },
     { field: 'school_id', headerName: 'School ID', width: 150 },
