@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import VerifiedIcon from '@mui/icons-material/Verified';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
@@ -18,6 +19,7 @@ import {
   clearErrors,
 } from "../../actions/userActions"
 import { DELETE_USER_RESET } from "../../constants/userConstants"
+import API from 'config/api';
 
 const User = ({history}) => {
   const [page, setPage] = useState(0)
@@ -30,6 +32,17 @@ const User = ({history}) => {
 
   const { loading, users, count, error } = useSelector((state) => state.users)
   const { error: deleteError, isDeleted } = useSelector((state) => state.user)
+
+  const verification = async response => {
+    if (response != null) {
+      await API.put(`user/${response}/verify`, {
+      }).catch(err => {
+        console.log(err)
+      })
+    } else {
+      console.log(response)
+    }
+  }
 
   useEffect(() => {
     dispatch(getAdminUsers(page, rowsPerPage))
@@ -65,6 +78,7 @@ const User = ({history}) => {
     { field: 'school_id', headerName: 'School ID', width: 150 },
     { field: 'role_id', headerName: 'Role ID', width: 150 },
     { field: 'course_name', headerName: 'Course', width: 150 },
+    { field: 'changes_verified', headerName: 'Status', width: 150 },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -75,16 +89,16 @@ const User = ({history}) => {
         <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
-              id: 'dialog_title',
-              defaultMessage: 'Dialog Item',
+              id: 'delete_dialog_title',
+              defaultMessage: 'Delete User',
             }),
             message: intl.formatMessage({
-              id: 'dialog_message',
+              id: 'delete_dialog_message',
               defaultMessage:
                 'Are you sure you want to delete this item?',
             }),
             action: intl.formatMessage({
-              id: 'dialog_action',
+              id: 'delete_dialog_action',
               defaultMessage: 'YES, Delete',
             }),
             handleAction: (handleClose) => {
@@ -93,6 +107,27 @@ const User = ({history}) => {
             },
           })
         } label="Delete" />,
+        <GridActionsCellItem icon={<VerifiedIcon color="secondary" />} onClick={() => 
+            openDialog({
+              title: intl.formatMessage({
+                id: 'verify_dialog_title',
+                defaultMessage: 'Verify User',
+              }),
+              message: intl.formatMessage({
+                id: 'verify_dialog_message',
+                defaultMessage:
+                  'Are you sure you want to verify this user?',
+              }),
+              action: intl.formatMessage({
+                id: 'verify_dialog_action',
+                defaultMessage: 'Verify',
+              }),
+              handleAction: (handleClose) => {
+                verification(params.id)
+                handleClose()
+              },
+            })
+          } label="Verify" />,
       ]
     },
   ];
