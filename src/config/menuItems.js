@@ -31,7 +31,8 @@ import {
   StyleOutlined,
   DevicesOutlined,
   ThermostatOutlined,
-  PersonOutlineOutlined
+  PersonOutlineOutlined,
+  NotificationsNoneOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -114,16 +115,22 @@ const getMenuItems = (props) => {
   }
   return [
     {
+      value: '/home',
+      visible: isAuthorised,
+      primaryText: intl.formatMessage({ id: 'dashboard', defaultMessage: 'Dashboard' }),
+      leftIcon: <DashboardOutlined />,
+    },
+    {
       value: '/',
       visible: true,
       primaryText: intl.formatMessage({ id: 'landing_page', defaultMessage: 'Landing Page' }),
       leftIcon: <WebOutlined />,
     },
     {
-      value: '/home',
-      visible: isAuthorised,
-      primaryText: intl.formatMessage({ id: 'dashboard', defaultMessage: 'Dashboard' }),
-      leftIcon: <DashboardOutlined />,
+      value: '/notification',
+      visible: true,
+      primaryText: "Notification",
+      leftIcon: <NotificationsNoneOutlined />,
     },
     {
       value: '/schedule',
