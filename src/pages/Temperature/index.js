@@ -1,42 +1,39 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import Page from 'material-ui-shell/lib/containers/Page';
-import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
-import { useDispatch, useSelector } from "react-redux"
-import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
-import {
-  getAdminTemperatures,
-  clearErrors,
-} from "../../actions/temperatureActions"
-import { DELETE_TEMPERATURE_RESET } from "../../constants/temperatureConstants"
+import API from 'config/api';
 
 const Temperature = ({history}) => {
   const [page, setPage] = useState(0)
+  const [temperatures, setTemperatures] = useState([])
   const [rowsPerPage, setRowsPerPage] = useState(50);
-  const [temperature, setTemperature] = useState({})
+  const [loading, setLoading] = useState(false);
+  const [count, setCount] = useState(0);
   const intl = useIntl();
-  const dispatch = useDispatch()
-  const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
 
-  const { loading, temperatures, count, error } = useSelector((state) => state.temperatures)
-  const { error: deleteError, isDeleted } = useSelector((state) => state.temperature)
+  const getData = async () => {
+    setLoading(true)
+    await API.get(`temperature?page=${page}&limit=${rowsPerPage}`).then(res => {
+      setTemperatures(res.data.data)
+      setCount(res.data.data.length)
+      setLoading(false)
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 
   useEffect(() => {
-    dispatch(getAdminTemperatures(page, rowsPerPage))
-    if (error === 'Unauthenticated.') {
-      console.log(history)
-      history.push('/signin')
+    if (count === 0) {
+      window.echo.channel('temperature').listen('UserTemperature', (e) => {
+        enqueueSnackbar(`${e.temperature.user.name} recorded ${e.temperature.temperature}.`, {variant: 'info'})  
+        setTemperatures(prev => [e.temperature, ...prev])
+      })
     }
-
-    if (deleteError) {
-      alert.error(deleteError)
-      dispatch(clearErrors())
-    }
-
-  }, [dispatch, deleteError, page, rowsPerPage, error])
+    getData()    
+  }, [count, page, rowsPerPage])
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
