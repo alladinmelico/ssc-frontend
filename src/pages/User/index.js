@@ -63,7 +63,7 @@ const User = ({history}) => {
     { field: 'year', headerName: 'Year', width: 150 },
     { field: 'section', headerName: 'Section', width: 150 },
     { field: 'school_id', headerName: 'School ID', width: 150 },
-    { field: 'role_id', headerName: 'Role ID', width: 150 },
+    { field: 'role', headerName: 'Role', width: 150 },
     { field: 'course_name', headerName: 'Course', width: 150 },
     {
       field: 'actions',
@@ -97,12 +97,27 @@ const User = ({history}) => {
     },
   ];
 
+  function getRole(role) {
+    switch (role) {
+      case 1:
+        return 'Admin'
+      case 2:
+        return 'Faculty'
+      case 3:
+        return 'Student'
+      case 4:
+        return 'Guest'
+      default:
+        return 'n/a';
+    }
+  }
+
   return (
     <Page
       pageTitle={intl.formatMessage({ id: 'user', defaultMessage: 'User' })}
     >
       <DataTable
-        rows={users}
+        rows={users.map(user => ({...user, course_name: user.course?.code, role: getRole(user.role_id) }))}
         columns={columns}
         count={count}
         loading={loading}

@@ -41,7 +41,7 @@ const Temperature = ({history}) => {
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'user_id', headerName: 'User ID', width: 150 },
-    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'user_name', headerName: 'Name', flex: 1, minWidth: 150 },
     { field: 'temperature', headerName: 'Temperature', width: 150 },
   ];
 
@@ -50,7 +50,7 @@ const Temperature = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'temperature', defaultMessage: 'Temperature' })}
     >
       <DataTable
-        rows={temperatures}
+        rows={temperatures.map(temp => ({...temp, user_name:  temp.user?.name}))}
         columns={columns}
         count={count}
         loading={loading}
