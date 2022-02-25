@@ -40,8 +40,9 @@ const Temperature = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'temperature', headerName: 'Temperature', width: 150 },
     { field: 'user_id', headerName: 'User ID', width: 150 },
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'temperature', headerName: 'Temperature', width: 150 },
   ];
 
   return (
