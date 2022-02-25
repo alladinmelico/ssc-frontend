@@ -56,12 +56,12 @@ const Classroom = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'description_heading', headerName: 'Description Heading', width: 300 },
-    { field: 'description', headerName: 'Description', width: 150 },
+    { field: 'name', headerName: 'Name', flex: 0.5 , minWidth: 150 },
+    { field: 'description_heading', headerName: 'Description Heading', flex: 0.5 ,minWidth: 300 },
+    { field: 'description', headerName: 'Description', flex: 0.5 ,minWidth: 150 },
     { field: 'google_classroom_id', headerName: 'Google Classroom ID', width: 150 },
     { field: 'section', headerName: 'Section', width: 150 },
-    { field: 'subject_name', headerName: 'Subject', width: 150 },
+    { field: 'subject_name', headerName: 'Subject', flex: 0.5 , minWidth: 150 },
     {
       field: 'actions',
       headerName: 'Actions',

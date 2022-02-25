@@ -59,8 +59,8 @@ const Facility = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'name', headerName: 'Name', width: 150 },
-    { field: 'code', headerName: 'Code', width: 300 },
+    { field: 'name', headerName: 'Name', flex: 0.5 ,minWidth: 150 },
+    { field: 'code', headerName: 'Code', flex: 0.5 ,minWidth: 300 },
     { field: 'capacity', headerName: 'Capacity', width: 150 },
     { field: 'type', headerName: 'Type', width: 150 },
     { field: 'building', headerName: 'Building', width: 150 },
