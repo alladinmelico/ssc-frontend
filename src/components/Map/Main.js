@@ -19,10 +19,16 @@ import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormLabel from '@mui/material/FormLabel';
+import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 
 const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment, showDetails}) => {
   const dispatch = useDispatch()
+
+  const [floor, setFloor] = useState(1)
 
   const { facilities } = useSelector((state) => state.facilities)
   
@@ -31,7 +37,29 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
     'Civil and Allied Department',
     'Electrical and Allied Department',
     'Mechanical and Allied Department',
-    'Italian Second Floor',
+  ]
+
+  const legends = [
+    {
+      label: 'Available',
+      color: '#ededed',
+    },
+    {
+      label: 'Selected',
+      color: '#00838f',
+    },
+    {
+      label: '0% - 50% occupied',
+      color: '#aed581',
+    },
+    {
+      label: '51% - 80% occupied',
+      color: '#ffc107',
+    },
+    {
+      label: '81% - 100% occupied',
+      color: '#ef5350',
+    },
   ]
 
   function formatFacility () {
@@ -57,7 +85,10 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
           <Select
             label="Departments" 
             value={selectedDepartment}
-            onChange={(event) => setSelectedDepartment(event.target.value)}    
+            onChange={(event) => { 
+              setFloor(1)
+              setSelectedDepartment(event.target.value)
+            }}    
           >
             {departments.map((department, index) => (
               <MenuItem value={++index} key={index}>{department}</MenuItem>
@@ -82,7 +113,7 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
             selected={selected}
             facilities={formatFacility()}
             />}
-          {selectedDepartment === 4 && <Electrical 
+          {(selectedDepartment === 4 && floor == 1) && <Electrical 
             setSelected={setSelected}
             selected={selected}
             facilities={formatFacility()}
@@ -92,7 +123,7 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
             selected={selected}
             facilities={formatFacility()}
             />}
-          {selectedDepartment === 6 && <Electronics
+          {(selectedDepartment === 4 && floor == 2) && <Electronics
             setSelected={setSelected}
             selected={selected}
             facilities={formatFacility()}
@@ -102,8 +133,8 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
         <Skeleton animation="wave" height={300} sx={{ mx: '1rem' }} />
       )}
       <Stack  direction="row" justifyContent="space-between">
-        <Box>
-          {setSelected && (
+        {selected && (
+          <Box>
             <Stack>
               <Typography variant="overline" >
                 Name
@@ -112,9 +143,33 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
                 {facilities.find(item => item.svg_key === selected)?.name}
               </Typography>
             </Stack>
-          )}
+          </Box>
+        )}
+        <FormControl>
+          <FormLabel id="demo-controlled-radio-buttons-group">Floor</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="demo-row-radio-buttons-group-label"
+            name="row-radio-buttons-group"
+            value={floor}
+            onChange={(event) => setFloor(event.target.value)}
+          >
+            <FormControlLabel value={1} control={<Radio />} label="Fist" />
+            <FormControlLabel value={2} control={<Radio />} label="Second" />
+          </RadioGroup>
+        </FormControl>
+        <Box>
+          <Button variant="outlined" onClick={() => setSelected('')}>Reset</Button>
         </Box>
-        <Button variant="outlined" onClick={() => setSelected('')}>Reset</Button>
+      </Stack>
+      <Typography variant="overline" mt={2}>Legends</Typography>
+      <Stack  direction="row" justifyContent="space-between">
+        {legends.map(legend => (
+          <Box key={legend.label} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <FiberManualRecordIcon fontSize="small" sx={{ color: legend.color }} />
+            <Typography variant="caption">{legend.label}</Typography>
+          </Box>
+        ))}
       </Stack>
     </Paper>
   )

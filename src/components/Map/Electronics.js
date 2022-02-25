@@ -8,11 +8,11 @@ const Electronics = ({selected, setSelected, facilities}) => {
         return '#00838f'
         
       } 
-      return '#fff'
+      return '#ededed'
     }
 
     if (!facility) {
-      return '#fff'
+      return '#ededed'
     }
     
     const percentage = Math.trunc((facility.occupied/facility.capacity) * 100)

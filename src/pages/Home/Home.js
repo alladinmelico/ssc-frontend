@@ -101,7 +101,7 @@ const HomePage = () => {
                       <DeviceThermostatOutlinedIcon sx={{ color: "#338a3e"  }} />
                       <List>
                         {temperatures.map(temp => (
-                          <ListItem>
+                          <ListItem key={temp.id}>
                             <ListItemAvatar>
                               {temp.user?.avatar ? (
                                 <Avatar alt={temp.user?.name} src={temp.user?.avatar} />
