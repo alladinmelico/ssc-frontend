@@ -29,8 +29,8 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
   const { enqueueSnackbar } = useSnackbar()
 
   const schema = yup.object({
-    name: yup.string().required(),
-    code: yup.string().required(),
+    name: yup.string().required("Name is a required field."),
+    code: yup.string().required("Code is a required field."),
     department_id: yup.number().required()
   }).required();
 

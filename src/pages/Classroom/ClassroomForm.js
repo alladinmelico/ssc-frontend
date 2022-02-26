@@ -37,12 +37,12 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
   })
 
   const schema = yup.object({
-    name: yup.string().required(),
-    description_heading: yup.string().required(),
-    description: yup.string().required(),
-    section: yup.string().required(),
-    subject_id: yup.number().required(),
-    google_classroom_id: yup.string()
+    name: yup.string().required("Name is a required field."),
+    description_heading: yup.string().required("Description Heading is a required field."),
+    description: yup.string().required("Description is a required field."),
+    section: yup.string().required("Section is a required field."),
+    subject_id: yup.number().required("Subject is a required field."),
+    google_classroom_id: yup.string("Google Classroom ID is a required field.")
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
@@ -141,7 +141,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
         <TextField 
           {...register("description_heading", { required: true, min: 3 })}
           error={errors.description_heading ? true : false}
-          label="Desc Heading"
+          label="Description Heading"
           variant="outlined"
           defaultValue={classroom ? classroom.description_heading : ''}
           helperText={errors.description_heading?.message}

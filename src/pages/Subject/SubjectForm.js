@@ -23,8 +23,8 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
   const { enqueueSnackbar } = useSnackbar()
 
   const schema = yup.object({
-    name: yup.string().required(),
-    code: yup.string().required(),
+    name: yup.string().required("Name is a required field."),
+    code: yup.string().required("Code is a required field."),
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({

@@ -32,12 +32,12 @@ export default function UserModal ({modalClosed, user}) {
   const { enqueueSnackbar } = useSnackbar()
 
   const schema = yup.object({
-    name: yup.string().required(),
-    email: yup.string().required(),
-    section: yup.string().required(),
-    school_id: yup.string().required(),
-    year: yup.number().required(),
-    course_id: yup.number().required(),
+    name: yup.string().required("Name is a required field."),
+    email: yup.string().required("Email is a required field."),
+    section: yup.string().required("Section is a required field."),
+    school_id: yup.string().required("School ID is a required field."),
+    year: yup.number().required("Year must be a number type."),
+    course_id: yup.number().required("Course ID is a required field."),
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
