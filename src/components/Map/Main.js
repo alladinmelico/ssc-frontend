@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Beng from './Beng'
 import Bsad from './Bsad'
 import Civil from './Civil'
+import Comtech from './Comtech'
 import Mech from './Mech'
+import Auto from './Auto'
 import Electrical from './Electrical'
 import Electronics from './Electronics'
 import FormControl from '@mui/material/FormControl';
@@ -24,6 +26,10 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
+import Mech2nd from './Mech2nd'
+import Chemtech from './Chemtech'
+import Ndt from './Ndt'
+import Bsad2nd from './Bsad2nd'
 
 const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment, showDetails}) => {
   const dispatch = useDispatch()
@@ -98,17 +104,32 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
       </Stack>
       {facilities.length ? (
         <Box>
-          {selectedDepartment === 1 && <Beng 
+          {(selectedDepartment === 1 && floor == 1) && <Beng 
             setSelected={setSelected}
             selected={selected}
             facilities={formatFacility()}
             />}
-          {selectedDepartment === 2 && <Bsad 
+          {(selectedDepartment === 1 && floor == 2) && <Auto 
             setSelected={setSelected}
             selected={selected}
             facilities={formatFacility()}
             />}
-          {selectedDepartment === 3 && <Civil 
+          {(selectedDepartment === 2 && floor == 1) && <Bsad 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {(selectedDepartment === 2 && floor == 2) && <Bsad2nd 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {(selectedDepartment === 3 && floor == 1) && <Civil 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {(selectedDepartment === 3 && floor == 2) && <Comtech 
             setSelected={setSelected}
             selected={selected}
             facilities={formatFacility()}
@@ -118,7 +139,22 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
             selected={selected}
             facilities={formatFacility()}
             />}
-          {selectedDepartment === 5 && <Mech 
+          {(selectedDepartment === 5 && floor == 1) && <Mech 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {(selectedDepartment === 5 && floor == 2) && <Mech2nd 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {(selectedDepartment === 5 && floor == 3) && <Chemtech 
+            setSelected={setSelected}
+            selected={selected}
+            facilities={formatFacility()}
+            />}
+          {(selectedDepartment === 5 && floor == 4) && <Ndt 
             setSelected={setSelected}
             selected={selected}
             facilities={formatFacility()}
@@ -154,8 +190,12 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
             value={floor}
             onChange={(event) => setFloor(event.target.value)}
           >
-            <FormControlLabel value={1} control={<Radio />} label="Fist" />
+            <FormControlLabel value={1} control={<Radio />} label="First" />
             <FormControlLabel value={2} control={<Radio />} label="Second" />
+            {selectedDepartment === 5 && 
+              <FormControlLabel value={3} control={<Radio />} label="Chem Tech" />}
+            {selectedDepartment === 5 && 
+              <FormControlLabel value={4} control={<Radio />} label="NDT" />}
           </RadioGroup>
         </FormControl>
         <Box>

@@ -8,11 +8,11 @@ const Civil = ({selected, setSelected, facilities}) => {
         return '#00838f'
         
       } 
-      return '#fff'
+      return '#ededed'
     }
 
     if (!facility) {
-      return '#fff'
+      return '#ededed'
     }
     
     const percentage = Math.trunc((facility.occupied/facility.capacity) * 100)
@@ -26,56 +26,42 @@ const Civil = ({selected, setSelected, facilities}) => {
 
   const rects = [
     {
-      id: "civil1",
-      height: "85",
-      width: "86",
-      y: "395.2", 
-      x: "145.6",      
-    },
-    {
-      id: "civil2",
+      id: "C-108",
       height: "85",
       width: "170",
       y: "395.2", 
       x: "232",      
     },
     {
-      id: "civil3",
+      id: "C-106",
       height: "127",
       width: "51",
       y: "268.2", 
       x: "401.6",      
     },
     {
-      id: "civil4",
-      height: "33",
-      width: "51",
-      y: "395", 
-      x: "401.6",      
-    },
-    {
-      id: "civil5",
+      id: "C-101",
       height: "98",
       width: "172",
       y: "106.2", 
       x: "486.6",      
     },
     {
-      id: "civil6",
+      id: "C-102",
       height: "119.00001",
       width: "85",
       y: "106.19999", 
       x: "659",      
     },
     {
-      id: "civil7",
-      height: "171",
+      id: "C-103",
+      height: "181",
       width: "85",
       y: "255", 
       x: "659",      
     },
     {
-      id: "civil8",
+      id: "C-104",
       height: "85",
       width: "257",
       y: "395.2", 
@@ -101,6 +87,8 @@ const Civil = ({selected, setSelected, facilities}) => {
         </g>
       ))}
       <g>
+        <rect stroke="#000" id="svg_7" height="33" width="51" y="395" x="401.6" fill="#fff"/>
+        <rect id="svg_2" height="85" width="86" y="395.2" x="145.6" stroke="#000" fill="#fff"/> 
         <rect id="svg_4" height="1" width="0" y="314.2" x="582.6" stroke="#000" />       
         <rect id="svg_6" height="1" width="2" y="266.2" x="927.6" stroke="#000" fill="#fff"/>
         <line id="svg_12" y2="268" x2="401.6" y1="225.2" x1="401.6" stroke="#000" fill="none"/>

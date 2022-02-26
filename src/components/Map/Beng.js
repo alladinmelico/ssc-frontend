@@ -8,11 +8,11 @@ const Beng = ({selected, setSelected, facilities}) => {
         return '#00838f'
         
       } 
-      return '#fff'
+      return '#ededed'
     }
 
     if (!facility) {
-      return '#fff'
+      return '#ededed'
     }
     
     const percentage = Math.trunc((facility.occupied/facility.capacity) * 100)
@@ -26,137 +26,116 @@ const Beng = ({selected, setSelected, facilities}) => {
 
   const rects = [
     {
-      id: "beng1",
+      id: "C-111",
       height: "45",
       width: "138",
       y: "231", 
       x: "627",      
     },
     {
-      id: "beng2",
+      id: "C-113",
       height: "81",
       width: "138",
       y: "276", 
       x: "627",      
     },
     {
-      id: "beng3",
+      id: "C-115",
       height: "57",
       width: "138",
       y: "357", 
       x: "627",      
     },
     {
-      id: "beng4",
+      id: "C-112",
       height: "70",
       width: "93",
       y: "231", 
       x: "488",      
     },
     {
-      id: "beng5",
+      id: "C-114",
       height: "46",
       width: "71",
       y: "301", 
       x: "510",      
     },
     {
-      id: "beng6",
+      id: "C-116",
       height: "67",
       width: "93",
       y: "347", 
       x: "488",      
     },
     {
-      id: "beng7",
+      id: "C-118",
       height: "46",
       width: "37",
       y: "231", 
       x: "451",      
     },
     {
-      id: "beng8",
-      height: "45",
-      width: "45",
-      y: "231", 
-      x: "395",      
-    },
-    {
-      id: "beng9",
+      id: "C-122",
       height: "45",
       width: "93",
       y: "231", 
       x: "303",      
     },
     {
-      id: "beng10",
+      id: "C-121",
       height: "118",
       width: "72",
       y: "296", 
       x: "303",      
     },
     {
-      id: "beng11",
+      id: "C-123",
       height: "91",
       width: "93",
       y: "231", 
       x: "210",      
     },
     {
-      id: "beng12",
+      id: "C-126",
       height: "68",
       width: "45",
       y: "254", 
       x: "210",      
     },
     {
-      id: "beng13",
+      id: "C-124",
       height: "47",
       width: "93",
       y: "322", 
       x: "210",      
     },
     {
-      id: "beng14",
+      id: "C-125",
       height: "45",
       width: "93",
       y: "368", 
       x: "210",      
     },
     {
-      id: "beng15",
+      id: "C-127",
       height: "45",
       width: "46",
       y: "231", 
       x: "164",      
     },
     {
-      id: "beng16",
-      height: "45",
-      width: "46",
-      y: "231", 
-      x: "70",      
-    },
-    {
-      id: "beng17",
+      id: "C-129",
       height: "91",
       width: "46",
       y: "231", 
       x: "25",      
     },
     {
-      id: "beng18",
+      id: "C-131",
       height: "71",
       width: "46",
       y: "344", 
       x: "25",      
-    },
-    {
-      id: "beng19",
-      height: "41",
-      width: "46",
-      y: "373", 
-      x: "581",      
     },
   ]
 
@@ -178,6 +157,9 @@ const Beng = ({selected, setSelected, facilities}) => {
         </g>
       ))}
       <g>
+      <rect fill="#fff" stroke="#000" x="580.66218" y="372.66357" width="46" height="41.33314" id="svg_6"/>
+      <rect fill="#fff" stroke="#000" x="395.32969" y="231" width="45" height="45" id="svg_13"/>
+      <rect fill="#fff" x="70.33332" y="231" width="46.33333" height="45" id="svg_22" stroke="#000"/>
       <rect fill="#fff" x="487.99594" y="300.53056" width="21.9999" height="58" id="svg_7" stroke="#000"/>    
       <rect fill="#fff" stroke="#000" x="24.66472" y="321.8638" width="46" height="22.66656" id="svg_24"/>
       <line fill="none" stroke="#000" x1="149.99748" y1="275.86401" x2="115.99764" y2="275.86401" id="svg_26"/>

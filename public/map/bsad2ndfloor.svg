@@ -1,0 +1,37 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>bsad2ndfloor</title>
+  <rect fill="#fff" x="12.20001" y="279.64109" width="82" height="83" id="svg_2" stroke="#000"/>
+  <rect fill="#fff" x="94.20001" y="297.64108" width="80" height="65" id="svg_3" stroke="#000"/>
+  <rect fill="#fff" stroke="#000" x="169.20001" y="438.30774" width="0" height="1" id="svg_6"/>
+  <path fill="#fff" stroke="#000" opacity="NaN" d="m320.58907,440.16406" id="svg_9"/>
+  <rect fill="#fff" x="174.1988" y="297.64108" width="82.66663" height="65" id="svg_11" stroke="#000"/>
+  <rect fill="#fff" x="256.86421" y="297.64108" width="83.99994" height="65" id="svg_12" stroke="#000"/>
+  <rect fill="#fff" x="294.58946" y="158.83593" width="83" height="93" id="svg_13" stroke="#000"/>
+  <rect fill="#fff" x="376.92132" y="158.83593" width="82" height="93" id="svg_14" stroke="#000"/>
+  <line fill="none" stroke="#000" x1="294.58946" y1="251.83454" x2="173.92462" y2="251.16788" id="svg_17"/>
+  <line fill="none" stroke="#000" x1="174.59128" y1="279.83412" x2="173.92462" y2="250.50123" id="svg_19"/>
+  <path fill="#fff" stroke="#000" opacity="NaN" d="m94.59249,279.83412c0,0 125.33143,0 124.67084,-0.39543" id="svg_24"/>
+  <line fill="none" stroke="#000" x1="219.92393" y1="251.16788" x2="219.92393" y2="279.16746" id="svg_25"/>
+  <line fill="none" stroke="#000" x1="192.59101" y1="251.16788" x2="192.59101" y2="279.83412" id="svg_26"/>
+  <line fill="none" stroke="#000" stroke-dasharray="5,5" x1="219.92393" y1="279.16746" x2="251.92344" y2="279.83412" id="svg_27"/>
+  <line fill="none" stroke="#000" stroke-dasharray="5,5" x1="233.25706" y1="265.16767" x2="262.58995" y2="265.16767" id="svg_28"/>
+  <line stroke="#000" fill="none" x1="341.25543" y1="325" x2="422.91671" y2="325" id="svg_29"/>
+  <rect fill="#fff" x="542.52132" y="159.83593" width="83.83231" height="93" id="svg_32" stroke="#000"/>
+  <rect fill="#fff" x="625.92132" y="159.83593" width="82.83231" height="93" id="svg_33" stroke="#000"/>
+  <path fill="#fff" stroke="#000" opacity="NaN" d="m579.20001,253.00774" id="svg_34"/>
+  <rect stroke="#000" fill="#fff" x="740.80001" y="292.00774" width="46" height="35" id="svg_38"/>
+  <line fill="none" stroke="#000" stroke-dasharray="2,2" x1="744.30001" y1="272.50774" x2="773.80001" y2="273.00774" id="svg_39"/>
+  <line stroke="#000" fill="none" x1="787" y1="252.00774" x2="787" y2="295.00773" id="svg_40"/>
+  <rect stroke="#000" fill="#fff" x="422.8" y="298.00774" width="83" height="120" id="svg_42"/>
+  <rect stroke="#000" fill="#fff" x="504.3" y="298.00774" width="83" height="120" id="svg_43"/>
+  <line fill="none" x1="579.79998" y1="253.00774" x2="671.79999" y2="253.00774" id="svg_47" stroke="#000"/>
+  <rect id="svg_5" height="1" width="0" y="234.50774" x="847.60001" stroke="#000" fill="#fff"/>
+  <line stroke="#000" id="svg_7" y2="252.50774" x2="786.60002" y1="252.50774" x1="743.60002" fill="none"/>
+  <line stroke="#000" fill="none" x1="587.25543" y1="314" x2="740.91671" y2="314" id="svg_1"/>
+  <path id="svg_4" d="m708,221.8" opacity="NaN" stroke="#000" fill="none"/>
+  <path id="svg_8" d="m708,227.8c0,0 36,0 36,-0.8c0,0.8 0,25.8 0,25.8" opacity="NaN" stroke="#000" fill="none"/>
+  <line id="svg_10" y2="224" x2="542" y1="224" x1="459" stroke="#000" fill="none"/>
+ </g>
+
+</svg>

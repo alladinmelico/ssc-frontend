@@ -8,11 +8,11 @@ const Bsad = ({selected, setSelected, facilities}) => {
         return '#00838f'
         
       } 
-      return '#fff'
+      return '#ededed'
     }
 
     if (!facility) {
-      return '#fff'
+      return '#ededed'
     }
     
     const percentage = Math.trunc((facility.occupied/facility.capacity) * 100)
@@ -26,83 +26,83 @@ const Bsad = ({selected, setSelected, facilities}) => {
 
   const rects = [
     {
-      id: "bsad1",
+      id: "B-114",
       height: "83",
       width: "82",
       y: "157.53335", 
       x: "13.6",      
     },
     {
-      id: "bsad2",
+      id: "B-113",
       height: "65",
       width: "80",
       y: "176", 
       x: "96",      
     },
     {
-      id: "bsad3",
+      id: "B-112",
       height: "65",
       width: "83",
       y: "176", 
       x: "176",      
     },
     {
-      id: "bsad4",
+      id: "B-110",
       height: "65",
       width: "84",
       y: "176", 
       x: "258",      
     },{
-      id: "bsad5",
+      id: "B-111",
       height: "93",
       width: "67.33232",
       y: "37.72819", 
       x: "295.98945",      
     },
     {
-      id: "bsad6",
+      id: "B-107",
       height: "93",
       width: "67.33232",
       y: "37.72819", 
       x: "393.32131",      
     },
     {
-      id: "bsad7",
+      id: "B-105",
       height: "93",
       width: "83.83231",
       y: "37.72819", 
       x: "543.92131",      
     },
     {
-      id: "bsad8",
+      id: "B-103",
       height: "93",
       width: "82.83231",
       y: "37.72819", 
       x: "627.32131",      
     },
     {
-      id: "bsad9",
+      id: "B-101",
       height: "48",
       width: "47",
       y: "156.9", 
       x: "742.2",      
     },
     {
-      id: "bsad10",
+      id: "B-108",
       height: "120",
       width: "68.5",
       y: "175.9", 
       x: "424.19999",      
     },
     {
-      id: "bsad11",
+      id: "B-104",
       height: "120",
       width: "68.5",
       y: "175.9", 
       x: "521.69999",      
     },
     {
-      id: "bsad12",
+      id: "B-102",
       height: "28",
       width: "93",
       y: "130.4", 

@@ -8,11 +8,11 @@ const Mech = ({selected, setSelected, facilities}) => {
         return '#00838f'
         
       } 
-      return '#fff'
+      return '#ededed'
     }
 
     if (!facility) {
-      return '#fff'
+      return '#ededed'
     }
     
     const percentage = Math.trunc((facility.occupied/facility.capacity) * 100)
@@ -26,112 +26,105 @@ const Mech = ({selected, setSelected, facilities}) => {
 
   const rects = [
     {
-      id: "mech1",
+      id: "C-136",
       height: "82.33333",
       width: "82.66667",
       y: "180.66667", 
       x: "690.26667",      
     },
     {
-      id: "mech2",
+      id: "C-144",
       height: "28.66666",
       width: "43.33332",
       y: "275.06647", 
       x: "355.99977",      
     },
     {
-      id: "mech3",
+      id: "C-135",
       height: "40.33332",
       width: "82.66667",
       y: "263", 
       x: "690",      
     },
     {
-      id: "mech4",
+      id: "C-134",
       height: "82.33333",
       width: "82.66667",
       y: "303", 
       x: "690",      
     },
     {
-      id: "mech5",
+      id: "C-138",
       height: "41",
       width: "78",
       y: "345.66667", 
       x: "586.8001",      
     },
     {
-      id: "mech6",
+      id: "C-139",
       height: "41",
       width: "44",
       y: "345.66667", 
       x: "545",      
     },
     {
-      id: "mech7",
+      id: "C-140",
       height: "41",
       width: "86.66668",
       y: "345.66667", 
       x: "458.33332",      
     },
     {
-      id: "mech8",
+      id: "C-141",
       height: "61.33334",
       width: "42",
       y: "180.40003", 
       x: "439.46675",      
     },
     {
-      id: "mech9",
+      id: "C-143",
       height: "69.33334",
       width: "40.66667",
       y: "180.40003", 
       x: "398.66666",      
     },
     {
-      id: "mech10",
-      height: "34.66667",
-      width: "40.66667",
-      y: "269.0667", 
-      x: "399.33333",      
-    },
-    {
-      id: "mech11",
+      id: "C-146",
       height: "35.33317",
       width: "83",
       y: "268.39738", 
       x: "273.33025",      
     },
     {
-      id: "mech12",
+      id: "C-149",
       height: "63.99971",
       width: "63",
       y: "239.73084", 
       x: "210.66387",      
     },
     {
-      id: "mech13",
+      id: "C-148",
       height: "59.99973",
       width: "63",
       y: "179.99998", 
       x: "210.66387",      
     },
     {
-      id: "mech14",
+      id: "C-150",
       height: "124",
       width: "84",
       y: "180", 
       x: "126.66676",      
     },
     {
-      id: "mech15",
+      id: "C-151",
       height: "124",
       width: "62",
       y: "180", 
       x: "64.9999",      
     },
     {
-      id: "mech16",
+      id: "C-147",
       height: "49.33324",
       width: "61",
       y: "180", 
@@ -157,6 +150,7 @@ const Mech = ({selected, setSelected, facilities}) => {
         </g>
       ))}
       <g>
+      <rect stroke="#000" id="svg_12" height="34.66667" width="40.66667" y="269.0667" x="399.33333" fill="#fff"/>
       <rect stroke="#000" id="svg_9" height="41" width="18" y="345.66667" x="441.00001" fill="#fff"/>
       <line id="svg_14" y2="275.0667" x2="367.46674" y1="293.73337" x1="367.46674" stroke="#000" fill="none"/>
       <line id="svg_15" y2="303.73337" x2="377.46675" y1="283.73337" x1="377.46675" stroke="#000" fill="none"/>

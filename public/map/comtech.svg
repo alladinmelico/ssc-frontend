@@ -1,0 +1,15 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+ <title>comtech.svg</title>
+ <g id="Layer_1">
+  <title>Layer 1</title>
+  <rect fill="#fff" stroke="#000" x="369" y="354.8" width="173" height="162" id="C-206"/>
+  <rect fill="#fff" x="436" y="82" width="106" height="217" id="C-204" stroke="#000"/>
+  <rect fill="#fff" x="486" y="298.8" width="56" height="56" id="C-205" stroke="#000"/>
+  <rect fill="#fff" x="261" y="81.8" width="107" height="218" id="C-202" stroke="#000"/>
+  <rect fill="#fff" x="261" y="299.8" width="42" height="217" id="C-201" stroke="#000"/>
+  <rect fill="#fff" stroke="#000" x="368" y="81.8" width="68" height="56" id="svg_7"/>
+  <line fill="none" stroke="#000" stroke-dasharray="5,5" x1="366" y1="449.8" x2="336" y2="449.8" id="svg_8"/>
+  <line fill="none" stroke-dasharray="5,5" x1="335" y1="488.8" x2="335" y2="450.8" id="svg_9" stroke="#000"/>
+ </g>
+
+</svg>
