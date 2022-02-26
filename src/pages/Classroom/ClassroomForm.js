@@ -141,7 +141,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
         <TextField 
           {...register("description_heading", { required: true, min: 3 })}
           error={errors.description_heading ? true : false}
-          label="Desc Heading"
+          label="Description Heading"
           variant="outlined"
           defaultValue={classroom ? classroom.description_heading : ''}
           helperText={errors.description_heading?.message}
