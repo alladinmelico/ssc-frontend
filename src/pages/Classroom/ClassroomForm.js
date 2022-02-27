@@ -42,7 +42,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
     description: yup.string().required("Description is a required field."),
     section: yup.string().required("Section is a required field."),
     subject_id: yup.number().required("Subject is a required field."),
-    google_classroom_id: yup.string("Google Classroom ID is a required field.")
+    google_classroom_id: yup.string("Google Classroom ID is a string.")
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
