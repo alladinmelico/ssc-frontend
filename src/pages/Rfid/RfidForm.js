@@ -25,8 +25,8 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
   const { enqueueSnackbar } = useSnackbar()
 
   const schema = yup.object({
-    value: yup.string().required(),
-    is_logged: yup.boolean().required(),
+    value: yup.string().required("Value is a required field."),
+    is_logged: yup.boolean().required("Name is a required field."),
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({

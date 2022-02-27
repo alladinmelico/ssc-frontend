@@ -32,7 +32,7 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
   const { enqueueSnackbar } = useSnackbar()
 
   const schema = yup.object({
-    name: yup.string().required(),
+    name: yup.string().required("Name is a required field."),
     president_id: yup.string().required(),
     faculty_id: yup.string().required(),
   }).required();

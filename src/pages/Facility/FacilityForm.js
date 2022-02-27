@@ -48,9 +48,10 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
   ]
 
   const schema = yup.object({
-    name: yup.string().required(),
-    code: yup.string().required(),
-    capacity: yup.number().required(),
+    name: yup.string().required("Name is a required field."),
+    code: yup.string().required("Code is a required field."),
+    code: yup.string().required("Code is a required field."),
+    capacity: yup.number().required("Capacity is a required field."),
     type: yup.number().required(),
     building_id: yup.number().required(),
   }).required();
