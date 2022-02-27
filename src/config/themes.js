@@ -24,7 +24,7 @@ const themes = [
       palette: {
         primary: primary,
         secondary: secondary,
-        error: cyan,
+        error: red,
       },
     },
   },
@@ -35,7 +35,7 @@ const themes = [
       palette: {
         primary: dark,
         secondary: secondary,
-        error: cyan,
+        error: red,
       },
     },
   },
@@ -46,7 +46,7 @@ const themes = [
       palette: {
         primary: primary,
         secondary: secondary,
-        error: cyan,
+        error: red,
       },
     },
   },
@@ -57,7 +57,7 @@ const themes = [
       palette: {
         primary: light,
         secondary: secondary,
-        error: cyan,
+        error: red,
       },
     },
   },
