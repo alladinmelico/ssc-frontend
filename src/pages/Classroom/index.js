@@ -8,6 +8,7 @@ import ClassroomForm from './ClassroomForm'
 import { useDispatch, useSelector } from "react-redux"
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
@@ -16,11 +17,13 @@ import {
   clearErrors,
 } from "../../actions/classroomActions"
 import { DELETE_CLASSROOM_RESET } from "../../constants/classroomConstants"
+import ClassroomShow from './ClassroomShow';
 
 const Classroom = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [classroom, setClassroom] = useState({})
+  const [editMode, setEditMode] = useState(true)
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -68,7 +71,14 @@ const Classroom = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => setClassroom(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
+          setClassroom(params.row)
+          setEditMode(false)
+        }} label="View" />,
+        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
+          setClassroom(params.row)
+          setEditMode(true)
+        }} label="Edit" />,
         <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -109,7 +119,14 @@ const Classroom = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <ClassroomForm classroom={classroom} modalClosed={() => setClassroom({})} page={page} rowsPerPage={rowsPerPage} />
+        {editMode ? (
+          <ClassroomForm classroom={classroom} modalClosed={() => setClassroom({})} page={page} rowsPerPage={rowsPerPage} />
+        ) : (
+          <ClassroomShow classroom={classroom} modalClosed={() => {
+            setClassroom({})
+            setEditMode(true)
+          }} />
+        )}
       </Box>
     </Page>
   );
