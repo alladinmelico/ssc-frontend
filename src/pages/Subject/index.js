@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
@@ -18,11 +19,13 @@ import {
   clearErrors,
 } from "../../actions/subjectActions"
 import { DELETE_SUBJECT_RESET } from "../../constants/subjectConstants"
+import SubjectShow from './SubjectShow';
 
 const Subject = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [subject, setSubject] = useState({})
+  const [editMode, setEditMode] = useState(true)
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -66,7 +69,14 @@ const Subject = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => setSubject(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
+          setSubject(params.row)
+          setEditMode(false)
+        }} label="View" />,
+        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
+          setSubject(params.row)
+          setEditMode(true)
+        }} label="Edit" />,
         <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -107,7 +117,14 @@ const Subject = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <SubjectForm subject={subject} modalClosed={() => setSubject({})} page={page} rowsPerPage={rowsPerPage} />
+        {editMode ? (
+          <SubjectForm subject={subject} modalClosed={() => setSubject({})} page={page} rowsPerPage={rowsPerPage} />
+        ) : (
+          <SubjectShow subject={subject} modalClosed={() => {
+            setSubject({})
+            setEditMode(true)
+          }} />
+        )}
       </Box>
     </Page>
   );
