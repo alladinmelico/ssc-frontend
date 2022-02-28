@@ -144,7 +144,7 @@ export default function UserModal ({modalClosed, user}) {
         <InputLabel id="year_select_label">Year</InputLabel>
         <Select
           {...register("year", { required: true, min: 3 })}
-          error={errors.course_id ? true : false}
+          error={errors.year ? true : false}
           labelId="year_select_label"
           id="year-select"
           defaultValue={user ? user.year : ''}
