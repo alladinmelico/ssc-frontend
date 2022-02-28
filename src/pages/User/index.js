@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
@@ -20,11 +21,13 @@ import {
 } from "../../actions/userActions"
 import { DELETE_USER_RESET } from "../../constants/userConstants"
 import API from 'config/api';
+import UserShow from './UserShow';
 
 const User = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [user, setUser] = useState({})
+  const [editMode, setEditMode] = useState(true)
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -73,19 +76,26 @@ const User = ({history}) => {
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'name', headerName: 'Name', flex: 0.5 , minWidth: 150 },
     { field: 'email', headerName: 'Email', flex: 0.5 , minWidth: 150 },
-    { field: 'year', headerName: 'Year', width: 150 },
-    { field: 'section', headerName: 'Section', width: 150 },
-    { field: 'school_id', headerName: 'School ID', width: 150 },
-    { field: 'role', headerName: 'Role', width: 150 },
-    { field: 'course_name', headerName: 'Course', width: 150 },
-    { field: 'changes_verified', headerName: 'Status', width: 150 },
+    { field: 'year', headerName: 'Year', width: 75 },
+    { field: 'section', headerName: 'Section', flex: 0.5 , minWidth: 100 },
+    { field: 'school_id', headerName: 'School ID', flex: 0.5 , minWidth: 150 },
+    { field: 'role', headerName: 'Role', flex: 0.5 , minWidth: 100 },
+    { field: 'course_name', headerName: 'Course', flex: 0.5 , minWidth: 100 },
+    { field: 'changes_verified', headerName: 'Status', width: 75 },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => setUser(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
+          setUser(params.row)
+          setEditMode(false)
+        }} label="View" />,
+        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
+          setUser(params.row)
+          setEditMode(true)
+        }} label="Edit" />,
         <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -152,7 +162,7 @@ const User = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'user', defaultMessage: 'User' })}
     >
       <DataTable
-        rows={users.map(user => ({...user, course_name: user.course?.code, role: getRole(user.role_id) }))}
+        rows={users.map(user => ({...user, section:user.section?.name, course_name: user.course?.code, role: getRole(user.role_id) }))}
         columns={columns}
         count={count}
         loading={loading}
@@ -161,9 +171,15 @@ const User = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-
       <Box>
-        <UserForm user={user} modalClosed={() => setUser({})} page={page} rowsPerPage={rowsPerPage} />
+        {editMode ? (
+          <UserForm user={user} modalClosed={() => setUser({})} page={page} rowsPerPage={rowsPerPage} />
+        ) : (
+          <UserShow user={user} modalClosed={() => {
+            setUser({})
+            setEditMode(true)
+          }} />
+        )}
       </Box>
     </Page>
   );
