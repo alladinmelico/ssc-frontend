@@ -125,6 +125,7 @@ export default function UserModal ({modalClosed, user}) {
           helperText={errors.name?.message}
           margin="normal"
           fullWidth
+          required
         />
 
         <TextField 
@@ -136,19 +137,24 @@ export default function UserModal ({modalClosed, user}) {
           helperText={errors.email?.message}
           margin="normal"
           fullWidth
+          required
         />
-        
-        <TextField 
+
+      <FormControl fullWidth required margin='normal'>
+        <InputLabel id="year_select_label">Year</InputLabel>
+        <Select
           {...register("year", { required: true, min: 3 })}
-          error={errors.year ? true : false}
-          label="Year"
-          variant="outlined"
+          error={errors.course_id ? true : false}
+          labelId="year_select_label"
+          id="year-select"
           defaultValue={user ? user.year : ''}
-          helperText={errors.year?.message}
-          margin="normal"
-          fullWidth
-          type="number"
-        />
+          label="Year">
+            <MenuItem value="1">First Year</MenuItem>
+            <MenuItem value="2">Second Year</MenuItem>
+            <MenuItem value="3">Third Year</MenuItem>
+            <MenuItem value="4">Fourth Year</MenuItem>
+            </Select>
+            </FormControl>
 
         <TextField 
           {...register("section", { required: true, min: 3 })}
@@ -159,6 +165,7 @@ export default function UserModal ({modalClosed, user}) {
           helperText={errors.section?.message}
           margin="normal"
           fullWidth
+          required
         />
 
         <FormControl fullWidth required margin="normal">
@@ -170,7 +177,7 @@ export default function UserModal ({modalClosed, user}) {
           id="course-select"
           label="course"
           defaultValue={user ? user.course_id : ''}
-         
+         required
         >
           {courses.map(course => (
             <MenuItem value={course.id}>{course.name}</MenuItem>
@@ -187,6 +194,7 @@ export default function UserModal ({modalClosed, user}) {
           helperText={errors.school_id?.message}
           margin="normal"
           fullWidth
+          required
         />
 
       </FormModal>
