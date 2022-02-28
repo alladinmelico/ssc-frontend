@@ -23,6 +23,7 @@ import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import ArrowBackIosOutlinedIcon from '@mui/icons-material/ArrowBackIosOutlined';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Stack } from "@mui/material";
 import {
   getUsers,
   getAdminUsers,
@@ -35,8 +36,9 @@ export default function Step3({history, activeStep, setActiveStep}) {
   const [hasUser, setHasUser] = useState(false);
   const [classroom, setClassroom] = useState('');
   const [facilityCapacity, setFacilityCapacity] = useState(0);
-  const [toAddUser, setToAddUser] = useState({});
+  const [toAddUser, setToAddUser] = useState({name: ''});
   const [batches, setBatches] = useState([]);
+  const [selectedBatch, setSelectedBatch] = useState('');
   const [error, setError] = useState({});
 
   const dispatch = useDispatch()
@@ -79,29 +81,23 @@ export default function Step3({history, activeStep, setActiveStep}) {
     const flatten = temp.flat()
     if (toAddUser && !flatten.find(item => item.id === toAddUser.id)) {
       if (temp.length) {
-        temp[temp.findIndex(i => i.length !== facilityCapacity)].push(toAddUser)
+        if (selectedBatch) {
+          if (temp[selectedBatch].length < facilityCapacity) {
+            temp[selectedBatch].push(toAddUser)
+          }
+        } else {
+          const index = temp.findIndex(i => i.length < facilityCapacity)
+          console.log(index)
+          if (index >= 0) {
+            temp[index].push(toAddUser)
+          } else {
+            temp.push([toAddUser])
+          }
+        }        
       } else {
         temp.push([toAddUser])
       }
       setBatches([...temp])
-    }
-  }
-  
-  function moveItem(row, index) {
-    const tempArr = [...batches]
-    const item = tempArr[row][index]
-    
-    let targetArr = 0
-    if (row + 1 === tempArr.length) {
-      targetArr = row - 1
-    } else {
-      targetArr = row + 1
-    }
-
-    if (tempArr[targetArr].length !== facilityCapacity) {
-      tempArr[row].splice(index, 1)
-      tempArr[targetArr].push(item)
-      setBatches([...tempArr])
     }
   }
 
@@ -109,6 +105,11 @@ export default function Step3({history, activeStep, setActiveStep}) {
     const tempArr = [...batches]
     tempArr[row].splice(index, 1)
     setBatches([...tempArr])
+  }
+
+  function clearFields() {
+    setSelectedBatch('')
+    setToAddUser({name: ''})
   }
 
   useEffect(() => {
@@ -154,19 +155,37 @@ export default function Step3({history, activeStep, setActiveStep}) {
 
         
         {count ? (
-          <Box>
+          <Stack direction="row" spacing={2}>
             <Autocomplete
+              fullWidth
               disablePortal
               id="add-user-search"
-              value={toAddUser || {name: ''}}
+              value={toAddUser}
               getOptionLabel={(item) => item.name}
               onChange={(event, newVal) => setToAddUser(newVal)}
               options={users}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Add User" placeholder="Select user to add" />}
             />
-            <Button onClick={() => addUser()}>Add</Button>
-          </Box>
+            <FormControl fullWidth>
+              <InputLabel id="batch-select-label">Batch</InputLabel>
+              <Select
+                labelId="batch-select-label"
+                id="batch-select"
+                value={selectedBatch}
+                label="Batch"
+                onChange={(e) => setSelectedBatch(e.target.value)}
+              >
+                {batches.map((item, index) => (
+                  <MenuItem value={index} key={index}>{index}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Stack>
+              <Button size='small' onClick={() => addUser()}>Add</Button>
+              <Button size='small' onClick={() => clearFields()}>Clear</Button>
+            </Stack>
+          </Stack>
         ) : 
           <Skeleton animation="wave" height={100} />
         }
@@ -208,15 +227,6 @@ export default function Step3({history, activeStep, setActiveStep}) {
                           secondary={row.school_id}
                         />
                         <Box edge="end">
-                          {(batches.length !== 1) && (
-                            <IconButton edge="end" aria-label="delete"
-                              onClick={() => moveItem(index, rowIndex)}
-                            >
-                              {(index + 1) === batches.length ? 
-                                (<ArrowBackIosOutlinedIcon />) :
-                                (<ArrowForwardIosOutlinedIcon />) } 
-                            </IconButton>
-                          )}
                           <IconButton edge="end" aria-label="delete" onClick={() => removeItem(index, rowIndex)}>
                             <DeleteIcon />
                           </IconButton>

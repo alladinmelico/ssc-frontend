@@ -38,9 +38,21 @@ export default function Step4({history, activeStep, setActiveStep}) {
       if (key.includes('is_')) {
         return formData.append(key, (value ? 1 : 0))
       }
+      if (key === 'users') {
+        return
+      }
       return formData.append(key, value)
     })
     
+    if (schedule.users) {
+      const value = schedule.users
+      for (let i = 0; i < value.length; i++) {
+        for (let j = 0; j < value[i].length; j++) {
+          formData.append(`users[${i}][]`, value[i][j])
+        }
+      }
+    }
+
     if (attachment) {
       formData.append('attachment', attachment)
     }
