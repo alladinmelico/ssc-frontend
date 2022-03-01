@@ -19,15 +19,18 @@ import InputLabel from '@mui/material/InputLabel';
 
 import {
   getAdminCourses,
-  deleteCourse,
-  clearErrors,
 } from "../../actions/courseActions"
+
+import {
+  getAdminSections,
+} from "../../actions/sectionActions"
 
 export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
   const { auth } = useAuth()
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
-  const { courses, sections, count, error } = useSelector((state) => state.courses)
+  const { courses,  count, error } = useSelector((state) => state.courses)
+  const { sections } = useSelector((state) => state.sections)
   const { register, handleSubmit, watch, formState: { errors } } = useForm(
     { 
       defaultValues: { 
@@ -87,6 +90,7 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
   useEffect(() =>{
     if (!count){
       dispatch(getAdminCourses(0, 1000))
+      dispatch(getAdminSections(0, 1000))
     }
   },[count])
 
@@ -141,7 +145,7 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
           </Select>
           </FormControl>
 
-        {/* {count ? (
+        {count ? (
         <FormControl fullWidth required margin="normal">
             <InputLabel id="course-select-label">Section</InputLabel>
             <Select
@@ -153,13 +157,13 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
             defaultValue={user ? user.section_id : ''}
           >
             {sections.map(section => (
-              <MenuItem value={section.id}>{section.name}</MenuItem>
+              <MenuItem value={section.id} key={section.id}>{section.name}</MenuItem>
             ))}
           </Select>
           </FormControl>
           ) : (
             <Skeleton animation="wave" height={100} />
-          )} */}
+          )}
      
         <Stack  marginTop="1rem" direction="row" spacing={2} justifyContent="flex-end" alignItems="center">
           <Button onClick={() =>  { 
