@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
@@ -18,11 +19,13 @@ import {
   clearErrors,
 } from "../../actions/sectionActions"
 import { DELETE_SECTION_RESET } from "../../constants/sectionConstants"
+import SectionShow from './SectionShow';
 
 const Section = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [section, setSection] = useState({})
+  const [editMode, setEditMode] = useState(true)
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -67,7 +70,14 @@ const Section = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => setSection(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
+          setSection(params.row)
+          setEditMode(false)
+        }} label="View" />,
+        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
+          setSection(params.row)
+          setEditMode(true)
+        }} label="Edit" />,
         <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -108,7 +118,14 @@ const Section = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <SectionForm section={section} modalClosed={() => setSection({})} page={page} rowsPerPage={rowsPerPage} />
+        {editMode ? (
+          <SectionForm section={section} modalClosed={() => setSection({})} page={page} rowsPerPage={rowsPerPage} />
+        ) : (
+          <SectionShow section={section} modalClosed={() => {
+            setSection({})
+            setEditMode(true)
+          }} />
+        )}
       </Box>
     </Page>
   );

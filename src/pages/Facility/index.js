@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
@@ -19,11 +20,13 @@ import {
   clearErrors,
 } from "../../actions/facilityActions"
 import { DELETE_FACILITY_RESET } from "../../constants/facilityConstants"
+import FacilityShow from './FacilityShow';
 
 const Facility = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [facility, setFacility] = useState({})
+  const [editMode, setEditMode] = useState(true)
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -70,7 +73,14 @@ const Facility = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => setFacility(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
+          setFacility(params.row)
+          setEditMode(false)
+        }} label="View" />,
+        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
+          setFacility(params.row)
+          setEditMode(true)
+        }} label="Edit" />,
         <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -111,7 +121,14 @@ const Facility = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        <FacilityForm facility={facility} modalClosed={() => setFacility({})} page={page} rowsPerPage={rowsPerPage}/>
+        {editMode ? (
+          <FacilityForm facility={facility} modalClosed={() => setFacility({})} page={page} rowsPerPage={rowsPerPage} />
+        ) : (
+          <FacilityShow facility={facility} modalClosed={() => {
+            setFacility({})
+            setEditMode(true)
+          }} />
+        )}
       </Box>
     </Page>
   );
