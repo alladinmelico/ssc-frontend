@@ -111,7 +111,7 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
   return (
     <div>
       <FormModal
-        title={course ? 'Add Course' : 'Edit Course'}
+        title={course && course.id ? 'Edit Course' : 'Add Course'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
         loading={loading}
