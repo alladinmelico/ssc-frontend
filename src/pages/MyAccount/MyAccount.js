@@ -173,7 +173,7 @@ const MyAccount = () => {
             >
                 <Typography sx={{fontWeight:"600", mt:"1rem"}} variant="h5">{user.name}</Typography>
                 <Typography style={{mt:"14px"}} variant="body1">{user.course_name}</Typography>
-                <Typography style={{mt:"14px"}}  variant="body1">{user.year}{user.section}</Typography>
+                <Typography style={{mt:"14px"}}  variant="body1">{user.section?.name}-{user.year}</Typography>
                 <Typography sx={{mt:"1rem"}} variant="body2">{user.email}</Typography>
                 </Stack>
               </div>
