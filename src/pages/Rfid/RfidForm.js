@@ -39,7 +39,7 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
 
   useEffect(() => {
     console.log(rfid)
-    if(rfid.id && !openModal) {
+    if(rfid && rfid.id  && !openModal) {
       setOpenModal(true)
       setValue('value', rfid.value)
       setValue('is_logged', rfid.is_logged)
