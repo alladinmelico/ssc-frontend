@@ -12,7 +12,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Button from '@mui/material/Button';
 
-export default function FormModal ({title, onSubmit, success, loading, cancelled, openModal, setOpenModal, children}) {
+export default function FormModal ({title, onSubmit, success, loading, cancelled, openModal, setOpenModal, children, noFab}) {
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
@@ -34,9 +34,11 @@ export default function FormModal ({title, onSubmit, success, loading, cancelled
         alignItems: 'center',
       }}
     >
-      <Fab onClick={handleOpen} color="primary" aria-label="add" className="fabIcon">
-        <AddIcon />
-      </Fab>
+      {!noFab && (
+        <Fab onClick={handleOpen} color="primary" aria-label="add" className="fabIcon">
+          <AddIcon />
+        </Fab>
+      )}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

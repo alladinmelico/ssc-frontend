@@ -82,7 +82,7 @@ const getMenuItems = (props) => {
     }
   })
 
-  if (isAuthMenuOpen || !isAuthorised) {
+  if (isAuthMenuOpen || !isAuthorised || !auth.hasProfile) {
     return [
       {
         value: '/my_account',
@@ -235,13 +235,19 @@ const getMenuItems = (props) => {
               leftIcon: isRTL ? <LTRIcon /> : <RTLIcon />,
             },
           ],
-        },
-        {
-          value: '/about',
-          visible: true,
-          primaryText: intl.formatMessage({ id: 'about', defaultMessage: 'About' }),
-          leftIcon: <InfoOutlined />,
-        },
+    },
+    {
+      value: '/communication',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'communication', defaultMessage: 'Communication' }),
+      leftIcon: <InfoOutlined />,
+    },
+    {
+      value: '/about',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'about', defaultMessage: 'About' }),
+      leftIcon: <InfoOutlined />,
+    },
     {
       value: null,
       visible: isAppInstallable && !isAppInstalled,

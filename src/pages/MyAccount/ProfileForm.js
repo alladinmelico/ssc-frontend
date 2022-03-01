@@ -26,7 +26,7 @@ import {
 } from "../../actions/sectionActions"
 
 export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
-  const { auth } = useAuth()
+  const { auth, setAuth } = useAuth()
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   const { courses,  count, error } = useSelector((state) => state.courses)
@@ -75,8 +75,9 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
         }
       })
       .then(res => {
-        console.log(res)
-        
+        if (res.status === 200) {
+          setAuth({...auth, hasProfile: true})
+        }
       })
       .catch(err => {
         console.log(err)

@@ -8,6 +8,7 @@ const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
 const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
 const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
+const Communication = lazy(() => import('../pages/Communication'))
 const Schedule = lazy(() => import('../pages/Schedule'))
 const ScheduleForm = lazy(() => import('../pages/Schedule/ScheduleForm'))
 const User = lazy(() => import('../pages/User'))
@@ -54,6 +55,11 @@ const routes = [
         <PasswordReset redirectTo="/home" />
       </UnauthorizedRoute>
     ),
+  },
+  {
+    path: '/communication',
+    exact: true,
+    element: <Communication />,
   },
   {
     path: '/about',
