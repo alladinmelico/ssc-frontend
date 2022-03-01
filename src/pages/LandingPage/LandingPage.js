@@ -12,9 +12,7 @@ import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import { makeStyles } from '@mui/styles';
 import Carousel from 'react-material-ui-carousel'
-import helloimage from '../../public/Hello-rafiki 1.png';
-
-import { Paper, Button } from '@mui/material'
+import { createTheme } from '@mui/material/styles';
 
 // Feature Icons
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
@@ -31,9 +29,19 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import { fontWeight } from '@mui/system';
+
 
 const useStyles = makeStyles({
+  activeTab: {
+    "& .MuiTabs-indicator": {
+      backgroundColor: "#00838f",
+     
+    },
+    "& .Mui-selected": {
+      color: "#000000"
+    }
+
+  },
   primaryTextColor: {
     color: "#00838f",
     fontWeight: 400
@@ -82,13 +90,11 @@ const useStyles = makeStyles({
   },
   ourTeamNameBox:{
     width: '100%', 
-    // height: '100%', 
     backgroundColor: "#EAF6F4", 
     borderRadius: '6px',
   },
   ourTeamMemBox:{
     width: '100%', 
-    // height: '200px',
     backgroundColor: "white", 
     borderRadius: '8px',
     
@@ -254,17 +260,19 @@ const LandingPage = () => {
      
       <Box style={{position:"sticky", top:0, zIndex: 999, display:"flex", 
       justifyContent:"center", }} sx={{ backgroundColor: "#EAF6F4", width:"100%" }}  >
-        <Tabs centered  
+        <Tabs centered  id="MuiTab-root"
         allowScrollButtonsMobile 
         variant="scrollable"
         scrollButtons="auto"
         sx={{ pt:"1rem"}}  
+        
          
           value={value}
           onChange={handleChange}
-          textColor="primary"
-          indicatorColor="primary"
+          // textColor="black"
+          // indicatorColor="primary"
           aria-label="secondary tabs example"
+          className={classes.activeTab}
         >
 
           <Tab value="#home" label="Home" />
@@ -319,13 +327,11 @@ const LandingPage = () => {
     <Box id="about"  sx={{mb:"2rem", mt: "2rem"}}>
     <Container sx={{mx:"auto"}} >
       <Grid container sx={{ maxWidth:'100%', backgroundColor: "white" }}>
-        {/* <Box sx={{ width: '300px', backgroundColor: "red"}}> */}
           <Grid item xs={12} sm={12} md={5} lg={3} sx={{mt: "3rem"}}   >
             <Box sx={{ width: '300px', maxHeight:'100%' , maxWidth: '100%', mx:"auto" }}>
               <img id="about-logo" src="ssc-system-logo.jpg" height={300} width={300} alt="HelloImage"  />
             </Box>
           </Grid>
-        {/* </Box> */}
         <Grid item xs={12} sm={12} md={7} lg={8} sx={{mx:"auto"}} >
           <Box sx={{ mx:"auto" }}>
             <Typography sx={{mt:"2rem"}} variant="h2" gutterBottom component="div" className={classes.primaryTextColor}>
@@ -341,8 +347,7 @@ const LandingPage = () => {
             Since this method automates the procedure, security staff may have less contact with most students that access the school. 
             Furthermore, having digital logs of the students’ temperatures could be utilized to produce insights or analytics.
             </Typography>
-            
-           
+
           </Box>
         </Grid>
       </Grid>
@@ -362,9 +367,10 @@ const LandingPage = () => {
           avoiding crowded, closed and close-contact settings, ensuring good ventilation of indoor spaces, 
           cleaning hands regularly, and covering sneezes and coughs with a tissue or bent elbow.
         </Typography>
-        <Box sx={{ fontStyle: 'italic',  mb:"8px" }}>
-          <Typography variant="body2" color="text.secondary" align="center"> 
-            https://www.who.int/emergencies/diseases/novel-coronavirus-2019/question-and-answers-hub/q-a-detail/coronavirus-disease-covid-19-masks
+        <Box sx={{ maxWidth:"100%", fontStyle: 'italic',  mb:"8px" }}>
+          <Typography variant="body2" color="text.secondary" align="center" gutterBottom component="div"> 
+            https://www.who.int/emergencies/diseases/
+            novel-coronavirus-2019/question-and-answers-hub/q-a-detail/coronavirus-disease-covid-19-masks
           </Typography>
         </Box>
         <Grid container sx={{width: '100%'}} spacing={{ xs:2, sm:3, md:4}}  >
