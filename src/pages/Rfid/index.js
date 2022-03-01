@@ -1,28 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
+import { useDispatch, useSelector } from "react-redux"
+import DataTable from '../../components/DataTable';
+import { DELETE_RFID_RESET } from "../../constants/rfidConstants"
+import RfidForm from './RfidForm';
+import RfidShow from './RfidShow';
 import Page from 'material-ui-shell/lib/containers/Page';
 import { GridActionsCellItem } from '@mui/x-data-grid';
-import DataTable from '../../components/DataTable';
-import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import RfidForm from './RfidForm'
-import { useDispatch, useSelector } from "react-redux"
-import Stack from '@mui/material/Stack';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
+
 import {
   getAdminRfids,
   deleteRfid,
   clearErrors,
 } from "../../actions/rfidActions"
-import { DELETE_RFID_RESET } from "../../constants/rfidConstants"
+
 
 const Rfid = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [rfid, setRfid] = useState({})
+  const [editMode, setEditMode] = useState(true)
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -67,7 +70,14 @@ const Rfid = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => setRfid(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => { 
+          setRfid(params.row) 
+          setEditMode(false)
+        }} label="View" />,
+        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => { 
+          setRfid(params.row) 
+          setEditMode(true)
+        }} label="Edit" />,
         <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -107,8 +117,15 @@ const Rfid = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-      <Box>
-        <RfidForm rfid={rfid} modalClosed={() => setRfid({})}page={page} rowsPerPage={rowsPerPage}/>
+       <Box>
+        {editMode ? (
+          <RfidForm rfid={rfid} modalClosed={() => setRfid({})} page={page} rowsPerPage={rowsPerPage} />
+        ) : (
+          <RfidShow rfid={rfid} modalClosed={() => {
+            setRfid({})
+            setEditMode(true)
+          }} />
+        )}
       </Box>
     </Page>
   );
