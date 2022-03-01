@@ -8,6 +8,7 @@ import CourseForm from './CourseForm'
 import { useDispatch, useSelector } from "react-redux"
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {
@@ -16,11 +17,13 @@ import {
   clearErrors,
 } from "../../actions/courseActions"
 import { DELETE_COURSE_RESET } from "../../constants/courseConstants"
+import CourseShow from './CourseShow';
 
 const Course = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [course, setCourse] = useState({})
+  const [editMode, setEditMode] = useState(true)
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -65,7 +68,14 @@ const Course = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => setCourse(params.row)} label="Edit" />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
+          setCourse(params.row)
+          setEditMode(false)
+        }} label="View" />,
+        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
+          setCourse(params.row)
+          setEditMode(true)
+        }} label="Edit" />,
         <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -105,8 +115,15 @@ const Course = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-      <Box>
-        <CourseForm course={course} modalClosed={() => setCourse({})} page={page} rowsPerPage={rowsPerPage} />
+     <Box>
+        {editMode ? (
+          <CourseForm course={course} modalClosed={() => setCourse({})} page={page} rowsPerPage={rowsPerPage} />
+        ) : (
+          <CourseShow course={course} modalClosed={() => {
+            setCourse({})
+            setEditMode(true)
+          }} />
+        )}
       </Box>
     </Page>
   );

@@ -14,6 +14,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import { Skeleton } from '@mui/material';
 
 export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
   const [openModal, setOpenModal] = useState(false)
@@ -142,6 +143,7 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
           fullWidth
         />
 
+      {departments ? (
       <FormControl fullWidth required margin="normal">
         <InputLabel id="departments-select-label">Department</InputLabel>
         <Select
@@ -151,13 +153,15 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
           id="departments-select"
           label="departments"
           defaultValue={course ? course.department_id : ''}
-         
         >
           {departments.map(departments => (
             <MenuItem value={departments.id}>{departments.value}</MenuItem>
           ))}
         </Select>
       </FormControl>
+        ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
       </FormModal>
     </div>
   );

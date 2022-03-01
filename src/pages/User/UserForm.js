@@ -15,12 +15,15 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { getAdminCourses } from 'actions/courseActions';
+import { getAdminSections } from 'actions/sectionActions';
+import { Skeleton } from '@mui/material';
 
 export default function UserModal ({modalClosed, user}) {
   const [openModal, setOpenModal] = useState(false)
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { courses, count} = useSelector((state) => state.courses)
+  const { courses } = useSelector((state) => state.courses)
+  const { sections, count } = useSelector((state) => state.sections)
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newUser)
   const {
@@ -45,11 +48,12 @@ export default function UserModal ({modalClosed, user}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', email: '', section: '', school_id: '', year: 0, course_id: 0})
+    reset({ name: '', email: '', section: '', school_id: '', year: 0, course_id: ''})
   }
 
   useEffect(() => {
     dispatch(getAdminCourses(page, rowsPerPage))
+    dispatch(getAdminSections(page, rowsPerPage))
     if(user.id && !openModal) {
       setOpenModal(true)
       setValue('name', user.name)
@@ -156,34 +160,47 @@ export default function UserModal ({modalClosed, user}) {
             </Select>
             </FormControl>
 
-        <TextField 
-          {...register("section", { required: true, min: 3 })}
-          error={errors.section ? true : false}
-          label="Section"
-          variant="outlined"
-          defaultValue={user ? user.section : ''}
-          helperText={errors.section?.message}
-          margin="normal"
-          fullWidth
-          required
-        />
-
+            {count ? (
+              <FormControl fullWidth required margin="normal">
+                <InputLabel id="section-select-label">Section</InputLabel>
+                <Select
+                  {...register("section", { required: true, min: 3 })}
+                  error={errors.section ? true : false}
+                  labelId="section-select-label"
+                  id="section-select"
+                  label="section"
+                  defaultValue={user ? user.section : ''}
+                required
+                >
+                  {sections.map(section => (
+                    <MenuItem value={section.name}>{section.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+        ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
+        
+        {count ? (
         <FormControl fullWidth required margin="normal">
-        <InputLabel id="course-select-label">Course</InputLabel>
-        <Select
-          {...register("course_id", { required: true, min: 3 })}
-          error={errors.course_id ? true : false}
-          labelId="course-select-label"
-          id="course-select"
-          label="course"
-          defaultValue={user ? user.course_id : ''}
-         required
-        >
-          {courses.map(course => (
-            <MenuItem value={course.id}>{course.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <InputLabel id="course-select-label">Course</InputLabel>
+          <Select
+            {...register("course_id", { required: true, min: 3 })}
+            error={errors.course_id ? true : false}
+            labelId="course-select-label"
+            id="course-select"
+            label="course"
+            defaultValue={user ? user.course_id : ''}
+          
+          >
+            {courses.map(course => (
+              <MenuItem value={course.id}>{course.name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
 
         <TextField 
           {...register("school_id", { required: true, min: 3 })}
