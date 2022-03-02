@@ -88,7 +88,7 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
   return (
     <div>
       <FormModal
-        title={subject ? 'Edit Subject' : 'Add Subject'}
+        title={subject && subject.id ? 'Edit Subject' : 'Add Subject'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
         loading={loading}

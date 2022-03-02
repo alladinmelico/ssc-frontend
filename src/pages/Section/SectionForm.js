@@ -103,7 +103,7 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
   return (
     <div>
       <FormModal
-        title={section.id ? 'Add Section' : 'Add Section'}
+        title={section && section.id ? 'Edit Section' : 'Add Section'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
         loading={loading}

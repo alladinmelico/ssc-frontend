@@ -92,7 +92,7 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
   return (
     <div>
       <FormModal
-        title={rfid ? 'Edit Rfid' : 'Add Rfid'}
+        title={rfid && rfid.id ? 'Edit Rfid' : 'Add Rfid'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
         loading={loading}
