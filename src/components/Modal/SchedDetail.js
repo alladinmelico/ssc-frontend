@@ -2,10 +2,10 @@ import React from 'react'
 import { Box } from "@mui/system";
 import Typography from '@mui/material/Typography';
 
-const ItemDetail = ({label, value}) => {
+const SchedDetail = ({label, value}) => {
   return (
     <Box>
-      <Typography variant="caption" display="block">
+      <Typography sx={{fontWeight:"600"}} variant="caption" display="block">
         {label}
       </Typography>
       <Typography variant="body1" display="block">
@@ -16,4 +16,4 @@ const ItemDetail = ({label, value}) => {
 }
 
 
-export default ItemDetail;
+export default SchedDetail;
