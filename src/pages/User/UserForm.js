@@ -209,9 +209,10 @@ export default function UserModal ({modalClosed, user}) {
           defaultValue={user ? user.school_id : ''}
           helperText={errors.school_id?.message}
           margin="normal"
+          placeholder="TUPT-##-####"
           fullWidth
           required
-        />
+          />
 
       </FormModal>
     </div>
