@@ -15,5 +15,4 @@ const SchedDetail = ({label, value}) => {
   )
 }
 
-
 export default SchedDetail;
