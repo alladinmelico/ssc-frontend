@@ -109,7 +109,7 @@ const Classroom = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'classroom', defaultMessage: 'Classroom' })}
     >
       <DataTable
-        rows={classrooms}
+        rows={classrooms.map(classroom => ({...classroom, section:classroom.section?.name }))}
         columns={columns}
         count={count}
         loading={loading}

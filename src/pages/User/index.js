@@ -86,6 +86,7 @@ const User = ({history}) => {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
+      width: 150,
       disableExport: true,
       getActions: (params) => [
         <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {

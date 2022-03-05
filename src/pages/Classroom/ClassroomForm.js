@@ -16,11 +16,13 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Autocomplete, Box, Chip, OutlinedInput, Skeleton } from '@mui/material';
+import { getAdminSections } from 'actions/sectionActions';
 
 export default function ClassroomModal ({page, rowsPerPage, modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
-  const { subjects, count} = useSelector((state) => state.subjects)
+  const { subjects } = useSelector((state) => state.subjects)
   const { users } = useSelector((state) => state.users)
+  const { sections, count } = useSelector((state) => state.sections)
   const [toAddUsers, setToAddUsers] = useState([]);
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newClassroom)
@@ -40,7 +42,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
     name: yup.string().required("Name is a required field."),
     description_heading: yup.string().required("Description Heading is a required field."),
     description: yup.string().required("Description is a required field."),
-    section: yup.string().required("Section is a required field."),
+    section_id: yup.number().required("Section is a required field."),
     subject_id: yup.number().required("Subject is a required field."),
     google_classroom_id: yup.string("Google Classroom ID is a string.")
   }).required();
@@ -50,11 +52,12 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
   });
 
   const resetForm = () => {
-    reset({ name: '', description_heading: '', description: '', section: '', subject_id: '', google_classroom_id: ''})
+    reset({ name: '', description_heading: '', description: '', section_id: '', subject_id: '', google_classroom_id: ''})
   }
 
   useEffect(() => {
     dispatch(getAdminSubjects(0, 1000))
+    dispatch(getAdminSections(0, 1000))
     dispatch(getAdminUsers(0, 1000))
 
     if(classroom.id && !openModal) {
@@ -63,7 +66,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
       setValue('name', classroom.name)
       setValue('description_heading', classroom.description_heading)
       setValue('description', classroom.description)
-      setValue('section', classroom.section)
+      setValue('section_id', classroom.section?.id)
       setValue('subject_id', classroom.subject_id)
       setValue('google_classroom_id', classroom.google_classroom_id)
       setToAddUsers(classroom.users)
@@ -160,16 +163,25 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
           fullWidth
         />
 
-        <TextField 
-          {...register("section", { required: true, min: 3 })}
-          error={errors.section ? true : false}
-          label="Section"
-          variant="outlined"
-          defaultValue={classroom ? classroom.section : ''}
-          helperText={errors.section?.message}
-          margin="normal"
-          fullWidth
-        />
+        {count ? (
+        <FormControl fullWidth required margin="normal">
+            <InputLabel id="section-select-label">Section</InputLabel>
+            <Select
+            {...register("section_id", { required: true})}
+            error={errors.section_id ? true : false}
+            labelId="section-select-label"
+            id="section-select"
+            label="section"
+            defaultValue={classroom ? classroom.section_id : ''}
+          >
+            {sections.map(section => (
+              <MenuItem value={section.id}>{section.name}</MenuItem>
+            ))}
+          </Select>
+          </FormControl>
+          ) : (
+            <Skeleton animation="wave" height={100} />
+          )}
 
       {count ? (
         <FormControl fullWidth required margin="normal">
@@ -203,6 +215,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
           fullWidth
         />
         
+        {count ? (
         <FormControl fullWidth required margin="normal">
           <Autocomplete
             multiple={true}
@@ -221,6 +234,9 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
             onChange={(event, newVal) => setToAddUsers(newVal)}
           />
         </FormControl>
+        ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
 
       </FormModal>
     </div>

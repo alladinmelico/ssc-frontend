@@ -37,7 +37,7 @@ export default function UserModal ({modalClosed, user}) {
   const schema = yup.object({
     name: yup.string().required("Name is a required field."),
     email: yup.string().required("Email is a required field."),
-    section: yup.string().required("Section is a required field."),
+    section_id: yup.string().required("Section is a required field."),
     school_id: yup.string().required("School ID is a required field."),
     year: yup.number().required("Year must be a number type."),
     course_id: yup.number().required("Course ID is a required field."),
@@ -48,7 +48,7 @@ export default function UserModal ({modalClosed, user}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', email: '', section: '', school_id: '', year: 0, course_id: ''})
+    reset({ name: '', email: '', section_id: '', school_id: '', year: 0, course_id: ''})
   }
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function UserModal ({modalClosed, user}) {
       setOpenModal(true)
       setValue('name', user.name)
       setValue('email', user.email)
-      setValue('section', user.section)
+      setValue('section_id', user.section)
       setValue('year', user.year)
       setValue('school_id', user.school_id)
       setValue('course_id', user.course_id)
@@ -110,7 +110,7 @@ export default function UserModal ({modalClosed, user}) {
   return (
     <div>
       <FormModal
-        title={user ? 'Edit User' : 'Add User'}
+        title={user && user.id ? 'Edit User' : 'Add User'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
         loading={loading}
@@ -161,25 +161,24 @@ export default function UserModal ({modalClosed, user}) {
             </FormControl>
 
             {count ? (
-              <FormControl fullWidth required margin="normal">
-                <InputLabel id="section-select-label">Section</InputLabel>
-                <Select
-                  {...register("section", { required: true, min: 3 })}
-                  error={errors.section ? true : false}
-                  labelId="section-select-label"
-                  id="section-select"
-                  label="section"
-                  defaultValue={user ? user.section : ''}
-                required
-                >
-                  {sections.map(section => (
-                    <MenuItem value={section.name}>{section.name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-        ) : (
-          <Skeleton animation="wave" height={100} />
-        )}
+            <FormControl fullWidth required margin="normal">
+            <InputLabel id="section-select-label">Section</InputLabel>
+            <Select
+            {...register("section_id", { required: true})}
+            error={errors.section_id ? true : false}
+            labelId="section-select-label"
+            id="section-select"
+            label="section"
+            defaultValue={user ? user.section_id : ''}
+          >
+            {sections.map(section => (
+              <MenuItem value={section.id}>{section.name}</MenuItem>
+            ))}
+          </Select>
+          </FormControl>
+          ) : (
+            <Skeleton animation="wave" height={100} />
+          )}
         
         {count ? (
         <FormControl fullWidth required margin="normal">
@@ -210,9 +209,10 @@ export default function UserModal ({modalClosed, user}) {
           defaultValue={user ? user.school_id : ''}
           helperText={errors.school_id?.message}
           margin="normal"
+          placeholder="TUPT-##-####"
           fullWidth
           required
-        />
+          />
 
       </FormModal>
     </div>

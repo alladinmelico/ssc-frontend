@@ -25,6 +25,7 @@ const UserShow = ({modalClosed, user}) => {
         <ItemDetail label="Year" value={user.year} />
         <ItemDetail label="Section" value={user.section} />
         <ItemDetail label="School ID" value={user.school_id} />
+        <ItemDetail label="Google ID" value={user.google_id} />
         <ItemDetail label="Role" value={user.role} />
         <ItemDetail label="Course" value={user.course_name} />
         <ItemDetail label="Status" value={user.changes_verified} />
