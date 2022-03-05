@@ -296,7 +296,7 @@ export const updateUser = (id, userData) => async (dispatch) => {
 
         dispatch({
             type: UPDATE_USER_SUCCESS,
-            payload: data.success
+            payload: data
         })
 
     } catch (error) {

@@ -84,9 +84,9 @@ export default function UserModal ({modalClosed, user}) {
 
     if (isUpdated) {
       resetForm()     
-      modalClosed() 
       dispatch({ type: UPDATE_USER_RESET })
       dispatch(getAdminUsers())
+      modalClosed() 
       enqueueSnackbar('User successfully updated.', {
         variant: 'success',
         anchorOrigin: {
