@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
@@ -21,11 +22,13 @@ import {
 } from "../../actions/scheduleActions"
 import { DELETE_SCHEDULE_RESET } from "../../constants/scheduleConstants"
 import { Link } from "react-router-dom"
+import ScheduleShow from './ScheduleShow';
 
 const Schedule = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [schedule, setSchedule] = useState({})
+  const [editMode, setEditMode] = useState(true)
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -65,22 +68,26 @@ const Schedule = ({history}) => {
     { field: 'type', headerName: 'Type', width: 300 },
     { field: 'start_date', headerName: 'Start Date', width: 300 },
     { field: 'end_date', headerName: 'End Date', width: 300 },
-    { field: 'classroom_id', headerName: 'Classroom', width: 300 },
-    { field: 'facility_id', headerName: 'Facility', width: 300 },
+    // { field: 'classroom_id', headerName: 'Classroom', width: 300 },
+    // { field: 'facility_id', headerName: 'Facility', width: 300 },
     { field: 'start_at', headerName: 'Start Time', width: 300 },
     { field: 'end_at', headerName: 'End Time', width: 300 },
     { field: 'repeat_by', headerName: 'Reapeat by', width: 300 },
     { field: 'days_of_week', headerName: 'Days of Week', width: 300 },
-    { field: 'note', headerName: 'Note', width: 300 },
-    { field: 'attachment', headerName: 'Attachment', width: 300 },
-    { field: 'user_id', headerName: 'User', width: 300 },
-    { field: 'users', headerName: 'Users', width: 300 },
+    // { field: 'note', headerName: 'Note', width: 300 },
+    // { field: 'attachment', headerName: 'Attachment', width: 300 },
+    // { field: 'user_id', headerName: 'User', width: 300 },
+    // { field: 'users', headerName: 'Users', width: 300 },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
+          setSchedule(params.row)
+          setEditMode(false)
+        }} label="View" />,
         <GridActionsCellItem icon={
           <Link to={`/schedule/${params.row.id}/edit`}>
             <EditOutlinedIcon color="primary" />
@@ -135,6 +142,16 @@ const Schedule = ({history}) => {
             <AddIcon />
           </Fab>
         </Link>
+      </Box>
+      <Box>
+        {editMode ? (
+          <ScheduleForm schedule={schedule} modalClosed={() => setSchedule({})} page={page} rowsPerPage={rowsPerPage} />
+        ) : (
+          <ScheduleShow schedule={schedule} modalClosed={() => {
+            setSchedule({})
+            setEditMode(true)
+          }} />
+        )}
       </Box>
     </Page>
   );
