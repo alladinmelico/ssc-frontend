@@ -98,7 +98,6 @@ export default function UserModal ({modalClosed, user}) {
   }, [dispatch, error, updateError, isUpdated, success, user])
 
   const onSubmit = async data => {
-    console.log(data)
     if (user.id) {
       dispatch(updateUser(user.id, data))
     } else {

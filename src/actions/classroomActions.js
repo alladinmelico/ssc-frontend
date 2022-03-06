@@ -71,8 +71,6 @@ export const deleteClassroom = (id) => async (dispatch) => {
 
         const { data } = await API.delete(`classroom/${id}`)
 
-        console.log(data)
-
         dispatch({
             type: DELETE_CLASSROOM_SUCCESS,
             payload: data
@@ -137,7 +135,6 @@ export const getAdminClassrooms = (page = 1, limit = 10) => async (dispatch) => 
 
         const { data } = await API.get(`classroom?page=${++page}&limit=${limit}`)
 
-        console.log(data)
         dispatch({
             type: ADMIN_CLASSROOMS_SUCCESS,
             payload: data

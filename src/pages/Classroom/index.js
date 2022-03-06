@@ -35,7 +35,6 @@ const Classroom = ({history}) => {
   useEffect(() => {
     dispatch(getAdminClassrooms(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
-      console.log(history)
       history.push('/signin')
     }
 

@@ -42,7 +42,6 @@ const HomePage = () => {
     await API.get(`temperature?page=1&limit=5`).then(res => {
       setTemperatures(res.data.data)
     }).catch(err => {
-      console.log(err)
     })
   }
 

@@ -73,8 +73,6 @@ export const deleteCourse = (id) => async (dispatch) => {
 
         const { data } = await API.delete(`course/${id}`)
 
-        console.log(data)
-
         dispatch({
             type: DELETE_COURSE_SUCCESS,
             payload: data
@@ -139,7 +137,6 @@ export const getAdminCourses = (page = 1, limit = 10) => async (dispatch) => {
 
         const { data } = await API.get(`course?type=1&page=${++page}&limit=${limit}`)
 
-        console.log(data)
         dispatch({
             type: ADMIN_COURSES_SUCCESS,
             payload: data

@@ -91,7 +91,6 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
   }, [dispatch, error, updateError, isUpdated, success, section])
 
   const onSubmit = async data => {
-    console.log(data)
     if (section.id) {
       dispatch(updateSection(section.id, data))
     } else {

@@ -73,8 +73,6 @@ export const deleteRfid = (id) => async (dispatch) => {
 
         const { data } = await API.delete(`rfid/${id}`)
 
-        console.log(data)
-
         dispatch({
             type: DELETE_RFID_SUCCESS,
             payload: data
@@ -139,7 +137,6 @@ export const getAdminRfids = (page = 1, limit = 10) => async (dispatch) => {
 
         const { data } = await API.get(`rfid?page=${++page}&limit=${limit}`)
 
-        console.log(data)
         dispatch({
             type: ADMIN_RFIDS_SUCCESS,
             payload: data

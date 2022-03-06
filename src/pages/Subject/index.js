@@ -37,7 +37,6 @@ const Subject = ({history}) => {
   useEffect(() => {
     dispatch(getAdminSubjects(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
-      console.log(history)
       history.push('/signin')
     }
 

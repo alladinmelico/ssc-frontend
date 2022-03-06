@@ -37,7 +37,6 @@ const Rfid = ({history}) => {
   useEffect(() => {
     dispatch(getAdminRfids(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
-      console.log(history)
       history.push('/signin')
     }
 

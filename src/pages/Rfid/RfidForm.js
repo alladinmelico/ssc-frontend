@@ -38,7 +38,6 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
   }
 
   useEffect(() => {
-    console.log(rfid)
     if(rfid && rfid.id  && !openModal) {
       setOpenModal(true)
       setValue('value', rfid.value)
@@ -80,7 +79,6 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
   }, [dispatch, error, updateError, isUpdated, success, rfid])
 
   const onSubmit = async data => {
-    console.log(data)
     if (rfid.id) {
       dispatch(updateRfid(rfid.id, data))
     } else {

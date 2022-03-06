@@ -73,8 +73,6 @@ export const deleteSubject = (id) => async (dispatch) => {
 
         const { data } = await API.delete(`subject/${id}`)
 
-        console.log(data)
-
         dispatch({
             type: DELETE_SUBJECT_SUCCESS,
             payload: data
@@ -139,7 +137,6 @@ export const getAdminSubjects = (page = 1, limit = 10) => async (dispatch) => {
 
         const { data } = await API.get(`subject?page=${++page}&limit=${limit}`)
 
-        console.log(data)
         dispatch({
             type: ADMIN_SUBJECTS_SUCCESS,
             payload: data

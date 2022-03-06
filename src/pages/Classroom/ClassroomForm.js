@@ -62,7 +62,6 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
 
     if(classroom.id && !openModal) {
       setOpenModal(true)
-      console.log('classroom', classroom)
       setValue('name', classroom.name)
       setValue('description_heading', classroom.description_heading)
       setValue('description', classroom.description)

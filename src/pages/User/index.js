@@ -40,17 +40,14 @@ const User = ({history}) => {
     if (response != null) {
       await API.put(`user/${response}/verify`, {
       }).catch(err => {
-        console.log(err)
       })
     } else {
-      console.log(response)
     }
   }
 
   useEffect(() => {
     dispatch(getAdminUsers(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
-      console.log(history)
       history.push('/signin')
     }
 

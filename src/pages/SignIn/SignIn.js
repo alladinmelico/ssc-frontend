@@ -46,10 +46,8 @@ const SignIn = ({ redirectTo = '/' }) => {
           window.location.reload();
 
       }).catch(err => {
-        console.log(err)
       })
     } else {
-      console.log(response)
     }
   }
 
