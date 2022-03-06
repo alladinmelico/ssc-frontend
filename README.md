@@ -15,7 +15,7 @@ This system's scheduling method could substantially benefit the school's managem
 
 #### ⚙️ **Technologies** 
 1. [React](https://reactjs.org/)
-2. [Netlify](ttps://www.netlify.com)
+2. [Netlify](https://www.netlify.com)
 3. [MUI](https://mui.com/)
 
 #### 🧑‍💻👩‍💻 **Who are behind this system?**
