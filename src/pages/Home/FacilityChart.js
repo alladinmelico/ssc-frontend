@@ -32,6 +32,7 @@ const FacilityChart = () => {
             data: [...facilities.map(facility=> facility.capacity )],
             borderColor: ['rgba(255,206,86,0.2)'],
             backgroundColor: ['rgb(0, 86, 98)'],
+            hoverBackgroundColor:['rgb(79, 179, 191)'],
           }
         ]
       }
