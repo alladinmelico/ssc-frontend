@@ -23,6 +23,9 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import { useSelector } from 'react-redux';
+import ScheduleChart from './ScheduleChart';
+import FacilityChart from './FacilityChart';
 
 const HomePage = () => {
   const intl = useIntl()
@@ -120,20 +123,7 @@ const HomePage = () => {
                 </Box>
               </Grid>
               <Grid item xs={6}>
-                <DashboardCard
-                  number={schedules.length}
-                  backgroundColor="#e6ffff"
-                  borderColor="#4ba3c7"
-                  title="Number of Schedules Today"
-                  icon={<CalendarTodayOutlinedIcon sx={{ color: "#4ba3c7"  }} />}
-                />
-                <DashboardCard
-                  number={schedulesNow.length}
-                  backgroundColor="#e6ffff"
-                  borderColor="#4ba3c7"
-                  title="Number of Schedules Now"
-                  icon={<EventAvailableOutlinedIcon sx={{ color: "#4ba3c7"  }} />}
-                />
+                <ScheduleChart />
                 <DashboardCard
                   number={schedulesOverStay.length}
                   backgroundColor="#ffffb3"
@@ -148,6 +138,7 @@ const HomePage = () => {
             <Main selected={selected} setSelected={setSelected} selectedDepartment={selectedDepartment} setSelectedDepartment={setSelectedDepartment} showDetails />
           </Grid>
         </Grid>
+        <FacilityChart />
       </Box>     
     </Page>
   )
