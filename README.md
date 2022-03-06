@@ -9,6 +9,15 @@
 #### 🌐 **What is SSC?** 
 This system's scheduling method could substantially benefit the school's management in implementing safe face-to-face classes. The scheduling system will incorporate the protocols provided by the IATF. 
 
+#### 💻 **Instruction**
+1. `npm install`
+2. `npm run start`
+
+#### ⚙️ **Technologies** 
+1. [React](https://reactjs.org/)
+2. [Netlify](ttps://www.netlify.com)
+3. [MUI](https://mui.com/)
+
 #### 🧑‍💻👩‍💻 **Who are behind this system?**
 4th year college students taking Bachelor of Science in Information Technology at Technological University of the Philippines, Taguig Campus.
 
@@ -35,13 +44,3 @@ This system's scheduling method could substantially benefit the school's managem
 - Facebook: https://www.facebook.com/tngsn.laine21
 - Github: https://github.com/laine12345
 - LinkedIn: https://www.linkedin.com/in//elaine-tongson-0a93bb232
-
-
-#### 💻 **Instruction**
-
-`npm install`
-
-`npm run start`
-
-
-
