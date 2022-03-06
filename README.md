@@ -6,10 +6,10 @@
   <img width="200" height="200" src="https://user-images.githubusercontent.com/64552500/156836066-e7fd7474-c242-4071-bcec-d7b39d03571b.png">
 </p>
 
-#### ❓ **What is SSC?** 
+#### 🌐 **What is SSC?** 
 This system's scheduling method could substantially benefit the school's management in implementing safe face-to-face classes. The scheduling system will incorporate the protocols provided by the IATF. 
 
-#### 🤔 **Who are behind this system?**
+#### 🧑‍💻👩‍💻 **Who are behind this system?**
 4th year college students taking Bachelor of Science in Information Technology at Technological University of the Philippines, Taguig Campus.
 
 1. Patricia Mae C. Espenida 
