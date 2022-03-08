@@ -37,7 +37,6 @@ const Section = ({history}) => {
   useEffect(() => {
     dispatch(getAdminSections(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
-      console.log(history)
       history.push('/signin')
     }
 

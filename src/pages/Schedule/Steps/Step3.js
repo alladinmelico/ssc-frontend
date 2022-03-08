@@ -87,7 +87,6 @@ export default function Step3({history, activeStep, setActiveStep}) {
           }
         } else {
           const index = temp.findIndex(i => i.length < facilityCapacity)
-          console.log(index)
           if (index >= 0) {
             temp[index].push(toAddUser)
           } else {

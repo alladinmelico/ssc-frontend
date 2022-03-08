@@ -66,7 +66,6 @@ export const login = (email, password) => async (dispatch) => {
 
         const { data } = await API.post('/login', { email, password })
 
-        console.log('user', data)
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
         localStorage.setItem('isAuthenticated', true)
@@ -271,7 +270,6 @@ export const allUsers = () => async (dispatch) => {
         dispatch({ type: ALL_USERS_REQUEST })
 
         const { data } = await API.get('/user')
-        await console.log(data)
 
         dispatch({
             type: ALL_USERS_SUCCESS,
@@ -428,7 +426,6 @@ export const getAdminUsers = (page = 1, limit = 10) => async (dispatch) => {
 
         const { data } = await API.get(`user?page=${++page}&limit=${limit}`)
 
-        console.log(data)
         dispatch({
             type: ADMIN_USERS_SUCCESS,
             payload: data

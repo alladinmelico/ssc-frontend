@@ -47,12 +47,10 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
     try {
 
       const { data }  = await API.get('/departments')
-      await console.log(data)
       await setcourseDepartments(data)
 
 
     } catch (error) {
-        console.log(error)
      }
   }
 
@@ -99,7 +97,6 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
   }, [dispatch, error, updateError, isUpdated, success, course])
 
   const onSubmit = async data => {
-    console.log(data)
     if (course.id) {
       dispatch(updateCourse(course.id, data))
     } else {

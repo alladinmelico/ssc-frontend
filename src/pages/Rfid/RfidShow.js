@@ -9,7 +9,6 @@ const  RfidShow = ({modalClosed, rfid}) => {
   useEffect(() => {
     if (rfid && rfid.id) {
       setOpenModal(true)
-      console.log(rfid)
     }
   }, [rfid])
 

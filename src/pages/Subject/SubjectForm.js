@@ -76,7 +76,6 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
   }, [dispatch, error, updateError, isUpdated, success, subject])
 
   const onSubmit = async data => {
-    console.log(data)
     if (subject.id) {
       dispatch(updateSubject(subject.id, data))
     } else {

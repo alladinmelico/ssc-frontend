@@ -73,11 +73,9 @@ const MyAccount = () => {
         }
       })
       .then(res => {
-        console.log(res)
         setUser(res.data.data)
       })
       .catch(err => {
-        console.log(err)
       })
       .finally(() => {
         setLoading(false)

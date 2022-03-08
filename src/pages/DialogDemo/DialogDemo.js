@@ -34,10 +34,8 @@ const DialogDemo = () => {
             }),
             handleAction: (handleClose) => {
               setProcessing(true)
-              console.log('Doing some async stuff')
 
               setTimeout(() => {
-                console.log('finished async stuff')
                 //Do some stuff and then
                 handleClose()
               }, 3000)

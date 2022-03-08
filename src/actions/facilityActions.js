@@ -73,8 +73,6 @@ export const deleteFacility = (id) => async (dispatch) => {
 
         const { data } = await API.delete(`facility/${id}`)
 
-        console.log(data)
-
         dispatch({
             type: DELETE_FACILITY_SUCCESS,
             payload: data
@@ -139,7 +137,6 @@ export const getAdminFacilities = (page = 1, limit = 10, query = '') => async (d
 
         const { data } = await API.get(`facility?page=${++page}&limit=${limit}&${query}`)
 
-        console.log(data)
         dispatch({
             type: ADMIN_FACILITIES_SUCCESS,
             payload: data

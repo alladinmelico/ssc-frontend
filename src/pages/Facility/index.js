@@ -38,7 +38,6 @@ const Facility = ({history}) => {
   useEffect(() => {
     dispatch(getAdminFacilities(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
-      console.log(history)
       history.push('/signin')
     }
 

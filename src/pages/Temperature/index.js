@@ -21,7 +21,6 @@ const Temperature = ({history}) => {
       setCount(res.data.data.length)
       setLoading(false)
     }).catch(err => {
-      console.log(err)
     })
   }
 

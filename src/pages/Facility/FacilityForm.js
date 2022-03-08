@@ -68,12 +68,10 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
     try {
 
       const { data }  = await API.get('/buildings')
-      await console.log(data)
       await setBuildings(data)
 
 
     } catch (error) {
-        console.log(error)
      }
   }
   
@@ -81,11 +79,9 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
     try {
 
       const { data }  = await API.get('/facility-types')
-      await console.log(data)
       await setfacilityTypes(data)
 
     } catch (error) {
-        console.log(error)
      }
   }
 

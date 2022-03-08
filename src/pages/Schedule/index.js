@@ -40,7 +40,6 @@ const Schedule = ({history}) => {
   useEffect(() => {
     dispatch(getAdminSchedules(page, rowsPerPage))
     if (error === 'Unauthenticated.') {
-      console.log(history)
       history.push('/signin')
     }
 

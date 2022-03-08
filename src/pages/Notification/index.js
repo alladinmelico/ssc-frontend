@@ -27,7 +27,6 @@ const Notification = ({history}) => {
       setNotifications(res.data.data)
       setLoading(false)
     }).catch(err => {
-      console.log(err)
     })
   }
 

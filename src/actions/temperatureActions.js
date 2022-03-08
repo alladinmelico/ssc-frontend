@@ -73,8 +73,6 @@ export const deleteTemperature = (id) => async (dispatch) => {
 
         const { data } = await API.delete(`temperature/${id}`)
 
-        console.log(data)
-
         dispatch({
             type: DELETE_TEMPERATURE_SUCCESS,
             payload: data
@@ -139,7 +137,6 @@ export const getAdminTemperatures = (page = 1, limit = 10) => async (dispatch) =
 
         const { data } = await API.get(`temperature?type=1&page=${++page}&limit=${limit}`)
 
-        console.log(data)
         dispatch({
             type: ADMIN_TEMPERATURES_SUCCESS,
             payload: data

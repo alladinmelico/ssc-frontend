@@ -73,8 +73,6 @@ export const deleteSchedule = (id) => async (dispatch) => {
 
         const { data } = await API.delete(`schedule/${id}`)
 
-        console.log(data)
-
         dispatch({
             type: DELETE_SCHEDULE_SUCCESS,
             payload: data
@@ -139,7 +137,6 @@ export const getAdminSchedules = (page = 1, limit = 10) => async (dispatch) => {
 
         const { data } = await API.get(`schedule?page=${++page}&limit=${limit}`)
 
-        console.log(data)
         dispatch({
             type: ADMIN_SCHEDULES_SUCCESS,
             payload: data

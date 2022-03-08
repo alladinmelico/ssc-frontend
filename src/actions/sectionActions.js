@@ -73,8 +73,6 @@ export const deleteSection = (id) => async (dispatch) => {
 
         const { data } = await API.delete(`section/${id}`)
 
-        console.log(data)
-
         dispatch({
             type: DELETE_SECTION_SUCCESS,
             payload: data
@@ -139,7 +137,6 @@ export const getAdminSections = (page = 1, limit = 10) => async (dispatch) => {
 
         const { data } = await API.get(`section?page=${++page}&limit=${limit}`)
 
-        console.log(data)
         dispatch({
             type: ADMIN_SECTIONS_SUCCESS,
             payload: data
