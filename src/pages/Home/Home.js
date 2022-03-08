@@ -123,7 +123,6 @@ const HomePage = () => {
                 </Box>
               </Grid>
               <Grid item xs={6}>
-                <ScheduleChart />
                 <DashboardCard
                   number={schedulesOverStay.length}
                   backgroundColor="#ffffb3"
@@ -131,6 +130,7 @@ const HomePage = () => {
                   title="Total Overstayed Users"
                   icon={<WarningAmberOutlinedIcon sx={{ color: "#caae53"  }} />}
                 />
+                <ScheduleChart />
               </Grid>
             </Grid>    
           </Grid>
