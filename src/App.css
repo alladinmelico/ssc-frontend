@@ -22,30 +22,39 @@
   cursor: pointer;
 }
 
-body{
+.rect-has-shadow {
+  filter: drop-shadow(0 0 10px #b2ffff);
+}
+
+.rect:hover {
+  filter: drop-shadow(0 0 8px #00838f65);
+}
+
+body {
   margin: 0;
 }
 
-.card-media{
-    padding: 1rem;
+.card-media {
+  padding: 1rem;
 }
 
-.member-image{
+.member-image {
   border-radius: 8px;
   width: 100%;
 }
 
-.signin-image{
+.signin-image {
   width: 100%;
 }
 
 
-#tech-box{
-    max-width: none;
-   
+#tech-box {
+  max-width: none;
+
 }
-.MuiTab-root{
-  color:#00838f;
+
+.MuiTab-root {
+  color: #00838f;
 }
 
 /* .slider-container {
@@ -68,28 +77,47 @@ body{
 
 
 .carousel-style {
-    height: 500px;
-   
+  height: 500px;
+
 }
 
 .techstack {
-    max-height: 500px;
-    max-width: 100%;
-      @media (max-width: 1024px)
-      {
-        max-height: 350px;
-      }
-        /* @media (max-width:  576px)
+  max-height: 500px;
+  max-width: 100%;
+
+  @media (max-width: 1024px) {
+    max-height: 350px;
+  }
+
+  /* @media (max-width:  576px)
         {
             max-height: 100%;
         } */
-    }
+}
 
+#general-map {
+  width: 500px;
+  height: 500px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+#gen-map-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  height: 500px;
+  filter: grayscale(100%);
+  filter: brightness(105%);
+}
 
-
-
-
-
-
-
+#gen-map-bsad {
+  position: absolute;
+  top: 347px;
+  left: 110px;
+  width: 200px;
+  z-index: 99;
+  transform: rotate(181deg);
+}

@@ -30,11 +30,14 @@ import Mech2nd from './Mech2nd'
 import Chemtech from './Chemtech'
 import Ndt from './Ndt'
 import Bsad2nd from './Bsad2nd'
+import AllMap from './AllMap'
+import Switch from '@mui/material/Switch'
 
 const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment, showDetails}) => {
   const dispatch = useDispatch()
 
   const [floor, setFloor] = useState(1)
+  const [showWholeMap, setShowWholeMap] = useState(false)
 
   const { facilities } = useSelector((state) => state.facilities)
   
@@ -104,66 +107,76 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
       </Stack>
       {facilities.length ? (
         <Box>
-          {(selectedDepartment === 1 && floor == 1) && <Beng 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 1 && floor == 2) && <Auto 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 2 && floor == 1) && <Bsad 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 2 && floor == 2) && <Bsad2nd 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 3 && floor == 1) && <Civil 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 3 && floor == 2) && <Comtech 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 4 && floor == 1) && <Electrical 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 5 && floor == 1) && <Mech 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 5 && floor == 2) && <Mech2nd 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 5 && floor == 3) && <Chemtech 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 5 && floor == 4) && <Ndt 
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
-          {(selectedDepartment === 4 && floor == 2) && <Electronics
-            setSelected={setSelected}
-            selected={selected}
-            facilities={formatFacility()}
-            />}
+          {showWholeMap ? (
+            <AllMap
+              setSelected={setSelected}
+              selected={selected}
+              facilities={formatFacility()}
+            />
+          ) : (
+            <Box>
+              {(selectedDepartment === 1 && floor == 1) && <Beng 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 1 && floor == 2) && <Auto 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 2 && floor == 1) && <Bsad 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 2 && floor == 2) && <Bsad2nd 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 3 && floor == 1) && <Civil 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 3 && floor == 2) && <Comtech 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 4 && floor == 1) && <Electrical 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 5 && floor == 1) && <Mech 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 5 && floor == 2) && <Mech2nd 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 5 && floor == 3) && <Chemtech 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 5 && floor == 4) && <Ndt 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 4 && floor == 2) && <Electronics
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}            
+            </Box>          
+          )}
         </Box>
       ) : (
         <Skeleton animation="wave" height={300} sx={{ mx: '1rem' }} />
@@ -199,7 +212,17 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
           </RadioGroup>
         </FormControl>
         <Box>
-          <Button variant="outlined" onClick={() => setSelected('')}>Reset</Button>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={showWholeMap}
+                onChange={(event) => setShowWholeMap(event.target.checked)}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />
+            }
+            label="Show Campus Map"
+          />         
+          <Button variant="outlined" onClick={() => setSelected('')}>Reset Selected Facility</Button>
         </Box>
       </Stack>
       <Typography variant="overline" mt={2}>Legends</Typography>
