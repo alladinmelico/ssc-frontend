@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Electrical = ({selected, setSelected, facilities}) => {
+const Electrical = ({selected, setSelected, facilities, hasShadow}) => {
 
   function getColor(facility, key) {
     if (selected !== '') {
@@ -116,7 +116,7 @@ const Electrical = ({selected, setSelected, facilities}) => {
             y={rect.y}
             x={rect.x}
             stroke="#000"
-            className='rect'
+            className={hasShadow ? 'rect rect-has-shadow':'rect'}
             onClick={() => setSelected(rect.id)}
             fill={getColor(facilities[rect.id], rect.id)}/>
         </g>
