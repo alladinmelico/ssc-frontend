@@ -33,6 +33,7 @@ const Subject = ({history}) => {
 
   const { loading, subjects, count, error } = useSelector((state) => state.subjects)
   const { error: deleteError, isDeleted } = useSelector((state) => state.subject)
+  const role = JSON.parse(localStorage.getItem('auth')).role
 
   useEffect(() => {
     dispatch(getAdminSubjects(page, rowsPerPage))
@@ -58,20 +59,18 @@ const Subject = ({history}) => {
     }
   }, [dispatch, deleteError, isDeleted, page, rowsPerPage, error])
 
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'name', headerName: 'Name', flex: 0.5 ,minWidth: 150 },
-    { field: 'code', headerName: 'Code', flex: 0.5 , minWidth: 300 },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      type: 'actions',
-      disableExport: true,
-      getActions: (params) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
-          setSubject(params.row)
-          setEditMode(false)
-        }} label="View" />,
+  
+
+  function getActions (params) {
+    const actions = [
+      <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
+        setSubject(params.row)
+        setEditMode(false)
+      }} label="View" />,    
+    ]
+
+    if (role === 1) {
+      actions.push(
         <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
           setSubject(params.row)
           setEditMode(true)
@@ -97,7 +96,22 @@ const Subject = ({history}) => {
             },
           })
         } label="Delete" />,
-      ]
+      )
+    }
+
+    return actions;
+  }
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 100, type: 'number'},
+    { field: 'name', headerName: 'Name', flex: 0.5 ,minWidth: 150 },
+    { field: 'code', headerName: 'Code', flex: 0.5 , minWidth: 300 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      disableExport: true,
+      getActions
     },
   ];
 

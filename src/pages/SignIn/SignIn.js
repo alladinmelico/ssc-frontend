@@ -41,7 +41,8 @@ const SignIn = ({ redirectTo = '/' }) => {
           token: res.data.token,
           photoURL: response.profileObj.imageUrl,
           hasProfile: res.data.hasProfile,
-          id: res.data.id
+          id: res.data.id,
+          role: res.data.role_id
         })
           window.location.reload();
 
@@ -97,6 +98,7 @@ const SignIn = ({ redirectTo = '/' }) => {
             <GoogleLogin
               clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
               buttonText="Sign In"
+              scope='https://www.googleapis.com/auth/classroom.courses.readonly'
               onSuccess={responseGoogle}
               onFailure={responseGoogle}
               cookiePolicy={'single_host_origin'}

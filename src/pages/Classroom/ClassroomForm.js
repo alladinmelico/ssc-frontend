@@ -20,6 +20,7 @@ import { getAdminSections } from 'actions/sectionActions';
 
 export default function ClassroomModal ({page, rowsPerPage, modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
+  const [courses, setCourses] = useState([])
   const { subjects } = useSelector((state) => state.subjects)
   const { users } = useSelector((state) => state.users)
   const { sections, count } = useSelector((state) => state.sections)
@@ -33,7 +34,6 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
   } = useSelector((state) => state.classroom) 
   const { auth } = useAuth()
   const { enqueueSnackbar } = useSnackbar()
-
   const [values, setValues] = useState({
     users: [],
   })
@@ -55,6 +55,21 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
     reset({ name: '', description_heading: '', description: '', section_id: '', subject_id: '', google_classroom_id: ''})
   }
 
+  function getClasses() {
+    const request = new XMLHttpRequest();
+    const url = 'https://classroom.googleapis.com/v1/courses?access_token=' + auth.googleToken;
+    request.open('GET', url, true);
+    request.send();
+    request.onreadystatechange = function() {
+      if (request.readyState === 4) {
+        if (request.status === 200) {
+          const data = JSON.parse(request.responseText);
+          setCourses(data.courses)
+        }
+      }
+    }
+  }
+
   useEffect(() => {
     dispatch(getAdminSubjects(0, 1000))
     dispatch(getAdminSections(0, 1000))
@@ -69,6 +84,10 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
       setValue('subject_id', classroom.subject_id)
       setValue('google_classroom_id', classroom.google_classroom_id)
       setToAddUsers(classroom.users)
+    }
+
+    if (courses.length === 0) {
+      getClasses()
     }
 
     if (error || updateError) {
@@ -203,16 +222,23 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
           <Skeleton animation="wave" height={100} />
         )}
 
-        <TextField 
-          {...register("google_classroom_id", { required: true, min: 3 })}
-          error={errors.google_classroom_id ? true : false}
-          label="Google Classroom ID"
-          variant="outlined"
-          defaultValue={classroom ? classroom.google_classroom_id : ''}
-          helperText={errors.google_classroom_id?.message}
-          margin="normal"
-          fullWidth
-        />
+        <Box>
+          <FormControl fullWidth required margin="normal">
+            <InputLabel id="section-select-label">Google Classroom</InputLabel>
+              <Select
+              {...register("google_classroom_id", { required: false })}
+              error={errors.google_classroom_id ? true : false}
+              label="Google Classroom"
+              variant="outlined"
+              id="gclassroom-select"
+              defaultValue={classroom ? classroom.google_classroom_id : ''}
+            >
+              {courses.map(course => (
+                <MenuItem value={course.id}>{course.name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Box>
         
         {count ? (
         <FormControl fullWidth required margin="normal">

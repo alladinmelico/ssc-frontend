@@ -32,7 +32,8 @@ import {
   DevicesOutlined,
   ThermostatOutlined,
   PersonOutlineOutlined,
-  NotificationsNoneOutlined
+  NotificationsNoneOutlined,
+  EmailOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -113,7 +114,8 @@ const getMenuItems = (props) => {
       },
     ]
   }
-  return [
+
+  const mainItems = [
     {
       value: '/home',
       visible: isAuthorised,
@@ -139,6 +141,7 @@ const getMenuItems = (props) => {
       leftIcon: <CalendarTodayOutlined />,
     },
     {
+      forAdmin: true,
       value: '/user',
       visible: true,
       primaryText: intl.formatMessage({ id: 'user', defaultMessage: 'Users' }),
@@ -175,6 +178,7 @@ const getMenuItems = (props) => {
       leftIcon: <GroupsOutlined />,
     },
     {
+      forAdmin: true,
       primaryText: intl.formatMessage({ id: 'hardware', defaultMessage: 'Hardware' }),
       primaryTogglesNestedList: true,
       leftIcon: <DevicesOutlined />,
@@ -237,10 +241,11 @@ const getMenuItems = (props) => {
           ],
     },
     {
+      forAdmin: true,
       value: '/communication',
       visible: true,
       primaryText: intl.formatMessage({ id: 'communication', defaultMessage: 'Communication' }),
-      leftIcon: <InfoOutlined />,
+      leftIcon: <EmailOutlined />,
     },
     {
       value: '/about',
@@ -261,5 +266,11 @@ const getMenuItems = (props) => {
       leftIcon: <GetApp />,
     },
   ]
+
+  if (auth.role !== 1) {
+    return mainItems.filter(item => !item.forAdmin )
+  }
+
+  return mainItems
 }
 export default getMenuItems

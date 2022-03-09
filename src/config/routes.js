@@ -3,8 +3,8 @@ import React, { lazy } from 'react'
 import AuthorizedRoute from 'base-shell/lib/components/AuthorizedRoute'
 import UnauthorizedRoute from 'base-shell/lib/components/UnauthorizedRoute'
 
+const PageNotFound = lazy(() => import('../pages/PageNotFound/PageNotFound'))
 const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
-
 const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
 const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
@@ -27,6 +27,7 @@ const FilterDemo = lazy(() => import('../pages/FilterDemo'))
 const ListPageDemo = lazy(() => import('../pages/ListPageDemo'))
 const TabsDemo = lazy(() => import('../pages/TabsDemo'))
 const MyAccount = lazy(() => import('../pages/MyAccount/MyAccount'))
+const role = JSON.parse(localStorage.getItem('auth')).role
 
 const routes = [
   {
@@ -59,7 +60,11 @@ const routes = [
   {
     path: '/communication',
     exact: true,
-    element: <Communication />,
+    element: (
+      <AuthorizedRoute>
+        {role === 1 ?  <Communication /> :  <PageNotFound />}
+      </AuthorizedRoute>
+    ),
   },
   {
     path: '/about',
@@ -98,7 +103,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <User />
+        {role === 1 ?  <User /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },
@@ -152,7 +157,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Rfid />
+        {role === 1 ? <Rfid /> : <PageNotFound />}        
       </AuthorizedRoute>
     ),
   },
@@ -161,7 +166,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Temperature />
+        {role === 1 ? <Rfid /> : <Temperature />}          
       </AuthorizedRoute>
     ),
   },

@@ -8,7 +8,7 @@ const PageNotFound = () => {
   const intl = useIntl()
 
   return (
-    <Page pageTitle={intl.formatMessage({ id: 'page_not_found' }) + ' MUI'}>
+    <Page pageTitle={intl.formatMessage({ id: 'page_not_found' })}>
       <Paper
         sx={{
           backgroundColor: (t) => t.palette.background.default,
@@ -27,7 +27,7 @@ const PageNotFound = () => {
         >
           <Typography variant="h4">404</Typography>
           <Typography variant="subtitle1">
-            {intl.formatMessage({ id: 'page_not_found' }) + ' MUI'}
+            {intl.formatMessage({ id: 'page_not_found' })}
           </Typography>
           <Button
             color="secondary"

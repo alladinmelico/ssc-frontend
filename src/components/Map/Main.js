@@ -83,7 +83,9 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
   }
 
   useEffect(() => {
-    dispatch(getAdminFacilities(0, 100, 'has_schedule=true'))
+    if (facilities.length === 0) {
+      dispatch(getAdminFacilities(0, 100, 'has_schedule=true'))
+    }
   }, [dispatch])
 
   return (
