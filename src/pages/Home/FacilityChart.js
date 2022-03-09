@@ -33,6 +33,8 @@ const FacilityChart = () => {
             borderColor: ['rgba(255,206,86,0.2)'],
             backgroundColor: ['rgb(0, 86, 98)'],
             hoverBackgroundColor:['rgb(79, 179, 191)'],
+            hoverBorderColor:['rgb(0,0,0)'],
+            hoverBorderWidth:['2']
           }
         ]
       }

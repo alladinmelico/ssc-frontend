@@ -42,6 +42,7 @@ const ScheduleChart = () => {
             borderColor: ['rgba(255,206,86,0.2)'],
             backgroundColor: ['rgb(0, 86, 98)',
               'rgb(79, 179, 191)'],
+            hoverBorderColor:['rgb(0,0,0)'],
           }
         ]
       }
@@ -56,7 +57,7 @@ const ScheduleChart = () => {
     return (
         <>
         <Box sx={{ m: '1rem' }}>
-            <Card variant="outlined" sx={{color: "#212121" }}>
+            <Card variant="outlined" sx={{padding:'10px'}}>
                 <Pie options={options} data={data} />
             </Card>
         </Box>
