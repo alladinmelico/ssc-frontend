@@ -10,9 +10,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
 import { makeStyles } from '@mui/styles';
 import Carousel from 'react-material-ui-carousel'
-import { createTheme } from '@mui/material/styles';
 
 // Feature Icons
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
@@ -35,16 +35,13 @@ const useStyles = makeStyles({
   activeTab: {
     "& .MuiTabs-indicator": {
       backgroundColor: "#00838f",
-     
     },
     "& .Mui-selected": {
       color: "#000000"
     }
-
   },
   primaryTextColor: {
     color: "#00838f",
-    fontWeight: 400
   },
   whiteTextColor:{
     color: "white",
@@ -97,7 +94,22 @@ const useStyles = makeStyles({
     width: '100%', 
     backgroundColor: "white", 
     borderRadius: '8px',
-    
+  },
+  ourTechAd:{
+    width: '300px', 
+    maxWidth: '100%', 
+    backgroundColor: "white", 
+    borderRadius: '8px',
+    "@media (max-width: 576px)": {
+      maxWidth: '100%',
+      alignContent: "center",
+   }
+  },
+  profBox:{
+    width: '300px', 
+    maxWidth: '100%', 
+    backgroundColor: "#EAF6F4", 
+    borderRadius: '6px',
   },
   sectionText:{
     fontStyle: "italic",
@@ -108,6 +120,12 @@ const useStyles = makeStyles({
     color: "black",
     fontWeight:600,
     textAlign: "center"
+  },
+  profText:{
+    color: "black",
+    fontWeight:400,
+    textAlign: "center",
+    fontStyle: "italic",
   },
   socmedIcon:{
     color: "#00838f",
@@ -140,6 +158,57 @@ const useStyles = makeStyles({
       maxWidth: '100%',
       alignContent: "center",
    }
+  },
+  androidMockup:{
+    width: '350px', 
+    maxHeight:'100%' , 
+    maxWidth: '100%', 
+    "@media (max-width: 576px)": {
+      maxWidth: '100%',
+      alignContent: "center",
+   }
+  },
+  qrCode:{
+    width: '160px', 
+    maxHeight:'100%' , 
+    maxWidth: '100%',  
+    "@media (max-width: 576px)": {
+      maxWidth: '100%',
+      alignContent: "center",
+    }
+  },
+  googleBadge:{
+    width: '150px', 
+    maxHeight:'100%' , 
+    maxWidth: '100%', 
+    "@media (max-width: 576px)": {
+      maxWidth: '100%',
+      alignContent: "center",
+    }
+  },
+  fonth2:{
+    color: "#000000",
+    fontSize:"h2",
+    "@media (max-width: 576px)": {
+      color: "#000000",
+      fontSize: "40px"
+    }
+  },
+  fonth3:{
+    color: "#000000",
+    fontSize:"h3",
+    "@media (max-width: 576px)": {
+      color: "#000000",
+      fontSize: "20px"
+    }
+  },
+  link:{
+    color: "#000000",
+    fontSize:"subtitle1",
+    "@media (max-width: 576px)": {
+      color: "#000000",
+      fontSize: "8px"
+    }
   },
   techstack:{
   maxHeight: '100%',
@@ -257,7 +326,6 @@ const LandingPage = () => {
 
   return (
     <Box sx={{ width: '100vw'}}  >
-     
       <Box style={{position:"sticky", top:0, zIndex: 999, display:"flex", 
       justifyContent:"center", }} sx={{ backgroundColor: "#EAF6F4", width:"100%" }}  >
         <Tabs centered  id="MuiTab-root"
@@ -265,16 +333,11 @@ const LandingPage = () => {
         variant="scrollable"
         scrollButtons="auto"
         sx={{ pt:"1rem"}}  
-        
-         
           value={value}
           onChange={handleChange}
-          // textColor="black"
-          // indicatorColor="primary"
           aria-label="secondary tabs example"
           className={classes.activeTab}
         >
-
           <Tab value="#home" label="Home" />
           <Tab value="#about" label="About" />
           <Tab value="#prevention" label="Prevention" />
@@ -283,81 +346,111 @@ const LandingPage = () => {
           <Tab value="#techstack" label="Tech Stack" />
           <Tab value="#ourteam" label="Our Team" />
         </Tabs>
-      
       </Box>
      
-
    {/* header */}
     <Box id="home" sx={{ maxHeight: "100%", maxWidth:"100%", backgroundColor: "#EAF6F4", pb:"1rem"}}>
-    <Container sx={{ mx:"auto" }} >
-      <Grid container sx={{ pt: "1rem", width: '100%', mx:"auto"  }}>
-        <Grid item xs={12} sm={12} md={7} lg={6} >
-        <Box sx={{ width: "500px", maxWidth: "100%", mx:"auto"}}>
-          <Typography sx={{mt: "5rem"}} variant="h2" gutterBottom component="div" className={classes.primaryTextColor}>
-          Safe F2F Class amidst Pandemic
-          </Typography>
-          <Typography variant="body1" gutterBottom textAlign="justify">
-          With modern software technologies, we can make face-to-face classes safe again. 
-          This scheduling system integrating various mobile, web, cloud, and IoT technologies.
-          </Typography>
-
-          </Box>
-          <Box sx={{mt: "1rem", mx:"auto"}} className={classes.signInBtn} >
-            <Link style={{ textDecoration: 'none' }} to="/home"> 
-              <Typography className={classes.whiteTextColor} sx={{pt:"5px", pb: "3px", textAlign: "center"}}  variant="subtitle1" gutterBottom>
-                Signin
+      <Container sx={{ mx:"auto" }} >
+        <Grid container sx={{ pt: "1rem", width: '100%', mx:"auto"  }}>
+          <Grid item xs={12} sm={12} md={7} lg={6} >
+            <Box sx={{ width: "500px", maxWidth: "100%", mx:"auto"}}>
+              <Typography sx={{mt: "5rem"}} fontWeight="400" variant="h2" gutterBottom component="div" className={classes.primaryTextColor}>
+              Safe F2F Class amidst Pandemic
               </Typography>
-            </Link>
-          </Box>
+              <Typography variant="body1" gutterBottom textAlign="justify">
+              With modern software technologies, we can make face-to-face classes safe again. 
+              This scheduling system integrating various mobile, web, cloud, and IoT technologies.
+              </Typography>
+              </Box>
+              <Box sx={{mt: "1rem", mx:"auto"}} className={classes.signInBtn} >
+                <Link style={{ textDecoration: 'none' }} to="/home"> 
+                  <Typography className={classes.whiteTextColor} sx={{pt:"5px", pb: "3px", textAlign: "center"}}  variant="subtitle1" gutterBottom>
+                    Sign in
+                  </Typography>
+                </Link>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={12} md={5} lg={6}>
+              <Box sx={{ mx:"auto" }} className={classes.aboutLogo}>
+                <img sx={{ mx:"auto" }} className={classes.aboutLogo} height={400} width={400} src="/sched-gif.gif" alt="Schedule GIF"/>
+              </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
 
+    {/* Download Section */}
+    <Box sx={{ maxHeight: "100%", maxWidth:"100%", pb:"1rem", mt:"4rem"}}>
+      <Container sx={{ mx:"auto" }} >
+        <Grid container sx={{ pt: "1rem", width: '100%', mx:"auto"  }}>
+          <Grid item xs={12} sm={12} md={5} lg={5}>
+            <Box sx={{ mx:"auto", mt:"2rem" }} className={classes.androidMockup}>
+              <img sx={{ mx:"auto" }} className={classes.androidMockup} src="/android-blobs.png" alt="Android Mockup"/>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={12} md={7} lg={6} >
+            <Box sx={{ width: "600px", maxWidth: "100%", mx:"auto", backgroundColor: "#D8F4F6", borderRadius:"10px"}} className={classes.cardShadow}>
+              <Box sx={{pt:"1rem", maxWidth:"100%", mx:"auto", width: "600px"}}>
+                <Typography sx={{mt:"1rem"}} fontWeight="600" textAlign="center" variant="h2" className={classes.fonth2}>
+                  DOWNLOAD 
+                </Typography>
+              </Box>
+              <Typography variant="h3" textAlign="center" gutterBottom component="div" className={classes.fonth3}>
+                  OUR APP
+              </Typography>
+              <Box>
+                <Stack direction="column" sx={{mx:"auto"}}>
+                  <Box sx={{ mx:"auto"}} className={classes.googleBadge}>
+                    <img sx={{ mx:"auto"}} src="/google-play-badge.png" alt="Google Play Store Badge" className={classes.googleBadge}/>
+                  </Box>
+                  <Box sx={{ mx:"auto", mt:"1rem", pb:"10px" }}>
+                    <img sx={{ mx:"auto" }} src="/qrcode.png" alt="Qr Code" className={classes.qrCode}/>
+                    <Typography sx={{mx:"1rem"}} fontWeight="600" variant="caption" textAlign="center" gutterBottom component="div" className={classes.blackTextColor}>
+                      Scan Me!
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Box>
+            </Box>
+          </Grid>
         </Grid>
-        
-        <Grid item xs={12} sm={12} md={5} lg={6}>
-          <Box sx={{ mx:"auto" }} className={classes.aboutLogo}>
-            <img sx={{ mx:"auto" }} className={classes.aboutLogo} height={400} width={400} src="/sched-gif.gif" alt="Schedule GIF"/>
-          </Box>
-        </Grid>
-        
-        
-      </Grid>
-    </Container>
+      </Container>
     </Box>
 
     {/* 1st Section: About */}
     <Box id="about"  sx={{mb:"2rem", mt: "2rem"}}>
-    <Container sx={{mx:"auto"}} >
-      <Grid container sx={{ maxWidth:'100%', backgroundColor: "white" }}>
-          <Grid item xs={12} sm={12} md={5} lg={3} sx={{mt: "3rem"}}   >
-            <Box sx={{ width: '300px', maxHeight:'100%' , maxWidth: '100%', mx:"auto" }}>
-              <img id="about-logo" src="ssc-system-logo.jpg" height={300} width={300} alt="HelloImage"  />
+      <Container sx={{mx:"auto"}} >
+        <Grid container sx={{ maxWidth:'100%', backgroundColor: "white" }}>
+            <Grid item xs={12} sm={12} md={5} lg={3} sx={{mt: "3rem"}}   >
+              <Box sx={{ width: '300px', maxHeight:'100%' , maxWidth: '100%', mx:"auto" }}>
+                <img id="about-logo" src="ssc-system-logo.jpg" height={300} width={300} alt="HelloImage"  />
+              </Box>
+            </Grid>
+          <Grid item xs={12} sm={12} md={7} lg={8} sx={{mx:"auto"}} >
+            <Box sx={{ mx:"auto" }}>
+              <Typography sx={{mt:"2rem"}} fontWeight="400" variant="h2" gutterBottom component="div" className={classes.primaryTextColor}>
+                Safe and Smart Campus
+              </Typography>
+              <Typography sx={{mt:"6px"}} variant="body1" gutterBottom align="justify">
+                This system's scheduling method could substantially benefit the school's management in implementing safe face-to-face classes. 
+                The scheduling system will incorporate the protocols provided by the IATF. One to those protocols is the restrictions in terms of the number of people allowed inside a room. 
+                This system will utilize notifications and real-time data onto the applications to keep the users updated. It will also take advantage of the TUP email and Google Classroom.
+              </Typography>
+              <Typography sx={{mt:"6px"}} variant="body1" gutterBottom align="justify">
+                The researchers also recognize the importance of integrating body temperature scanning and hand sanitization into the system. 
+                Since this method automates the procedure, security staff may have less contact with most students that access the school. 
+                Furthermore, having digital logs of the students’ temperatures could be utilized to produce insights or analytics.
+              </Typography>
             </Box>
           </Grid>
-        <Grid item xs={12} sm={12} md={7} lg={8} sx={{mx:"auto"}} >
-          <Box sx={{ mx:"auto" }}>
-            <Typography sx={{mt:"2rem"}} variant="h2" gutterBottom component="div" className={classes.primaryTextColor}>
-            Smart and Safe Campus
-            </Typography>
-            <Typography sx={{mt:"6px"}} variant="body1" gutterBottom align="justify">
-            This system's scheduling method could substantially benefit the school's management in implementing safe face-to-face classes. 
-            The scheduling system will incorporate the protocols provided by the IATF. One to those protocols is the restrictions in terms of the number of people allowed inside a room. 
-            This system will utilize notifications and real-time data onto the applications to keep the users updated. It will also take advantage of the TUP email and Google Classroom.
-            </Typography>
-            <Typography sx={{mt:"6px"}} variant="body1" gutterBottom align="justify">
-            The researchers also recognize the importance of integrating body temperature scanning and hand sanitization into the system. 
-            Since this method automates the procedure, security staff may have less contact with most students that access the school. 
-            Furthermore, having digital logs of the students’ temperatures could be utilized to produce insights or analytics.
-            </Typography>
-
-          </Box>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
     </Box>
 
     {/* 2nd section: Prevention */}
     <Box id="prevention" sx={{ maxHeight:'100%', width:'400', maxWidth:'100%', mx: "2rem", backgroundColor: "#EAF6F4", pt: "1rem", pb:"1rem",  borderRadius: '30px', flexGrow: 1}} >
       <Container sx={{mt:"1rem"}}  >
-        <Typography  variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+        <Typography  variant="h4" fontWeight="600" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
           How Can I Protect Myself from Covid-19
         </Typography>
         <Typography sx={{mt:"1rem", mb:"10px"}} variant="body2" color="text.secondary" align="center">
@@ -367,11 +460,13 @@ const LandingPage = () => {
           avoiding crowded, closed and close-contact settings, ensuring good ventilation of indoor spaces, 
           cleaning hands regularly, and covering sneezes and coughs with a tissue or bent elbow.
         </Typography>
-        <Box sx={{ maxWidth:"100%", fontStyle: 'italic',  mb:"8px" }}>
-          <Typography variant="body2" color="text.secondary" align="center" gutterBottom component="div"> 
-            https://www.who.int/emergencies/diseases/
-            novel-coronavirus-2019/question-and-answers-hub/q-a-detail/coronavirus-disease-covid-19-masks
-          </Typography>
+        <Box>
+          <Box sx={{ maxWidth:"100%", fontStyle: 'italic',  mb:"8px", mx:"auto" }}>
+            <Typography variant="body2" color="text.secondary" align="center" gutterBottom component="div"> 
+              https://www.who.int/emergencies/diseases/
+              novel-coronavirus-2019/question-and-answers-hub/q-a-detail/coronavirus-disease-covid-19-masks
+            </Typography>
+          </Box>
         </Box>
         <Grid container sx={{width: '100%'}} spacing={{ xs:2, sm:3, md:4}}  >
           {howTo.map(item => (
@@ -399,66 +494,65 @@ const LandingPage = () => {
 
     {/* 3rd Section: Our System */}
     <Container id="sscsystem" sx={{ mt: "5rem"}} >
-      <Typography  variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-            How Our System Can Help Prevent Covid-19?
+      <Typography variant="h4" fontWeight="600" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+         How Our System Can Help Prevent Covid-19?
       </Typography>
       <Grid container sx={{width: '100%', mt:"2rem"}}>
-          <Grid item xs={12} sm={12} md={6} lg={3}>
-            <Box onClick={() => setSelectedPrevention({label:"Step 1: Implements restrictions on schedules", 
-            image:"/restrictions.png"})} 
-            sx={{cursor:"pointer", mb:"1rem", mx:"auto", mt:"1rem"}} className={classes.ourSysBox} >
-              <img src="/restrictions.png" height={200} width={200} alt="HelloImage"/>
-              <Typography  variant="body1" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-                Step 1 
-              </Typography>
-            </Box>
-            <Box onClick={() => setSelectedPrevention({label:"Step 2: Scanning of RFID for schedule checking", 
-            image:"/scan-id.png"})}
-            sx={{cursor:"pointer", mb:"1rem", mx:"auto", mt:"1rem"}} className={classes.ourSysBox}>
-              <img src="/scan-id.png" height={200} width={200} alt="HelloImage"/>
-              <Typography  variant="body1" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-                Step 2 
-              </Typography>
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6} lg={3}>
-            <Box onClick={() => setSelectedPrevention({label:"Step 3: Scans temperature and storing it in the database", 
-            image:"/temperature.png"})}
-            sx={{cursor:"pointer", mb:"1rem", mx:"auto", mt:"1rem"}} className={classes.ourSysBox}>
-              <img src="/temperature.png" height={200} width={200} alt="HelloImage"/>
-              <Typography  variant="body1" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-                Step 3 
-              </Typography>
-            </Box>
-            <Box onClick={() => setSelectedPrevention({label:"Step 4: Notifies and warns  user when exceeding scheduled time of stay", 
-            image:"/notify.png"})}
-            sx={{cursor:"pointer", mb:"1rem", mx:"auto", mt:"1rem"}} className={classes.ourSysBox}>
-              <img src="/notify.png" height={200} width={200} alt="HelloImage"/>
-              <Typography  variant="body1" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-                Step 4 
-              </Typography>
-            </Box>
-            </Grid>
-          <Grid item xs={12} sm={12} md={12} lg={6} >
-            <Box sx={{width: "300px", mb:"1rem",mt:"1rem", mx:"auto",}} >
-              <img src={selectedPrevention.image} height={300} width={300} alt="HelloImage"/>   
-            </Box>
-            <Box>
-              <Typography  variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-                {selectedPrevention.label}
-              </Typography>
-            </Box>
-          </Grid>
+        <Grid item xs={12} sm={12} md={6} lg={3}>
+          <Box onClick={() => setSelectedPrevention({label:"Step 1: Implements restrictions on schedules", 
+          image:"/restrictions.png"})} 
+          sx={{cursor:"pointer", mb:"1rem", mx:"auto", mt:"1rem"}} className={classes.ourSysBox} >
+            <img src="/restrictions.png" height={200} width={200} alt="HelloImage"/>
+            <Typography  variant="body1" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+              Step 1 
+            </Typography>
+          </Box>
+          <Box onClick={() => setSelectedPrevention({label:"Step 2: Scanning of RFID for schedule checking", 
+          image:"/scan-id.png"})}
+          sx={{cursor:"pointer", mb:"1rem", mx:"auto", mt:"1rem"}} className={classes.ourSysBox}>
+            <img src="/scan-id.png" height={200} width={200} alt="HelloImage"/>
+            <Typography  variant="body1" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+              Step 2 
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={12} md={6} lg={3}>
+          <Box onClick={() => setSelectedPrevention({label:"Step 3: Scans temperature and storing it in the database", 
+          image:"/temperature.png"})}
+          sx={{cursor:"pointer", mb:"1rem", mx:"auto", mt:"1rem"}} className={classes.ourSysBox}>
+            <img src="/temperature.png" height={200} width={200} alt="HelloImage"/>
+            <Typography  variant="body1" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+              Step 3 
+            </Typography>
+          </Box>
+          <Box onClick={() => setSelectedPrevention({label:"Step 4: Notifies and warns  user when exceeding scheduled time of stay", 
+          image:"/notify.png"})}
+          sx={{cursor:"pointer", mb:"1rem", mx:"auto", mt:"1rem"}} className={classes.ourSysBox}>
+            <img src="/notify.png" height={200} width={200} alt="HelloImage"/>
+            <Typography  variant="body1" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+              Step 4 
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} lg={6} >
+          <Box sx={{width: "300px", mb:"1rem",mt:"1rem", mx:"auto",}} >
+            <img src={selectedPrevention.image} height={300} width={300} alt="HelloImage"/>   
+          </Box>
+          <Box>
+            <Typography  variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+              {selectedPrevention.label}
+            </Typography>
+          </Box>
+        </Grid>
       </Grid>
     </Container>
 
-
     {/* 4th Section: Features */}
     <Container id="features" sx={{mx:"auto", mt:"4rem"}}  >
-      <Typography  variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-            Features
+      <Typography variant="h4" fontWeight="600" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+        FEATURES
       </Typography>
-      <Grid container sx={{mx:"auto"}} >
+      <Grid container sx={{mx:"auto", pt:"1rem"}} >
         <Grid item xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center" >
           <Box sx={{mx:"auto"}} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
@@ -469,7 +563,6 @@ const LandingPage = () => {
               </Typography>
           </Box> 
         </Grid>
-
         <Grid item  xs={6} sm={6} md={4} lg={3}  sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto",}} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
@@ -480,7 +573,6 @@ const LandingPage = () => {
               </Typography>
           </Box> 
         </Grid>
-
         <Grid item  xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto",}} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
@@ -491,7 +583,6 @@ const LandingPage = () => {
               </Typography>
           </Box> 
         </Grid>
-
         <Grid item xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto",}} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
@@ -502,7 +593,6 @@ const LandingPage = () => {
               </Typography>
           </Box> 
         </Grid>
-
         <Grid item xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto", }} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
@@ -513,7 +603,6 @@ const LandingPage = () => {
               </Typography>
           </Box> 
         </Grid>
-
         <Grid item  xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto", }} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
@@ -524,7 +613,6 @@ const LandingPage = () => {
               </Typography>
           </Box> 
         </Grid>
-
         <Grid item xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto", }} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
@@ -535,7 +623,6 @@ const LandingPage = () => {
               </Typography>
           </Box> 
         </Grid>
-        
         <Grid item xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto", }} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
@@ -551,8 +638,8 @@ const LandingPage = () => {
 
    {/* 5th Section: Tech Stack  */}
   <Container id="techstack" sx={{width:'400', maxWidth:"100%", mt:"4rem", pt: "1rem", pb:"1rem",  borderRadius: '30px',}}>
-    <Typography sx={{mt:"1rem"}}  variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-     Tech Stack
+    <Typography sx={{mt:"1rem"}} fontWeight="600"  variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+      TECH STACK
     </Typography>
     <Carousel 
       indicators={false}
@@ -586,16 +673,43 @@ const LandingPage = () => {
     </Carousel>
   </Container>
 
-
    {/* 6th Section: Our Team */}
     <Container id="ourteam" sx={{ mt: "4rem"}} >
-      <Typography  variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
-           Our Team
+      <Typography fontWeight="600" variant="h4" gutterBottom component="div" align="center" className={classes.primaryTextColor} >
+        OUR TEAM
       </Typography>
       <Typography sx={{ mt: "2rem", mb:"1rem"}} variant="body2" gutterBottom component="div" align="center" className={classes.blackTextColor} >
-        We are 4th year college students taking Bachelor of Science in Information Technology at
-        Technological University of the Philippines, Taguig Campus.
+        We are from Technological University of the Philippines, Taguig Campus, taking Bachelor of Science in Information Technology.
       </Typography>
+      <Stack sx={{mx:"auto"}}  
+      direction={{ xs: 'column', md: 'column', lg: 'row', }}
+      justifyContent="center" 
+      alignItems="center">
+        <Box sx={{ mx:"auto", mt:"2rem"}} className={classes.profBox}>
+          <Typography pt={2} px={1} variant="subtitle1" className={classes.nameText} >
+            Prof. Josephine B. Andong
+          </Typography>
+          <Typography px={2} pb={2} variant="body2" className={classes.profText} >
+            BSIT Department Head 
+          </Typography>
+        </Box>
+        <Box sx={{ mx:"auto", mt:"2rem"}} className={classes.profBox}>
+          <Typography pt={2} px={1} variant="subtitle1" className={classes.nameText} >
+            Prof. Nestor R. Valdez
+          </Typography>
+          <Typography px={2} pb={2} variant="body2" className={classes.profText} >
+            Technical Adviser
+          </Typography>
+        </Box>
+        <Box sx={{ mx:"auto", mt:"2rem"}} className={classes.profBox}>
+          <Typography pt={2} px={1} variant="subtitle1" className={classes.nameText} >
+            Prof. Julius D. Silang
+          </Typography>
+          <Typography px={2} pb={2} variant="body2" className={classes.profText} >
+            Subject Adviser
+          </Typography>
+        </Box>
+      </Stack>
       <Grid container sx={{mt:"2rem", mx:"auto"}}  >
           <Grid item xs={6} sm={4} md={6} lg={3} sx={{px:"1rem", pb:"1rem"}}>
             <Box sx={{mb:"1rem", mt:"1rem", mx:"auto"}} className={classes.ourTeamMemBox}>
@@ -761,7 +875,6 @@ const LandingPage = () => {
       </Box>
     </Box>
 </Box>
-
-  )}
+)}
 
 export default LandingPage
