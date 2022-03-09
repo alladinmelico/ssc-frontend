@@ -121,3 +121,38 @@ body {
   z-index: 99;
   transform: rotate(181deg);
 }
+
+#gen-map-beng {
+  position: absolute;
+  top: 68px;
+  left: 90px;
+  width: 196px;
+  z-index: 99;
+  transform: rotate(180deg);
+}
+
+#gen-map-civil {
+  position: absolute;
+  top: 168px;
+  left: 92px;
+  width: 112px;
+  z-index: 99;
+  transform: rotate(180deg);
+}
+
+#gen-map-mech {
+  position: absolute;
+  top: 166px;
+  left: 185px;
+  width: 210px;
+  z-index: 99;
+  transform: rotate(180deg);
+}
+
+#gen-map-electrical {
+  position: absolute;
+  top: 0;
+  left: 160px;
+  width: 140px;
+  z-index: 99;
+}
