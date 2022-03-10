@@ -44,7 +44,7 @@ const SignIn = ({ redirectTo = '/' }) => {
           id: res.data.id,
           role: res.data.role_id
         })
-          window.location.reload();
+        window.location.reload();
 
       }).catch(err => {
       })

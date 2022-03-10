@@ -28,6 +28,7 @@ const ListPageDemo = lazy(() => import('../pages/ListPageDemo'))
 const TabsDemo = lazy(() => import('../pages/TabsDemo'))
 const MyAccount = lazy(() => import('../pages/MyAccount/MyAccount'))
 const role = JSON.parse(localStorage.getItem('auth')).role
+const hasProfile = JSON.parse(localStorage.getItem('auth')).hasProfile
 
 const routes = [
   {
@@ -193,7 +194,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Home />
+        {hasProfile ? <Home /> : <MyAccount />} 
       </AuthorizedRoute>
     ),
   },

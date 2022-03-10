@@ -8,8 +8,6 @@ import Paper from '@mui/material/Paper';
 import Main from 'components/Map/Main';
 import DashboardTime from './DashboardTime';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
-import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
-import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import WarningAmberOutlinedIcon from '@mui/icons-material/WarningAmberOutlined';
 import API from 'config/api';
 import { useSnackbar } from 'notistack'
@@ -21,9 +19,7 @@ import CardContent from '@mui/material/CardContent';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { useSelector } from 'react-redux';
 import ScheduleChart from './ScheduleChart';
 import FacilityChart from './FacilityChart';
 
@@ -37,6 +33,7 @@ const HomePage = () => {
   const [presentUsers, setPresentUsers] = useState(0)
   const [schedulesNow, setSchedulesNow] = useState([])
   const [schedulesOverStay, setSchedulesOverStay] = useState([])
+  const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar()
@@ -50,20 +47,29 @@ const HomePage = () => {
 
   const getDashboardData = async () => {
     setLoading(true)
-    await API.get(`dashboard`).then(res => {
-      setPresentUsers(res.data.present_students)
-      setSchedules(res.data.schedules_today)
-      setSchedulesCount(res.data.schedules_today.length)
-      setSchedulesNow(res.data.schedules_now)
-      setSchedulesOverStay(res.data.schedules_overstay)
-      setLoading(false)
-    }).catch(err => {
-      console.log(err)
-    })
+    try {
+      await API.get(`dashboard`).then(res => {
+        setPresentUsers(res.data.present_students)
+        setSchedules(res.data.schedules_today)
+        setSchedulesCount(res.data.schedules_today.length)
+        setSchedulesNow(res.data.schedules_now)
+        setSchedulesOverStay(res.data.schedules_overstay)
+        setLoading(false)
+        setSuccess(true)
+      }).catch(error => {
+        if (error.response && error.response.status === 401) {
+          localStorage.setItem('auth',JSON.stringify({ isAuthenticated: false }));
+          window.location.reload();        
+        }
+      })
+    } catch (error) {
+      console.log('err', error)
+    }
+    
   }
 
   useEffect(() => {
-    if (schedulesCount === 0 && !loading) {
+    if (!success) {
       getDashboardData()
       getTemperaturesData()
       window.echo.channel('logging').listen('UserLogging', (e) => {
@@ -80,7 +86,7 @@ const HomePage = () => {
         setTemperatures(prev => [e.temperature, ...prev.slice(0, -1)])
       })
     }
-  }, [schedulesCount, loading]);
+  }, [schedulesCount, success]);
 
   return (
     <Page pageTitle={intl.formatMessage({ id: 'home' })} >
@@ -129,7 +135,7 @@ const HomePage = () => {
                   title="Total Overstayed Users"
                   icon={<WarningAmberOutlinedIcon sx={{ color: "#caae53"  }} />}
                 />
-                <ScheduleChart />
+                <ScheduleChart schedules={schedules} schedulesNow={schedulesNow} />
               </Grid>
             </Grid>    
           </Grid>
