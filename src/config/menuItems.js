@@ -83,7 +83,7 @@ const getMenuItems = (props) => {
     }
   })
 
-  if (isAuthMenuOpen || !isAuthorised || !auth.hasProfile) {
+  if (isAuthMenuOpen || !isAuthorised) {
     return [
       {
         value: '/my_account',
