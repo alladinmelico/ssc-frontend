@@ -95,6 +95,18 @@ body {
         } */
 }
 
+#map-container {
+  position: relative;
+}
+
+#map-tools {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  height: auto;
+}
+
 #general-map {
   width: 500px;
   height: 500px;
@@ -108,9 +120,7 @@ body {
   top: 0;
   left: 0;
   z-index: 0;
-  height: 500px;
-  filter: grayscale(100%);
-  filter: brightness(105%);
+  height: 500px;;
 }
 
 #gen-map-bsad {
