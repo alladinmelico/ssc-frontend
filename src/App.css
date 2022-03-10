@@ -151,7 +151,7 @@ body {
 
 #gen-map-electrical {
   position: absolute;
-  top: 0;
+  top: -25px;
   left: 160px;
   width: 140px;
   z-index: 99;
