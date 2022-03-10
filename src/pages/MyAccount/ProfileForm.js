@@ -77,7 +77,6 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
       .then(res => {
         if (res.status === 200) {
           setAuth({...auth, hasProfile: true})
-          window.location.reload();
         }
       })
       .catch(err => {

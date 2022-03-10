@@ -17,14 +17,17 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const FacilityChart = () => {
   const { facilities } = useSelector((state) => state.facilities)
 
-  const labels = [...facilities.map((facility) => facility.name)]
+  let filteredData = [...facilities]
+  filteredData = filteredData.sort((first, second) => first.capacity - second.capacity).splice(0, 10)
+
+  const labels = [...filteredData.map((facility) => facility.code)]
 
   const data = {
     labels,
     datasets: [
       {
         label: "Facility's Capacity",
-        data: [...facilities.map((facility) => facility.capacity)],
+        data: [...filteredData.map((facility) => facility.capacity)],
         borderColor: ["rgba(255,206,86,0.2)"],
         backgroundColor: ["rgb(0, 86, 98)"],
         hoverBackgroundColor: ["rgb(79, 179, 191)"],
@@ -44,6 +47,18 @@ const FacilityChart = () => {
           beginAtZero: true,
         },
       },
+      title: {
+        display: true,
+        text: "Top 10 biggest room capacity",
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            let label = filteredData[context.datasetIndex].name
+            return label
+          }
+        }
+      }
     },
   }
   return (
