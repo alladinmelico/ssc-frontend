@@ -87,26 +87,26 @@ const About = () => {
           )}
             <Box textAlign="center">
               <Typography sx={{mt: "2rem"}} variant="h4" gutterBottom component="div">
-              About
+                Rationale
               </Typography>
             </Box>
             <Box textAlign="justify" sx={{mx: "3rem"}}>
               <Typography sx={{mt: "1rem", mx:"auto"}} variant="body2" gutterBottom component="div">
-              Eventually, face-to-face classes will be gradually reimplemented. The reopening of face-to-face classes must be carefully planned to protect the health of students and faculties (Sarmiento et al., 2021). 
-              According to the recommendation of the Department of Education, the COVID-19 risk factors should be highly considered on reopening of classes. 
-              Areas with Modified General Community Quarantine (MGCQ) may have some level of opening of face to-face classes. 
-              However, Secretary Briones added that quarantine classification should be the only considerations (Briones, 2020, p. 4). 
-              The Commission on Higher Education (CHED) released a joint memorandum with the Department of Health (DOH) stating that the face-to- face class must meet the minimum public health standards. 
-              It includes the reduction of transmission, contact, and duration of infection. They also emphasized that the face-to-face classes are not mandatory. 
-              The students have the right to choose flexible learning (Briones, 2020). Furthermore, the distribution of Covid-19 vaccines may contribute to the possibility of gradually implementing limited face-to-face classes.
+                Eventually, face-to-face classes will be gradually reimplemented. The reopening of face-to-face classes must be carefully planned to protect the health of students and faculties (Sarmiento et al., 2021). 
+                According to the recommendation of the Department of Education, the COVID-19 risk factors should be highly considered on reopening of classes. 
+                Areas with Modified General Community Quarantine (MGCQ) may have some level of opening of face to-face classes. 
+                However, Secretary Briones added that quarantine classification should be the only considerations (Briones, 2020, p. 4). 
+                The Commission on Higher Education (CHED) released a joint memorandum with the Department of Health (DOH) stating that the face-to- face class must meet the minimum public health standards. 
+                It includes the reduction of transmission, contact, and duration of infection. They also emphasized that the face-to-face classes are not mandatory. 
+                The students have the right to choose flexible learning (Briones, 2020). Furthermore, the distribution of Covid-19 vaccines may contribute to the possibility of gradually implementing limited face-to-face classes.
               </Typography>
               <Typography sx={{mt: "1rem", mx:"auto"}} variant="body2" gutterBottom component="div">
-              HEIs that will conduct limited face-to-face classes should have reliable system that the faculties and students could rely on. Managing hundreds or even thousands of students could be challenging for the institutions. 
-              Thus, this system aims to provide technologies to help on systematically implementing minimum public health standards and face-to-face classes specific protocols from various recognized institutions. 
+                HEIs that will conduct limited face-to-face classes should have reliable system that the faculties and students could rely on. Managing hundreds or even thousands of students could be challenging for the institutions. 
+                Thus, this system aims to provide technologies to help on systematically implementing minimum public health standards and face-to-face classes specific protocols from various recognized institutions. 
               </Typography>
               <Typography sx={{mt: "1rem", mx:"auto"}} variant="body2" gutterBottom component="div">
-              The scheduling and monitoring system of this study aims to reduce the contact. With limited number of people inside a room or establishment, the rate of transmission is significantly reduced in case one of the persons inside caries a virus. 
-              It could also serve as a tool for the administrators of the campus to have an overview on the status of implementing health protocols for face-to-face classes. 
+                The scheduling and monitoring system of this study aims to reduce the contact. With limited number of people inside a room or establishment, the rate of transmission is significantly reduced in case one of the persons inside caries a virus. 
+                It could also serve as a tool for the administrators of the campus to have an overview on the status of implementing health protocols for face-to-face classes. 
               </Typography>
               </Box>
               <Box 
@@ -144,7 +144,7 @@ const About = () => {
               </Box>
               <Box textAlign="center">
               <Typography sx={{mt: "2rem"}} variant="h4" gutterBottom component="div">
-              Developers
+                Developers
               </Typography>
               </Box>
               <Container sx={{ mt: "20px"}} >
