@@ -834,7 +834,7 @@ const LandingPage = () => {
             </Box>
           </Grid>
           <Grid item xs={6} sm={4} md={6} lg={3} sx={{px:"1rem", pb:"1rem"}} >
-          <Box sx={{mb:"1rem", mt:"1rem", mx:"auto"}} className={classes.ourTeamMemBox}>
+            <Box sx={{mb:"1rem", mt:"1rem", mx:"auto"}} className={classes.ourTeamMemBox}>
               <img src="joanna-saba.jpg" className="member-image" alt="HelloImage"/>
             </Box>
             <Box sx={{mt:"1rem", mx:"auto"}} className={classes.ourTeamNameBox}>
