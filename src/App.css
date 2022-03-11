@@ -7,6 +7,15 @@
   position: fixed !important;
 }
 
+.fabIconSecondary {
+  margin: 0 !important;
+  bottom: auto;
+  right: 20px;
+  top: 140px;
+  left: auto;
+  position: fixed !important;
+}
+
 .formModal {
   position: absolute;
   top: 50%;

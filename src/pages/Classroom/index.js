@@ -18,6 +18,7 @@ import {
 } from "../../actions/classroomActions"
 import { DELETE_CLASSROOM_RESET } from "../../constants/classroomConstants"
 import ClassroomShow from './ClassroomShow';
+import ClassroomJoin from './ClassroomJoin';
 
 const Classroom = ({history}) => {
   const [page, setPage] = useState(0)
@@ -126,6 +127,7 @@ const Classroom = ({history}) => {
             setEditMode(true)
           }} />
         )}
+        <ClassroomJoin modalClosed={() => setClassroom({})} page={page} rowsPerPage={rowsPerPage}/>
       </Box>
     </Page>
   );
