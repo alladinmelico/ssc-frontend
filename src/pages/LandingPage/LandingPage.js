@@ -50,7 +50,7 @@ const useStyles = makeStyles({
     boxShadow: "2px 3px",
     color: "#E5E5E5" 
   },
- blackTextColor:{
+  blackTextColor:{
     color: "#000000"
   },
   blackBoldTextColor:{
@@ -135,8 +135,23 @@ const useStyles = makeStyles({
   },
   sectionText:{
     fontStyle: "italic",
-    color: "black",
-    textAlign: "center"
+    textAlign: "center",
+    fontSize: "body2",
+    color: "#000000",
+    width: '100%', 
+    "@media (max-width: 576px)": {
+      maxWidth: '100%',
+      alignContent: "center",
+      fontSize: "12px",
+   }
+  },
+  sectionTextBox:{
+    maxWidth: '100%',
+    "@media (max-width: 576px)": {
+      maxWidth: '100%',
+      alignContent: "center",
+      fontSize: "12px",
+    },
   },
   nameText:{
     color: "black",
@@ -484,7 +499,10 @@ const LandingPage = () => {
           <Box sx={{ maxWidth:"100%", fontStyle: 'italic',  mb:"8px", mx:"auto" }}>
             <Typography variant="body2" color="text.secondary" align="center" gutterBottom component="div"> 
               https://www.who.int/emergencies/diseases/
-              novel-coronavirus-2019/question-and-answers-hub/q-a-detail/coronavirus-disease-covid-19-masks
+              novel-coronavirus-2019
+              /question-and-answers-hub
+              /q-a-detail
+              /coronavirus-disease-covid-19-masks
             </Typography>
           </Box>
         </Box>
@@ -650,7 +668,7 @@ const LandingPage = () => {
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <DesignServicesIcon sx={{my: "5px", mx: "4px", fontSize: 40, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
             </Box>
-            <Box sx={{mx:"auto"}} className={classes.featuresText}>  
+            <Box sx={{mx:"auto"}} >  
               <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                 Responsive web and mobile design
               </Typography>
@@ -662,7 +680,7 @@ const LandingPage = () => {
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <DeviceThermostatIcon sx={{ my: "5px", mx: "4px", fontSize: 40, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
             </Box> 
-            <Box sx={{mx:"auto"}} className={classes.featuresText}> 
+            <Box sx={{mx:"auto"}} > 
               <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                 Utilizes industry standard temperature sensor
               </Typography>
@@ -726,7 +744,7 @@ const LandingPage = () => {
             Prof. Josephine B. Andong
           </Typography>
           <Typography px={2} pb={2} variant="body2" className={classes.profText} >
-            BSIT Department Head 
+            BSIT Section Head 
           </Typography>
         </Box>
         <Box sx={{ mx:"auto", mt:"2rem"}} className={classes.profBox}>
@@ -755,10 +773,12 @@ const LandingPage = () => {
               <Typography pt={2} px={2} variant="body2" gutterBottom component="div" className={classes.nameText} >
                 Patricia Mae C. Espenida
               </Typography>
-              <Typography pt={1} sx={{ mx:"auto"}} variant="body2" gutterBottom component="div" className={classes.sectionText} >
-                patriciamae.espenida
-                @tup.edu.ph
-              </Typography>
+              <Box sx={{mx:"auto"}} >  
+                <Typography pt={1} sx={{ mx:"auto"}} variant="body2" gutterBottom component="div" className={classes.sectionText} >
+                  patriciamae.espenida
+                  @tup.edu.ph
+                </Typography>
+              </Box>
               <Box textAlign="center">
                 <IconButton className={classes.socmedIcon} aria-label="Facebook">
                   <FacebookIcon  onClick={() => window.open('https://www.facebook.com/espenidapatriciamae/')} target="_blank"
@@ -787,10 +807,12 @@ const LandingPage = () => {
               <Typography pt={2} px={2} variant="body2" gutterBottom component="div" className={classes.nameText} >
                 Alladin M. Melico 
               </Typography>
-              <Typography pt={1} sx={{ mx:"auto"}} variant="body2" gutterBottom component="div" className={classes.sectionText} >
-                alladin.melico
-                @tup.edu.ph
-              </Typography>
+              <Box sx={{mx:"auto"}} >  
+                <Typography pt={1} sx={{ mx:"auto"}} variant="body2" gutterBottom component="div" className={classes.sectionText} >
+                  alladin.melico
+                  @tup.edu.ph
+                </Typography>
+              </Box>
               <Box textAlign="center">
                 <IconButton className={classes.socmedIcon} aria-label="Facebook">
                   <FacebookIcon onClick={() => window.open('https://www.facebook.com/melico.alladin')} target="_blank"
@@ -819,10 +841,12 @@ const LandingPage = () => {
               <Typography pt={2} px={2} variant="body2" gutterBottom component="div" className={classes.nameText} >
                 Joanna Marie N. Saba 
               </Typography>
-              <Typography pt={1} sx={{ mx:"auto"}} variant="body2" gutterBottom component="div" className={classes.sectionText} >
-                joannamarie.saba
-                @tup.edu.ph
-              </Typography>
+              <Box sx={{mx:"auto"}} >  
+                <Typography pt={1} sx={{ mx:"auto"}} variant="body2" gutterBottom component="div" className={classes.sectionText} >
+                  joannamarie.saba
+                  @tup.edu.ph
+                </Typography>
+              </Box>
               <Box textAlign="center">
                 <IconButton className={classes.socmedIcon} aria-label="Facebook">
                   <FacebookIcon onClick={() => window.open('https://www.facebook.com/neko.skhye')} target="_blank"
@@ -851,10 +875,12 @@ const LandingPage = () => {
               <Typography pt={2} px={2} variant="body2" gutterBottom component="div" className={classes.nameText} >
                 Elaine M. Tongson
               </Typography>
-              <Typography pt={1} sx={{ mx:"auto"}} variant="body2" gutterBottom component="div" className={classes.sectionText} >
-                elaine.tongson
-                @tup.edu.ph
-              </Typography>
+              <Box sx={{mx:"auto"}} >  
+                <Typography pt={1} sx={{ mx:"auto"}} variant="body2" gutterBottom component="div" className={classes.sectionText} >
+                  elaine.tongson
+                  @tup.edu.ph
+                </Typography>
+              </Box>
               <Box textAlign="center">
                 <IconButton className={classes.socmedIcon} aria-label="Facebook">
                   <FacebookIcon onClick={() => window.open('https://www.facebook.com/tngsn.laine21')} target="_blank"
