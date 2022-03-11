@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import FormModal from '../../components/Modal/FormModal'
 import { useForm } from "react-hook-form";
-import TextField from '@mui/material/TextField';
+import { Skeleton } from '@mui/material';
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import { useDispatch, useSelector } from "react-redux"
-import { getAdminRfids, newRfid, updateRfid, clearErrors } from "../../actions/rfidActions"
+import { getAdminRfids, newRfid, updateRfid, clearErrors, } from "../../actions/rfidActions"
 import { NEW_RFID_RESET, UPDATE_RFID_RESET } from "../../constants/rfidConstants"
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Autocomplete } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 import Switch from '@mui/material/Switch';
 import * as yup from "yup"
+import { getAdminUsers } from 'actions/userActions'
+
 
 export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
   const [openModal, setOpenModal] = useState(false)
+  const { users, count  } = useSelector((state) => state.users)
+  const [toAddUsers, setToAddUsers] = useState([]);
+  const { loading, error, success, } = useSelector((state) => state.newRfid)
   const dispatch = useDispatch()
-  const { loading, error, success } = useSelector((state) => state.newRfid)
+
   const {
     loading: updateLoading,
     error: updateError,
@@ -38,11 +49,13 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
   }
 
   useEffect(() => {
+    dispatch(getAdminUsers(page, rowsPerPage))
     if(rfid && rfid.id  && !openModal) {
       setOpenModal(true)
       setValue('value', rfid.value)
       setValue('is_logged', rfid.is_logged)
-      setValue('user_id', rfid.user.id)
+      setValue('user_id', rfid.user_id)
+      setValue('email', rfid.user?.email)
     }
 
     if (error || updateError) {
@@ -111,16 +124,27 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
           fullWidth
         />
 
-        <TextField 
-          {...register("user_id", { required: true, min: 3 })}
-          error={errors.code ? true : false}
-          label="Name"
-          variant="outlined"
-          defaultValue={rfid ? rfid.user_id : ''}
-          helperText={errors.user_id?.message}
-          margin="normal"
-          fullWidth
-        />
+        {count ? (
+        <FormControl fullWidth required margin="normal">
+          <Autocomplete
+            {...register("user_id", { required: true})}
+            id="emails-list"
+            name="users"
+            options={users}
+            value={rfid ? rfid.user: ''}
+            getOptionLabel={((option) => option.email)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="User Email"
+                placeholder="User Email"
+              />
+            )}
+          />
+        </FormControl>
+        ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
 
         <FormControlLabel control={<Switch 
         {...register("is_logged", { required: true})}
