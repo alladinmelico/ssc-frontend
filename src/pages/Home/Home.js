@@ -22,6 +22,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import ScheduleChart from './ScheduleChart';
 import FacilityChart from './FacilityChart';
+import { useAuth } from 'base-shell/lib/providers/Auth'
 
 const HomePage = () => {
   const intl = useIntl()
@@ -35,6 +36,7 @@ const HomePage = () => {
   const [schedulesOverStay, setSchedulesOverStay] = useState([])
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false);
+  const { auth } = useAuth()
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -69,6 +71,9 @@ const HomePage = () => {
   }
 
   useEffect(() => {
+    if (!API.defaults.headers.Authorization.includes(auth.token)) {
+      window.location.reload()
+    }
     if (!success) {
       getDashboardData()
       getTemperaturesData()

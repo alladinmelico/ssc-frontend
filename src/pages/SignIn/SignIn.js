@@ -44,8 +44,6 @@ const SignIn = ({ redirectTo = '/' }) => {
             id: res.data.id,
             role: res.data.role_id
           })
-          window.location.replace("/home");
-
       }).catch(err => {
       })
     } else {
