@@ -91,11 +91,11 @@ const HomePage = () => {
   return (
     <Page pageTitle={intl.formatMessage({ id: 'home' })} >
       <Box sx={{ p: '1rem' }}>
-        <Grid container spacing={4} sx={{ height: '100%',  width: '100%' }}>
+        <Grid container sx={{ mx:"auto", height: '100%',  width: '100%' }}>
           <Grid item xs={12} md={6}>
             <DashboardTime />
             <Grid container spacing={4}>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={12} lg={6}>
                 <DashboardCard 
                   number={presentUsers}
                   title="Users inside the campus"
@@ -127,7 +127,7 @@ const HomePage = () => {
                   </Card>
                 </Box>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} md={12} lg={6}>
                 <DashboardCard
                   number={schedulesOverStay.length}
                   backgroundColor="#ffffb3"
@@ -139,11 +139,11 @@ const HomePage = () => {
               </Grid>
             </Grid>    
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} md={12} lg={6} sx={{pb:"1rem"}}>
             <Main selected={selected} setSelected={setSelected} selectedDepartment={selectedDepartment} setSelectedDepartment={setSelectedDepartment} showDetails />
           </Grid>
         </Grid>
-        <FacilityChart />
+        <FacilityChart  />
       </Box>     
     </Page>
   )
