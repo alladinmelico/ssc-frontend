@@ -83,8 +83,9 @@ const Schedule = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
-          setSchedule(params.row)
+        <GridActionsCellItem 
+          icon={<Link to={`/schedule/${params.row.id}`} style={{ textDecoration: 'none' }} ><VisibilityOutlinedIcon color="green" /></Link> }
+          onClick={() => {
           setEditMode(false)
         }} label="View" />,
         <GridActionsCellItem icon={

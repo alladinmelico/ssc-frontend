@@ -1,33 +1,50 @@
 import React, {useState, useEffect} from "react";
-import ShowModal from 'components/Modal/ShowModal'
 import { Stack } from "@mui/material";
-import ItemDetail from "components/Modal/ItemDetail";
 import SchedDetail from "components/Modal/SchedDetail";
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
+import Page from 'material-ui-shell/lib/containers/Page';
+import Skeleton from '@mui/material/Skeleton';
+import API from '../../config/api'
 
-const ScheduleShow = ({modalClosed, schedule}) => {
-  const [openModal, setOpenModal] = useState(false)
+const ScheduleShow = () => {
+  const loc = window.location.pathname
+  const id = loc.substring(loc.lastIndexOf('/') + 1);
+  const [schedule, setSchedule] = useState('')
+
+  async function getSchedule() {
+    try {
+      const {data} = await API.get(`schedule/${id}`)
+      console.log(data)
+      await setSchedule(data.data)
+    } catch (error) {
+      setSchedule('')
+    }
+  }
 
   useEffect(() => {
-    if (schedule && schedule.id) {
-      setOpenModal(true)
+    if (!schedule) {
+      getSchedule()
     }
   }, [schedule])
 
   return (
-    <ShowModal
-      title="Schedule Details"
-      openModal={openModal}
-      setOpenModal={setOpenModal}
-      cancelled={modalClosed}
+     <Page
+      pageTitle="Schedule Details"
     >
-      <Box>
+      {!schedule ? (
+        <Box sx={{ width: '100%', height: '100%' }}>
+          <Skeleton variant="rectangular" height={200} animation="wave" sx={{ my: 2  }} />
+          <Skeleton variant="rectangular" height={118} animation="wave" sx={{ my: 2  }} />
+          <Skeleton variant="text" sx={{ my: 2  }} />
+        </Box>
+      ) :(      
+      <Box sx={{ p: '1rem' }}>
         <Box sx={{mx:"auto", mt:"1rem"}}>
-        <SchedDetail label="User" value={schedule.user?.name} /> 
+          <SchedDetail label="User" value={schedule.user?.name} /> 
         </Box>
         <Box sx={{mx:"auto", mt:"1rem"}}>
           <Stack sx={{mt:"1rem"}} direction="row" spacing={2}>
@@ -61,7 +78,7 @@ const ScheduleShow = ({modalClosed, schedule}) => {
           <SchedDetail label="Note" value={schedule.note} />
         </Box>
         <Box sx={{mx:"auto", mt:"1rem"}}>
-          <SchedDetail label="Users" value={schedule.users.map((row, rowIndex) => (
+          <SchedDetail label="Users" value={schedule.classroom.users?.map((row, rowIndex) => (
             <ListItem
               key={row.id}
             >
@@ -77,7 +94,10 @@ const ScheduleShow = ({modalClosed, schedule}) => {
           </SchedDetail>
         </Box>
       </Box>
-    </ShowModal>
+      )}
+
+      
+    </Page>
   )
 }
 

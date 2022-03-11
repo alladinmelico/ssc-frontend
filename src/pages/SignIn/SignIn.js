@@ -35,16 +35,16 @@ const SignIn = ({ redirectTo = '/' }) => {
         }).then(res => {
           setLoading(false)
           authenticate({
-          ...response.profileObj,
-          displayName: response.profileObj.name,
-          googleToken: response.accessToken,
-          token: res.data.token,
-          photoURL: response.profileObj.imageUrl,
-          hasProfile: res.data.hasProfile,
-          id: res.data.id,
-          role: res.data.role_id
-        })
-        window.location.reload();
+            ...response.profileObj,
+            displayName: response.profileObj.name,
+            googleToken: response.accessToken,
+            token: res.data.token,
+            photoURL: response.profileObj.imageUrl,
+            hasProfile: res.data.hasProfile,
+            id: res.data.id,
+            role: res.data.role_id
+          })
+          window.location.replace("/home");
 
       }).catch(err => {
       })
