@@ -83,7 +83,23 @@ const useStyles = makeStyles({
     border: '1px solid',
     borderColor: "#E5E5E5",
     width: '100%', 
-    height: '100%'
+    height: '100%',
+    "@media (max-width: 576px)": {
+      maxWidth: '100%',
+      alignContent: "center",
+   }
+  },
+  featuresText:{
+    textAlign: "center",
+    fontSize: "body1",
+    color: "#000000",
+    width: '100%', 
+    maxHeight: '100%',
+    "@media (max-width: 576px)": {
+      maxWidth: '100%',
+      alignContent: "center",
+      fontSize: "12px",
+   }
   },
   ourTeamNameBox:{
     width: '100%', 
@@ -110,6 +126,12 @@ const useStyles = makeStyles({
     maxWidth: '100%', 
     backgroundColor: "#EAF6F4", 
     borderRadius: '6px',
+  }, 
+  profText:{
+    color: "black",
+    fontWeight:400,
+    textAlign: "center",
+    fontStyle: "italic",
   },
   sectionText:{
     fontStyle: "italic",
@@ -120,12 +142,6 @@ const useStyles = makeStyles({
     color: "black",
     fontWeight:600,
     textAlign: "center"
-  },
-  profText:{
-    color: "black",
-    fontWeight:400,
-    textAlign: "center",
-    fontStyle: "italic",
   },
   socmedIcon:{
     color: "#00838f",
@@ -400,8 +416,12 @@ const LandingPage = () => {
               </Typography>
               <Box>
                 <Stack direction="column" sx={{mx:"auto"}}>
-                  <Box sx={{ mx:"auto"}} className={classes.googleBadge}>
-                    <img sx={{ mx:"auto"}} src="/google-play-badge.png" alt="Google Play Store Badge" className={classes.googleBadge}/>
+                  <Box sx={{ mx:"auto"}}>
+                    <a href='https://play.google.com/store/apps/details?id=com.sscsystem.capstone_android&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1' 
+                    target="_blank"  rel="noreferrer noopener">
+                    <img sx={{ mx:"auto", cursor:"pointer" }} alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' 
+                    className={classes.googleBadge}/>
+                    </a>
                   </Box>
                   <Box sx={{ mx:"auto", mt:"1rem", pb:"10px" }}>
                     <img sx={{ mx:"auto" }} src="/qrcode.png" alt="Qr Code" className={classes.qrCode}/>
@@ -558,19 +578,23 @@ const LandingPage = () => {
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <AccessTimeFilledIcon sx={{ fontSize: 50, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
             </Box > 
-              <Typography sx={{mt:"2rem", mx:"1rem"}} className= {classes.blackTextColor} variant="body1" gutterBottom component="div" >
+            <Box sx={{mx:"auto"}} >
+              <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                   Real-time Data Stream.
               </Typography>
+            </Box>
           </Box> 
         </Grid>
         <Grid item  xs={6} sm={6} md={4} lg={3}  sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto",}} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <WebhookIcon sx={{ fontSize: 50, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
-            </Box > 
-              <Typography sx={{mt:"1rem", mx:"1rem"}} className= {classes.blackTextColor} variant="body1" gutterBottom component="div" >
+            </Box> 
+            <Box sx={{mx:"auto"}}> 
+              <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                 Seamless integration of web, mobile, raspberry application, and sensors 
               </Typography>
+            </Box>
           </Box> 
         </Grid>
         <Grid item  xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
@@ -578,59 +602,71 @@ const LandingPage = () => {
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <HomeWorkIcon sx={{ my: "5px", mx: "6px", fontSize: 40, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
             </Box > 
-              <Typography sx={{mt:"1rem", mx:"1rem"}} className= {classes.blackTextColor} variant="body1" gutterBottom component="div" >
+            <Box sx={{mx:"auto"}}>  
+              <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                 Smart Scheduling system that limits overcrowding of the campus
               </Typography>
+            </Box>
           </Box> 
         </Grid>
         <Grid item xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto",}} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <CloudIcon sx={{ my: "3px", mx: "4px", fontSize: 40, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
-            </Box > 
-              <Typography sx={{mt:"1rem", mx:"1rem"}} className= {classes.blackTextColor} variant="body1" gutterBottom component="div" >
+            </Box> 
+            <Box sx={{mx:"auto"}}> 
+              <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                 Reliable cloud infrastructures 
               </Typography>
+            </Box>
           </Box> 
         </Grid>
         <Grid item xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto", }} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <HttpsIcon sx={{ my: "3px", mx: "4px", fontSize: 40, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
-            </Box > 
-              <Typography sx={{mt:"1rem", mx:"1rem"}} className= {classes.blackTextColor} variant="body1" gutterBottom component="div" >
+            </Box> 
+            <Box sx={{mx:"auto"}}> 
+              <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                 Secured API endpoints and Request validations
               </Typography>
+            </Box>
           </Box> 
         </Grid>
         <Grid item  xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto", }} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <MobileFriendlyIcon sx={{ my: "5px", mx: "5px", fontSize: 40, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
-            </Box > 
-              <Typography sx={{mt:"1rem", mx:"1rem"}} className= {classes.blackTextColor} variant="body1" gutterBottom component="div" >
+            </Box> 
+            <Box sx={{mx:"auto"}} className={classes.featuresText}> 
+              <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                 Consistent design system for mobile and web applications
               </Typography>
+            </Box>
           </Box> 
         </Grid>
         <Grid item xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto", }} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <DesignServicesIcon sx={{my: "5px", mx: "4px", fontSize: 40, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
-            </Box > 
-              <Typography sx={{mt:"1rem", mx:"1rem"}} className= {classes.blackTextColor} variant="body1" gutterBottom component="div" >
+            </Box>
+            <Box sx={{mx:"auto"}} className={classes.featuresText}>  
+              <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                 Responsive web and mobile design
               </Typography>
+            </Box>
           </Box> 
         </Grid>
         <Grid item xs={6} sm={6} md={4} lg={3} sx={{px:"1rem", pb:"1rem"}} justifyContent="center" alignItems="center"  >
           <Box sx={{mx:"auto", }} className={classes.featuresBox}>
             <Box sx={{mx:"1rem", mt: "1rem"}} className={classes.smallIconShape}>
               <DeviceThermostatIcon sx={{ my: "5px", mx: "4px", fontSize: 40, align: "center" }} className={classes.smallIcon} alt="Feature One"/>
-            </Box > 
-              <Typography sx={{mt:"1rem", mx:"1rem"}} className= {classes.blackTextColor} variant="body1" gutterBottom component="div" >
+            </Box> 
+            <Box sx={{mx:"auto"}} className={classes.featuresText}> 
+              <Typography sx={{mt:"2rem", mx:"auto"}} className={classes.featuresText} gutterBottom component="div" >
                 Utilizes industry standard temperature sensor
               </Typography>
+            </Box>
           </Box> 
         </Grid>
       </Grid>
