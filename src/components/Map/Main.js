@@ -32,6 +32,7 @@ import Ndt from './Ndt'
 import Bsad2nd from './Bsad2nd'
 import AllMap from './AllMap'
 import Switch from '@mui/material/Switch'
+import { makeStyles } from '@mui/styles';
 
 const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment, showDetails}) => {
   const dispatch = useDispatch()
@@ -47,6 +48,17 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
     'Electrical and Allied Department',
     'Mechanical and Allied Department',
   ]
+  const useStyles = makeStyles({
+  resetButton:{
+  maxWidth: '100%',
+    "@media (max-width: 576px)": {
+    maxWidth: '300px',
+    alignContent: "center",
+    }
+  },
+});
+
+const classes = useStyles();
 
   const legends = [
     {
@@ -213,8 +225,9 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
               <FormControlLabel value={4} control={<Radio />} label="NDT" />}
           </RadioGroup>
         </FormControl>
-        <Box>
-          <FormControlLabel
+        <Box sx={{mx:"auto", mt:"1rem"}}>
+          <Stack  direction={{ xs: 'column', md: 'row', lg: 'row', }}  spacing={2}>
+            <FormControlLabel sx={{mx:"auto"}}
             control={
               <Switch
                 checked={showWholeMap}
@@ -224,13 +237,18 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
             }
             label="Show Campus Map"
           />         
-          <Button variant="outlined" onClick={() => setSelected('')}>Reset Selected Facility</Button>
+          <Button classname={classes.resetButton} variant="outlined" onClick={() => setSelected('')}>Reset Selected Facility</Button>
+          </Stack>
         </Box>
       </Stack>
       <Typography variant="overline" mt={2}>Legends</Typography>
-      <Stack  direction="row" justifyContent="space-between">
+      <Stack justifyContent="flex-start"
+      alignItems="flex-start"
+      spacing={2}
+      direction={{ xs: 'column', md: 'row', lg: 'row', }}
+      >
         {legends.map(legend => (
-          <Box key={legend.label} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Box key={legend.label} sx={{maxWidth:"100%", display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <FiberManualRecordIcon fontSize="small" sx={{ color: legend.color }} />
             <Typography variant="caption">{legend.label}</Typography>
           </Box>

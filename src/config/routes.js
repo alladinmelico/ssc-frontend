@@ -10,6 +10,7 @@ const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
 const Communication = lazy(() => import('../pages/Communication'))
 const Schedule = lazy(() => import('../pages/Schedule'))
+const ScheduleShow = lazy(() => import('../pages/Schedule/ScheduleShow'))
 const ScheduleForm = lazy(() => import('../pages/Schedule/ScheduleForm'))
 const User = lazy(() => import('../pages/User'))
 const Rfid = lazy(() => import('../pages/Rfid'))
@@ -77,6 +78,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Schedule />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/schedule/:id',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <ScheduleShow />
       </AuthorizedRoute>
     ),
   },

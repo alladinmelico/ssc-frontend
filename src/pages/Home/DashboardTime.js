@@ -12,7 +12,7 @@ const DashboardTime = () => {
   })
 
   return (
-    <Typography ml={4} variant="h4" sx={{ color: 'GrayText' }}>
+    <Typography ml={4} variant="h4" sx={{ color: 'GrayText'}}>
       {clock}
     </Typography>
   )

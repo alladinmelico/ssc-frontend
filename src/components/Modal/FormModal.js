@@ -12,7 +12,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Button from '@mui/material/Button';
 
-export default function FormModal ({title, onSubmit, success, loading, cancelled, openModal, setOpenModal, children, noFab}) {
+export default function FormModal ({title, onSubmit, success, loading, cancelled, openModal, setOpenModal, children, noFab, btnType, btnComponent}) {
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
 
@@ -35,8 +35,8 @@ export default function FormModal ({title, onSubmit, success, loading, cancelled
       }}
     >
       {!noFab && (
-        <Fab onClick={handleOpen} color="primary" aria-label="add" className="fabIcon">
-          <AddIcon />
+        <Fab onClick={handleOpen} color="primary" aria-label="add" className={btnType && btnType === 'secondary' ? 'fabIconSecondary':'fabIcon'}>
+          {btnComponent ? btnComponent : <AddIcon />}
         </Fab>
       )}
       <Modal
