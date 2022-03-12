@@ -118,7 +118,7 @@ const User = ({history}) => {
             },
           })
         } label="Delete" />,
-        <GridActionsCellItem icon={<VerifiedIcon color="secondary" />} onClick={() => 
+        <GridActionsCellItem icon={<VerifiedIcon color="info" />} onClick={() => 
             openDialog({
               title: intl.formatMessage({
                 id: 'verify_dialog_title',

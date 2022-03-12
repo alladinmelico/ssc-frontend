@@ -9,6 +9,7 @@ const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
 const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
 const Communication = lazy(() => import('../pages/Communication'))
+const Report = lazy(() => import('../pages/Report'))
 const Schedule = lazy(() => import('../pages/Schedule'))
 const ScheduleShow = lazy(() => import('../pages/Schedule/ScheduleShow'))
 const ScheduleForm = lazy(() => import('../pages/Schedule/ScheduleForm'))
@@ -64,6 +65,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         {role === 1 ?  <Communication /> :  <PageNotFound />}
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/report',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        {role === 1 ?  <Report /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },

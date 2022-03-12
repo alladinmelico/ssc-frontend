@@ -33,7 +33,8 @@ import {
   ThermostatOutlined,
   PersonOutlineOutlined,
   NotificationsNoneOutlined,
-  EmailOutlined
+  EmailOutlined,
+  AssessmentOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -246,6 +247,13 @@ const getMenuItems = (props) => {
       visible: true,
       primaryText: intl.formatMessage({ id: 'communication', defaultMessage: 'Communication' }),
       leftIcon: <EmailOutlined />,
+    },
+    {
+      forAdmin: true,
+      value: '/report',
+      visible: true,
+      primaryText: intl.formatMessage({ id: 'report', defaultMessage: 'Report' }),
+      leftIcon: <AssessmentOutlined />,
     },
     {
       value: '/about',
