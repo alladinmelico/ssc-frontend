@@ -35,7 +35,10 @@ const Rfid = ({history}) => {
   const { error: deleteError, isDeleted } = useSelector((state) => state.rfid)
 
   useEffect(() => {
-    dispatch(getAdminRfids(page, rowsPerPage))
+    if (!loading) {
+      dispatch(getAdminRfids(page, rowsPerPage))
+    }
+    
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
@@ -107,7 +110,7 @@ const Rfid = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'rfid', defaultMessage: 'Rfid' })}
     >
       <DataTable
-        rows={rfids}
+        rows={rfids ? rfids : []}
         columns={columns}
         count={count}
         loading={loading}

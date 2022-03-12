@@ -38,7 +38,7 @@ export default function Step4({history, activeStep, setActiveStep}) {
       if (key.includes('is_')) {
         return formData.append(key, (value ? 1 : 0))
       }
-      if (key === 'users') {
+      if (key === 'users' || 'days_of_week') {
         return
       }
       return formData.append(key, value)
@@ -50,6 +50,12 @@ export default function Step4({history, activeStep, setActiveStep}) {
         for (let j = 0; j < value[i].length; j++) {
           formData.append(`users[${i}][]`, value[i][j])
         }
+      }
+    }
+
+    if (schedule.days_of_week) {
+      for (let i = 0; i < schedule.days_of_week; i++) {
+        formData.append('days_of_week[]', schedule.days_of_week[i]);
       }
     }
 

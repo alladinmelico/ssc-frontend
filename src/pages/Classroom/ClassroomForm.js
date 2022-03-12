@@ -21,9 +21,9 @@ import { getAdminSections } from 'actions/sectionActions';
 export default function ClassroomModal ({page, rowsPerPage, modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
   const [courses, setCourses] = useState([])
-  const { subjects } = useSelector((state) => state.subjects)
-  const { users } = useSelector((state) => state.users)
-  const { sections, count } = useSelector((state) => state.sections)
+  const { loading: subjectLoading, subjects } = useSelector((state) => state.subjects)
+  const { loading: userLoading, users } = useSelector((state) => state.users)
+  const { loading: sectionLoading, sections, count } = useSelector((state) => state.sections)
   const [toAddUsers, setToAddUsers] = useState([]);
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newClassroom)
@@ -71,9 +71,15 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
   }
 
   useEffect(() => {
-    dispatch(getAdminSubjects(0, 1000))
-    dispatch(getAdminSections(0, 1000))
-    dispatch(getAdminUsers(0, 1000))
+    if (!subjectLoading) {
+      dispatch(getAdminSubjects(0, 1000))
+    }
+    if (!sectionLoading) {
+      dispatch(getAdminSections(0, 1000))
+    }
+    if (!userLoading) {
+      dispatch(getAdminUsers(0, 1000))
+    }
 
     if(classroom.id && !openModal) {
       setOpenModal(true)

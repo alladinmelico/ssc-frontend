@@ -29,7 +29,7 @@ export const schedulesReducer = (state = { schedules: [] }, action) => {
     case ADMIN_SCHEDULES_REQUEST:
       return {
         loading: true,
-        schedules: [],
+        schedules: state.schedules,
       }
 
     case ALL_SCHEDULES_SUCCESS:

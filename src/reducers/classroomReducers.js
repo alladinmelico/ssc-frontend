@@ -29,7 +29,7 @@ export const classroomsReducer = (state = { classrooms: [] }, action) => {
     case ADMIN_CLASSROOMS_REQUEST:
       return {
         loading: true,
-        classrooms: [],
+        classrooms: state.classrooms,
       }
 
     case ALL_CLASSROOMS_SUCCESS:

@@ -29,7 +29,7 @@ export const rfidsReducer = (state = { rfids: [] }, action) => {
     case ADMIN_RFIDS_REQUEST:
       return {
         loading: true,
-        rfids: [],
+        rfids: state.rfids,
       }
 
     case ALL_RFIDS_SUCCESS:

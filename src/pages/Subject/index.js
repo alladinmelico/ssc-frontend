@@ -36,7 +36,10 @@ const Subject = ({history}) => {
   const role = JSON.parse(localStorage.getItem('auth')).role
 
   useEffect(() => {
-    dispatch(getAdminSubjects(page, rowsPerPage))
+    if (!loading) {
+      dispatch(getAdminSubjects(page, rowsPerPage))
+    }
+    
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
@@ -120,7 +123,7 @@ const Subject = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'subject', defaultMessage: 'Subject' })}
     >
       <DataTable
-        rows={subjects}
+        rows={subjects ? subjects : []}
         columns={columns}
         count={count}
         loading={loading}

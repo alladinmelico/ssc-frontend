@@ -29,7 +29,7 @@ export const sectionsReducer = (state = { sections: [] }, action) => {
     case ADMIN_SECTIONS_REQUEST:
       return {
         loading: true,
-        sections: [],
+        sections: state.sections,
       }
 
     case ALL_SECTIONS_SUCCESS:

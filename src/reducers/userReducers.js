@@ -338,7 +338,7 @@ export const newUserReducer = (state = { user: {} }, action) => {
       case ADMIN_USERS_REQUEST:
         return {
           loading: true,
-          users: [],
+          users: state.users,
         }
   
       case GET_USERS_SUCCESS:

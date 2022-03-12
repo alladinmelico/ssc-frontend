@@ -29,7 +29,7 @@ export const subjectsReducer = (state = { subjects: [] }, action) => {
     case ADMIN_SUBJECTS_REQUEST:
       return {
         loading: true,
-        subjects: [],
+        subjects: state.subjects,
       }
 
     case ALL_SUBJECTS_SUCCESS:

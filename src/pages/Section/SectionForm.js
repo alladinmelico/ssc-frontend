@@ -45,10 +45,13 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
     reset({ name: '', president_id: 0, faculty_id: 0})
   }
 
-  const { users } = useSelector((state) => state.allUsers)
+  const { loading: userLoading, users } = useSelector((state) => state.allUsers)
 
   useEffect(() => {  
-    dispatch(allUsers())
+    if (!userLoading) {
+      dispatch(allUsers())
+    }
+    
     if(section.id && !openModal) {
       setOpenModal(true)
       setValue('name', section.name)

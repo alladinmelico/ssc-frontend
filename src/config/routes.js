@@ -73,15 +73,6 @@ const routes = [
     element: <About />,
   },
   {
-    path: '/schedule',
-    exact: true,
-    element: (
-      <AuthorizedRoute>
-        <Schedule />
-      </AuthorizedRoute>
-    ),
-  },
-  {
     path: '/schedule/:id',
     exact: true,
     element: (
@@ -105,6 +96,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <ScheduleForm />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/schedule',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Schedule />
       </AuthorizedRoute>
     ),
   },

@@ -29,7 +29,7 @@ export const facilitiesReducer = (state = { facilities: [] }, action) => {
     case ADMIN_FACILITIES_REQUEST:
       return {
         loading: true,
-        facilities: [],
+        facilities: state.facilities,
       }
 
     case ALL_FACILITIES_SUCCESS:

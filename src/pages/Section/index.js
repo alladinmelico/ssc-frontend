@@ -35,7 +35,10 @@ const Section = ({history}) => {
   const { error: deleteError, isDeleted } = useSelector((state) => state.section)
 
   useEffect(() => {
-    dispatch(getAdminSections(page, rowsPerPage))
+    if (!loading) {
+      dispatch(getAdminSections(page, rowsPerPage))
+    }
+    
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
@@ -107,7 +110,7 @@ const Section = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'section', defaultMessage: 'Section' })}
     >
       <DataTable
-        rows={sections}
+        rows={sections ? sections : []}
         columns={columns}
         count={count}
         loading={loading}

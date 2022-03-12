@@ -36,7 +36,9 @@ const Facility = ({history}) => {
   const { error: deleteError, isDeleted } = useSelector((state) => state.facility)
 
   useEffect(() => {
-    dispatch(getAdminFacilities(page, rowsPerPage))
+    if (!loading) {
+      dispatch(getAdminFacilities(page, rowsPerPage))
+    }
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
@@ -123,7 +125,7 @@ const Facility = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'facility', defaultMessage: 'Facility' })}
     >
       <DataTable
-        rows={facilities}
+        rows={facilities ? facilities : []}
         columns={columns}
         count={count}
         loading={loading}

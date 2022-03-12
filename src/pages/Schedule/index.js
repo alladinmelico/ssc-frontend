@@ -38,7 +38,10 @@ const Schedule = ({history}) => {
   const { error: deleteError, isDeleted } = useSelector((state) => state.schedule)
 
   useEffect(() => {
-    dispatch(getAdminSchedules(page, rowsPerPage))
+    if (!loading) {
+      dispatch(getAdminSchedules(page, rowsPerPage))
+    }
+    
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
@@ -62,21 +65,12 @@ const Schedule = ({history}) => {
   }, [dispatch, deleteError, isDeleted, page, rowsPerPage, error])
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'title', headerName: 'Title', width: 150 },
-    { field: 'type', headerName: 'Type', width: 300 },
-    { field: 'start_date', headerName: 'Start Date', width: 300 },
-    { field: 'end_date', headerName: 'End Date', width: 300 },
-    // { field: 'classroom_id', headerName: 'Classroom', width: 300 },
-    // { field: 'facility_id', headerName: 'Facility', width: 300 },
-    { field: 'start_at', headerName: 'Start Time', width: 300 },
-    { field: 'end_at', headerName: 'End Time', width: 300 },
-    { field: 'repeat_by', headerName: 'Reapeat by', width: 300 },
-    { field: 'days_of_week', headerName: 'Days of Week', width: 300 },
-    // { field: 'note', headerName: 'Note', width: 300 },
-    // { field: 'attachment', headerName: 'Attachment', width: 300 },
-    // { field: 'user_id', headerName: 'User', width: 300 },
-    // { field: 'users', headerName: 'Users', width: 300 },
+    { field: 'id', headerName: 'ID', type: 'number'},
+    { field: 'title', headerName: 'Title', flex: 1 , minWidth: 150},
+    { field: 'start_date', headerName: 'Start Date'},
+    { field: 'end_date', headerName: 'End Date'},
+    { field: 'start_at', headerName: 'Start Time'},
+    { field: 'end_at', headerName: 'End Time'},
     {
       field: 'actions',
       headerName: 'Actions',
@@ -127,7 +121,7 @@ const Schedule = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedule' })}
     >
       <DataTable
-        rows={schedules}
+        rows={schedules ? schedules : []}
         columns={columns}
         count={count}
         loading={loading}
@@ -142,16 +136,6 @@ const Schedule = ({history}) => {
             <AddIcon />
           </Fab>
         </Link>
-      </Box>
-      <Box>
-        {editMode ? (
-          <ScheduleForm schedule={schedule} modalClosed={() => setSchedule({})} page={page} rowsPerPage={rowsPerPage} />
-        ) : (
-          <ScheduleShow schedule={schedule} modalClosed={() => {
-            setSchedule({})
-            setEditMode(true)
-          }} />
-        )}
       </Box>
     </Page>
   );

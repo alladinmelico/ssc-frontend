@@ -34,7 +34,10 @@ const Classroom = ({history}) => {
   const { error: deleteError, isDeleted } = useSelector((state) => state.classroom)
 
   useEffect(() => {
-    dispatch(getAdminClassrooms(page, rowsPerPage))
+    if (!loading) {
+      dispatch(getAdminClassrooms(page, rowsPerPage))
+    }
+    
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
@@ -109,7 +112,7 @@ const Classroom = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'classroom', defaultMessage: 'Classroom' })}
     >
       <DataTable
-        rows={classrooms.map(classroom => ({...classroom, section:classroom.section?.name }))}
+        rows={classrooms ? classrooms.map(classroom => ({...classroom, section:classroom.section?.name })) : []}
         columns={columns}
         count={count}
         loading={loading}

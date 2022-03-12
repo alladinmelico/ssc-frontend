@@ -46,7 +46,10 @@ const User = ({history}) => {
   }
 
   useEffect(() => {
-    dispatch(getAdminUsers(page, rowsPerPage))
+    if (!loading) {
+      dispatch(getAdminUsers(page, rowsPerPage))
+    }
+    
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
@@ -160,7 +163,7 @@ const User = ({history}) => {
       pageTitle={intl.formatMessage({ id: 'user', defaultMessage: 'User' })}
     >
       <DataTable
-        rows={users.map(user => ({...user, section:user.section?.name, course_name: user.course?.code, role: getRole(user.role_id) }))}
+        rows={users ? users.map(user => ({...user, section:user.section?.name, course_name: user.course?.code, role: getRole(user.role_id) })) : []}
         columns={columns}
         count={count}
         loading={loading}

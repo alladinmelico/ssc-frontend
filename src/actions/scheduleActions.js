@@ -130,7 +130,7 @@ export const getScheduleDetails = (id) => async (dispatch) => {
     }
 }
 
-export const getAdminSchedules = (page = 1, limit = 10) => async (dispatch) => {
+export const getAdminSchedules = (page = 1, limit = 10, data = null) => async (dispatch) => {
     try {
 
         dispatch({ type: ADMIN_SCHEDULES_REQUEST })
@@ -143,9 +143,6 @@ export const getAdminSchedules = (page = 1, limit = 10) => async (dispatch) => {
         })
 
     } catch (error) {
-        if (error.response.status === 401) {
-          // localStorage.setItem('auth', JSON.stringify({isAuthenticated: false}))
-        }
         dispatch({
             type: ADMIN_SCHEDULES_FAIL,
             payload: error.response.data.message
