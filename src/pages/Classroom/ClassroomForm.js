@@ -18,7 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Autocomplete, Box, Chip, OutlinedInput, Skeleton } from '@mui/material';
 import { getAdminSections } from 'actions/sectionActions';
 
-export default function ClassroomModal ({page, rowsPerPage, modalClosed, classroom}) {
+export default function ClassroomModal ({modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
   const [courses, setCourses] = useState([])
   const { loading: subjectLoading, subjects } = useSelector((state) => state.subjects)
@@ -103,7 +103,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
     if (success) {
       resetForm()
       dispatch({ type: NEW_CLASSROOM_RESET })
-      dispatch(getAdminClassrooms(page, rowsPerPage))
+      dispatch(getAdminClassrooms(0, 50))
       modalClosed()
       enqueueSnackbar('Classroom successfully added.', {
         variant: 'success',
@@ -118,7 +118,7 @@ export default function ClassroomModal ({page, rowsPerPage, modalClosed, classro
       resetForm()     
       modalClosed() 
       dispatch({ type: UPDATE_CLASSROOM_RESET })
-      dispatch(getAdminClassrooms(page, rowsPerPage))
+      dispatch(getAdminClassrooms(0, 50))
       enqueueSnackbar('Classroom successfully updated.', {
         variant: 'success',
         anchorOrigin: {

@@ -21,7 +21,7 @@ import Main from 'components/Map/Main';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
-export default function FacilityModal ({page, rowsPerPage, modalClosed, facility}) {
+export default function FacilityModal ({modalClosed, facility}) {
   const [openModal, setOpenModal] = useState(false)
   const [area, setArea] = useState(0)
   const [maxPeople, setMaxPeople] = useState(0)
@@ -104,7 +104,7 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
     if (success) {
       resetForm()
       dispatch({ type: NEW_FACILITY_RESET })
-      dispatch(getAdminFacilities(page, rowsPerPage))
+      dispatch(getAdminFacilities(0, 50))
       modalClosed()
       enqueueSnackbar('Facility successfully added.', {
         variant: 'success',
@@ -119,7 +119,7 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
       resetForm()     
       modalClosed() 
       dispatch({ type: UPDATE_FACILITY_RESET })
-      dispatch(getAdminFacilities())
+      dispatch(getAdminFacilities(0, 50))
       enqueueSnackbar('Facility successfully updated.', {
         variant: 'success',
         anchorOrigin: {

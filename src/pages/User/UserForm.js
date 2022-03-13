@@ -52,8 +52,8 @@ export default function UserModal ({modalClosed, user}) {
   }
 
   useEffect(() => {
-    dispatch(getAdminCourses(page, rowsPerPage))
-    dispatch(getAdminSections(page, rowsPerPage))
+    dispatch(getAdminCourses(0, 50))
+    dispatch(getAdminSections(0, 50))
     if(user.id && !openModal) {
       setOpenModal(true)
       setValue('name', user.name)
@@ -71,7 +71,7 @@ export default function UserModal ({modalClosed, user}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_USER_RESET })
-      dispatch(getAdminUsers(page, rowsPerPage))
+      dispatch(getAdminUsers(0, 50))
       modalClosed()
       enqueueSnackbar('User successfully added.', {
         variant: 'success',
@@ -85,7 +85,7 @@ export default function UserModal ({modalClosed, user}) {
     if (isUpdated) {
       resetForm()     
       dispatch({ type: UPDATE_USER_RESET })
-      dispatch(getAdminUsers())
+      dispatch(getAdminUsers(0, 50))
       modalClosed() 
       enqueueSnackbar('User successfully updated.', {
         variant: 'success',

@@ -19,7 +19,7 @@ import {
 } from "../../actions/userActions"
 
 
-export default function SectionModal ({page, rowsPerPage, modalClosed, section}) {
+export default function SectionModal ({modalClosed, section}) {
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newSection)
@@ -67,7 +67,7 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
     if (success) {
       resetForm()
       dispatch({ type: NEW_SECTION_RESET })
-      dispatch(getAdminSections(page, rowsPerPage))
+      dispatch(getAdminSections(0, 50))
       modalClosed()
       enqueueSnackbar('Section successfully added.', {
         variant: 'success',
@@ -82,7 +82,7 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
       resetForm()     
       modalClosed() 
       dispatch({ type: UPDATE_SECTION_RESET })
-      dispatch(getAdminSections())
+      dispatch(getAdminSections(0, 50))
       enqueueSnackbar('Section successfully updated.', {
         variant: 'success',
         anchorOrigin: {

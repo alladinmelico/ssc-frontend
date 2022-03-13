@@ -20,7 +20,7 @@ import * as yup from "yup"
 import { getAdminUsers } from 'actions/userActions'
 
 
-export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
+export default function RfidModal ({modalClosed, rfid}) {
   const [openModal, setOpenModal] = useState(false)
   const { users, count  } = useSelector((state) => state.users)
   const [toAddUsers, setToAddUsers] = useState([]);
@@ -49,7 +49,9 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
   }
 
   useEffect(() => {
-    dispatch(getAdminUsers(page, rowsPerPage))
+    if (!users) {
+      dispatch(getAdminUsers(0, 50))
+    }
     if(rfid && rfid.id  && !openModal) {
       setOpenModal(true)
       setValue('value', rfid.value)
@@ -65,7 +67,7 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_RFID_RESET })
-      dispatch(getAdminRfids(page, rowsPerPage))
+      dispatch(getAdminRfids(0, 50))
       modalClosed()
       enqueueSnackbar('Rfid successfully added.', {
         variant: 'success',
@@ -80,7 +82,7 @@ export default function RfidModal ({modalClosed, rfid, page, rowsPerPage}) {
       resetForm()     
       modalClosed() 
       dispatch({ type: UPDATE_RFID_RESET })
-      dispatch(getAdminRfids(page, rowsPerPage))
+      dispatch(getAdminRfids(0, 50))
       enqueueSnackbar('Rfid successfully updated.', {
         variant: 'success',
         anchorOrigin: {

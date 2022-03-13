@@ -16,7 +16,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Skeleton } from '@mui/material';
 
-export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
+export default function CourseModal ({ modalClosed, course}) {
   const [openModal, setOpenModal] = useState(false)
   const [departments, setcourseDepartments] = useState([])
   const dispatch = useDispatch()
@@ -85,7 +85,7 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
       resetForm()     
       modalClosed() 
       dispatch({ type: UPDATE_COURSE_RESET })
-      dispatch(getAdminCourses())
+      dispatch(getAdminCourses(0, 50))
       enqueueSnackbar('Course successfully updated.', {
         variant: 'success',
         anchorOrigin: {
