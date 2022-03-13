@@ -108,7 +108,7 @@ export default function SectionModal ({page, rowsPerPage, modalClosed, section})
         title={section && section.id ? 'Edit Section' : 'Add Section'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
-        loading={loading}
+        loading={loading || updateLoading}
         openModal={openModal}
         setOpenModal={setOpenModal}
         cancelled={() => {

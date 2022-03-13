@@ -70,7 +70,7 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
     if (success) {
       resetForm()
       dispatch({ type: NEW_COURSE_RESET })
-      dispatch(getAdminCourses(page, rowsPerPage))
+      dispatch(getAdminCourses(0, 50))
       modalClosed()
       enqueueSnackbar('Course successfully added.', {
         variant: 'success',
@@ -111,7 +111,7 @@ export default function CourseModal ({page, rowsPerPage, modalClosed, course}) {
         title={course && course.id ? 'Edit Course' : 'Add Course'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
-        loading={loading}
+        loading={loading || updateLoading}
         openModal={openModal}
         setOpenModal={setOpenModal}
         cancelled={() => {

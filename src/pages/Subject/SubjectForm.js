@@ -90,7 +90,7 @@ export default function SubjectModal ({page, rowsPerPage, modalClosed, subject})
         title={subject && subject.id ? 'Edit Subject' : 'Add Subject'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
-        loading={loading}
+        loading={loading || updateLoading}
         openModal={openModal}
         setOpenModal={setOpenModal}
         cancelled={() => {

@@ -154,7 +154,7 @@ export default function FacilityModal ({page, rowsPerPage, modalClosed, facility
         title={facility.id ? 'Edit Facility' : 'Add Facility'}
         onSubmit={handleSubmit(onSubmit)}
         success={success || isUpdated}
-        loading={loading}
+        loading={loading || updateLoading}
         openModal={openModal}
         setOpenModal={setOpenModal}
         cancelled={() => {
