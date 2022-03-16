@@ -175,7 +175,7 @@ export default function FacilityModal ({modalClosed, facility}) {
               <TextField 
                 {...register("name", { required: true, min: 3 })}
                 error={errors.name ? true : false}
-                label="Name"
+                label="Room"
                 variant="outlined"
                 defaultValue={facility ? facility.name : ''}
                 helperText={errors.name?.message}

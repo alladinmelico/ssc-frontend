@@ -12,7 +12,7 @@ export default function PrevNextButtons ({text, handleBack, isActive}) {
         sx={{ mr: 1 }}
         type="button"
       >
-        Back
+        Cancel
       </Button>
       <Box sx={{ flex: '1 1 auto' }} />
 
