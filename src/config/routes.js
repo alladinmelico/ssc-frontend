@@ -29,7 +29,7 @@ const FilterDemo = lazy(() => import('../pages/FilterDemo'))
 const ListPageDemo = lazy(() => import('../pages/ListPageDemo'))
 const TabsDemo = lazy(() => import('../pages/TabsDemo'))
 const MyAccount = lazy(() => import('../pages/MyAccount/MyAccount'))
-const role = JSON.parse(localStorage.getItem('auth')).role
+const role = JSON.parse(localStorage.getItem('auth'))?.role
 
 const routes = [
   {
