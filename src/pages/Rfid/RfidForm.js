@@ -23,7 +23,7 @@ import { getAdminUsers } from 'actions/userActions'
 export default function RfidModal ({modalClosed, rfid}) {
   const [openModal, setOpenModal] = useState(false)
   const { users, count  } = useSelector((state) => state.users)
-  const [toAddUsers, setToAddUsers] = useState([]);
+  const [toAddUser, setToAddUser] = useState(rfid? rfid.user : {});
   const { loading, error, success, } = useSelector((state) => state.newRfid)
   const dispatch = useDispatch()
 
@@ -49,7 +49,7 @@ export default function RfidModal ({modalClosed, rfid}) {
   }
 
   useEffect(() => {
-    if (!users) {
+    if (users && users.length === 0) {
       dispatch(getAdminUsers(0, 50))
     }
     if(rfid && rfid.id  && !openModal) {
@@ -58,6 +58,7 @@ export default function RfidModal ({modalClosed, rfid}) {
       setValue('is_logged', rfid.is_logged)
       setValue('user_id', rfid.user_id)
       setValue('email', rfid.user?.email)
+      setToAddUser(rfid.user)
     }
 
     if (error || updateError) {
@@ -95,7 +96,7 @@ export default function RfidModal ({modalClosed, rfid}) {
 
   const onSubmit = async data => {
     if (rfid.id) {
-      dispatch(updateRfid(rfid.id, data))
+      dispatch(updateRfid(rfid.id, {...data, user_id: toAddUser.id}))
     } else {
       dispatch(newRfid(data))
     }
@@ -129,12 +130,12 @@ export default function RfidModal ({modalClosed, rfid}) {
         {count ? (
         <FormControl fullWidth required margin="normal">
           <Autocomplete
-            {...register("user_id", { required: true})}
             id="emails-list"
             name="users"
             options={users}
-            value={rfid ? rfid.user: ''}
+            value={toAddUser}
             getOptionLabel={((option) => option.email)}
+            onChange={(event, newVal) => setToAddUser(newVal)}
             renderInput={(params) => (
               <TextField
                 {...params}
