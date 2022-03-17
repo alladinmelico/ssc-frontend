@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Mech2nd = ({selected, setSelected, facilities}) => {
+const Mech2nd = ({selected, setSelected, facilities, hasShadow}) => {
 
   function getColor(facility, key) {
     if (selected !== '') {
@@ -53,7 +53,7 @@ const Mech2nd = ({selected, setSelected, facilities}) => {
             y={rect.y}
             x={rect.x}
             stroke="#000"
-            className='rect'
+            className={hasShadow ? 'rect rect-has-shadow':'rect'}
             onClick={() => setSelected(rect.id)}
             fill={getColor(facilities[rect.id], rect.id)}/>
         </g>

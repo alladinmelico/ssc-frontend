@@ -31,6 +31,7 @@ import Chemtech from './Chemtech'
 import Ndt from './Ndt'
 import Bsad2nd from './Bsad2nd'
 import AllMap from './AllMap'
+import SecondAllMap from './SecondAllMap'
 import Switch from '@mui/material/Switch'
 import { makeStyles } from '@mui/styles';
 
@@ -121,12 +122,19 @@ const classes = useStyles();
       </Stack>
       {facilities.length ? (
         <Box>
-          {showWholeMap ? (
-            <AllMap
-              setSelected={setSelected}
-              selected={selected}
-              facilities={formatFacility()}
-            />
+          {(showWholeMap) ? (
+            <Box>
+              {(floor == 1) && <AllMap
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(floor == 2) && <SecondAllMap
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+            </Box>
           ) : (
             <Box>
               {(selectedDepartment === 1 && floor == 1) && <Beng 

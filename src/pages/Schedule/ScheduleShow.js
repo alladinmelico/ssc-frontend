@@ -6,6 +6,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
+import Grid from '@mui/material/Grid';
 import Page from 'material-ui-shell/lib/containers/Page';
 import Skeleton from '@mui/material/Skeleton';
 import API from '../../config/api'
@@ -141,7 +142,7 @@ const ScheduleShow = () => {
           <Skeleton variant="text" sx={{ my: 2  }} />
         </Container>
       ) :(  
-        <Container maxWidth="md" sx={{ mx: "auto"}}>
+        <Container maxWidth="lg" sx={{ mx: "auto"}}>
           <Box sx={{ p: '1rem' }}>
             <Box sx={{mx:"auto", mt:"1rem"}}>
               <SchedDetail label="Created by" value={schedule.user?.name} /> 
@@ -158,34 +159,36 @@ const ScheduleShow = () => {
             <Box sx={{mx:"auto", mt:"1rem"}}>
               <SchedDetail label="Facility" value={schedule.facility?.name} />
             </Box>
-            <Box sx={{mx:"auto"}}>
-              <Stack
-                sx={{mt:"12px"}}
-                direction="row"
-                divider={<Divider orientation="vertical" flexItem />}
-                justifyContent="space-between"
-                spacing={2}>
-                <SchedDetail label="Start Time" value={schedule.start_at} />
-                <SchedDetail label="End Time" value={schedule.end_at} />
-              </Stack>
+            <Box sx={{mx:"auto", mt:"1rem"}}>
+              <Grid container direction="row">
+                <Grid item xs={4}>
+                  <SchedDetail label="Start Time" value={schedule.start_at} />
+                </Grid>
+                <Grid item xs={4}>
+                  <SchedDetail label="End Time" value={schedule.end_at} />
+                </Grid>
+              </Grid>
             </Box>
-             <Box sx={{mx:"auto", mt:"10px"}}>
-              <Stack sx={{mt:"1rem"}} direction="row" spacing={2}
-                divider={<Divider orientation="vertical" flexItem />}
-                justifyContent="space-between"
-              > 
-                <SchedDetail label="Start Date" value={schedule.start_date} />
-                <SchedDetail label="End Date" value={schedule.end_date} />
-              </Stack>
+             <Box sx={{mx:"auto", mt:"1rem"}}>
+              <Grid container direction="row" spacing={1}>
+                <Grid item xs={4}>
+                  <SchedDetail label="Start Date" value={schedule.start_date} />
+                </Grid>
+                <Grid item xs={4}>
+                  <SchedDetail label="End Date" value={schedule.end_date} />
+                </Grid>
+              </Grid>
             </Box>
             {schedule.is_recurring && (
-              <Box sx={{mx:"auto", mt:"10px"}}>
-                <Stack sx={{mt:"12px"}} direction="row" spacing={2}
-                  justifyContent="space-around"
-                >
-                  <SchedDetail label="Repeat By" value={schedule.repeat_by} />
+              <Box sx={{mx:"auto", mt:"1rem"}}>
+                <Grid container direction="row" spacing={1}>
+                  <Grid item xs={4}>
+                    <SchedDetail label="Repeat By" value={schedule.repeat_by} />
+                  </Grid>
+                  <Grid item xs={4}>
                   <SchedDetail label="Days of Week" value={typeof schedule.days_of_week === 'string'? schedule.days_of_week : schedule.days_of_week.join(', ')} />
-                </Stack>
+                  </Grid>
+                </Grid>
               </Box>           
             )}
             <Box sx={{mx:"auto", mt:"1rem"}}>
@@ -200,7 +203,7 @@ const ScheduleShow = () => {
                 </a>
               </Box>
             )}
-            <Container maxWidth="sm" sx={{ mt: "2rem" }}>
+            <Container maxWidth="lg" sx={{ mt: "2rem" }}>
               <Box sx={{mx:"auto", mt:"1rem"}}>
                 <SchedDetail label="Users" value={schedule.batches?.map((row, rowIndex) => (
                   <ListItem

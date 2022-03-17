@@ -299,8 +299,8 @@ const LandingPage = () => {
           image: "/laravel-logo.jpg"
         },
         {
-          name: "Heroku",
-          image: "/heroku-logo.png"
+          name: "Cloudways",
+          image: "/cloudways-logo.jpg"
         },
         {
           name: "AWS Relational Database Service",
