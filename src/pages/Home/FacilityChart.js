@@ -49,7 +49,7 @@ const FacilityChart = () => {
       },
       title: {
         display: true,
-        text: "Top 10 biggest room capacity",
+        text: "Top 10 Biggest Room Capacity",
       },
       tooltip: {
         callbacks: {
