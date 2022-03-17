@@ -196,7 +196,7 @@ const classes = useStyles();
         <Skeleton animation="wave" height={300} sx={{ mx: '1rem' }} />
       )}
       <Stack  direction="row" justifyContent="space-between">
-        {selected && (
+        {(selected && facilities.find(item => item.svg_key === selected)) && (
           <Box>
             <Stack>
               <Typography variant="overline" >

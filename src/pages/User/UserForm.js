@@ -38,7 +38,7 @@ export default function UserModal ({modalClosed, user}) {
     name: yup.string().required("Name is a required field."),
     email: yup.string().required("Email is a required field."),
     section_id: yup.string().required("Section is a required field."),
-    school_id: yup.string().required("School ID is a required field."),
+    school_id: yup.string().required("School ID is a required field.").matches(/(TUPT-)\d\d-\d\d\d\d/i, "School ID's format should be: TUPT-**-****"),
     year: yup.number().required("Year must be a number type."),
     course_id: yup.number().required("Course ID is a required field."),
   }).required();
@@ -60,7 +60,7 @@ export default function UserModal ({modalClosed, user}) {
       setValue('email', user.email)
       setValue('section_id', user.section)
       setValue('year', user.year)
-      setValue('school_id', user.school_id)
+      setValue('school_id', user.school_id);
       setValue('course_id', user.course_id)
     }
 

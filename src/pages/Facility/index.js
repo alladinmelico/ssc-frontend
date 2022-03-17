@@ -21,6 +21,9 @@ import {
 } from "../../actions/facilityActions"
 import { DELETE_FACILITY_RESET } from "../../constants/facilityConstants"
 import FacilityShow from './FacilityShow';
+import AddIcon from '@mui/icons-material/Add';
+import { Link } from "react-router-dom"
+import Fab from '@mui/material/Fab';
 
 const Facility = ({history}) => {
   const [page, setPage] = useState(0)
@@ -50,7 +53,7 @@ const Facility = ({history}) => {
 
     if (isDeleted) {
       dispatch({ type: DELETE_FACILITY_RESET })
-      dispatch(getAdminFacilities())
+      dispatch(getAdminFacilities(page, rowsPerPage))
       enqueueSnackbar('Facility successfully Deleted.', {
         variant: 'success',
         anchorOrigin: {
@@ -73,10 +76,7 @@ const Facility = ({history}) => {
 
     if (role === 1) {
       actions.push(
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
-          setFacility(params.row)
-          setEditMode(true)
-        }} label="Edit" />,
+        <GridActionsCellItem icon={ <Link to={`/facility/${params.row.id}/edit`} style={{ textDecoration: 'none' }}><EditOutlinedIcon color="primary" /></Link>} label="Edit" />,
         <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
@@ -135,14 +135,11 @@ const Facility = ({history}) => {
         setRowsPerPage={setRowsPerPage}
       />
       <Box>
-        {editMode ? (
-          <FacilityForm facility={facility} modalClosed={() => setFacility({})} page={page} rowsPerPage={rowsPerPage} />
-        ) : (
-          <FacilityShow facility={facility} modalClosed={() => {
-            setFacility({})
-            setEditMode(true)
-          }} />
-        )}
+        <Link to="/facility/create">
+          <Fab color="primary" aria-label="add" className="fabIcon">
+            <AddIcon />
+          </Fab>
+        </Link>
       </Box>
     </Page>
   );

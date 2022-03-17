@@ -50,7 +50,7 @@ const Rfid = ({history}) => {
 
     if (isDeleted) {
       dispatch({ type: DELETE_RFID_RESET })
-      dispatch(getAdminRfids())
+      dispatch(getAdminRfids(page, rowsPerPage))
       enqueueSnackbar('Rfid successfully added.', {
         variant: 'success',
         anchorOrigin: {

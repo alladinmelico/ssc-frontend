@@ -119,7 +119,7 @@ export const getFacilityDetails = (id) => async (dispatch) => {
 
         dispatch({
             type: FACILITY_DETAILS_SUCCESS,
-            payload: data.facility
+            payload: data.data
         })
 
     } catch (error) {

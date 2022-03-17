@@ -18,6 +18,7 @@ const Rfid = lazy(() => import('../pages/Rfid'))
 const Temperature = lazy(() => import('../pages/Temperature'))
 const Subject = lazy(() => import('../pages/Subject'))
 const Facility = lazy(() => import('../pages/Facility'))
+const FacilityForm = lazy(() => import('../pages/Facility/FacilityForm'))
 const Course = lazy(() => import('../pages/Course'))
 const Classroom = lazy(() => import('../pages/Classroom'))
 const Section = lazy(() => import('../pages/Section'))
@@ -137,6 +138,24 @@ const routes = [
     ),
   },
   {
+    path: '/facility/create',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <FacilityForm />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/facility/:id/edit',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <FacilityForm />
+      </AuthorizedRoute>
+    ),
+  },
+  {
     path: '/facility',
     exact: true,
     element: (
@@ -186,7 +205,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {role === 1 ? <Rfid /> : <Temperature />}          
+        {role === 1 ? <Temperature /> : <PageNotFound />}          
       </AuthorizedRoute>
     ),
   },

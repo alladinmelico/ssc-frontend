@@ -339,7 +339,7 @@ export const deleteUser = (id) => async (dispatch) => {
 
         dispatch({
             type: DELETE_USER_SUCCESS,
-            payload: data.success
+            payload: data
         })
 
     } catch (error) {

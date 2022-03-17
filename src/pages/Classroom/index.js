@@ -49,7 +49,7 @@ const Classroom = ({history}) => {
 
     if (isDeleted) {
       dispatch({ type: DELETE_CLASSROOM_RESET })
-      dispatch(getAdminClassrooms())
+      dispatch(getAdminClassrooms(page, rowsPerPage))
       enqueueSnackbar('Classroom successfully deleted.', {
         variant: 'success',
         anchorOrigin: {
