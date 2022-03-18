@@ -271,7 +271,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 />
               </Grid>          
             )}
-            {isRecurring && (
+            {isRecurring && endDate && (
               <Grid item xs={6}>
                 <FormControl fullWidth required>
                   <InputLabel id="repeatBy-select-label">Repeat by</InputLabel>

@@ -16,6 +16,7 @@ const ScheduleForm = lazy(() => import('../pages/Schedule/ScheduleForm'))
 const User = lazy(() => import('../pages/User'))
 const Rfid = lazy(() => import('../pages/Rfid'))
 const Temperature = lazy(() => import('../pages/Temperature'))
+const Monitor = lazy(() => import('../pages/Monitor'))
 const Subject = lazy(() => import('../pages/Subject'))
 const Facility = lazy(() => import('../pages/Facility'))
 const FacilityForm = lazy(() => import('../pages/Facility/FacilityForm'))
@@ -206,6 +207,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         {role === 1 ? <Temperature /> : <PageNotFound />}          
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/monitor',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        {role === 1 ? <Monitor /> : <PageNotFound />}          
       </AuthorizedRoute>
     ),
   },

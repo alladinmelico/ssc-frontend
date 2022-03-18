@@ -28,7 +28,7 @@ export const getClassrooms = () => async (dispatch) => {
 
         dispatch({ type: ALL_CLASSROOMS_REQUEST })
 
-        const { data } = await API.get(`classroom?user_id=1`)
+        const { data } = await API.get(`classroom`)
 
         dispatch({
             type: ALL_CLASSROOMS_SUCCESS,

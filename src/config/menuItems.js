@@ -34,7 +34,8 @@ import {
   PersonOutlineOutlined,
   NotificationsNoneOutlined,
   EmailOutlined,
-  AssessmentOutlined
+  AssessmentOutlined,
+  MonitorOutlined
 } from '@mui/icons-material'
 
 import allLocales from './locales'
@@ -184,6 +185,12 @@ const getMenuItems = (props) => {
       primaryTogglesNestedList: true,
       leftIcon: <DevicesOutlined />,
       nestedItems: [
+        {
+          value: '/monitor',
+          visible: isAuthorised,
+          primaryText: intl.formatMessage({ id: 'monitor', defaultMessage: 'Monitor' }),
+          leftIcon: <MonitorOutlined />,
+        },
         {
           value: '/rfid',
           visible: isAuthorised,
