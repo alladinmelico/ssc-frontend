@@ -19,8 +19,8 @@ import {
     SCHEDULE_DETAILS_REQUEST,
     SCHEDULE_DETAILS_SUCCESS,
     SCHEDULE_DETAILS_FAIL,
-    CLEAR_ERRORS
-
+    CLEAR_ERRORS,
+    CLEAR_DATA,
 } from '../constants/scheduleConstants'
 
 export const getSchedules = (keyword = '', currentPage = 1) => async (dispatch) => {
@@ -98,6 +98,8 @@ export const updateSchedule = (id, scheduleData) => async (dispatch) => {
             type: UPDATE_SCHEDULE_SUCCESS,
             payload: data
         })
+
+        dispatch({type: CLEAR_DATA})
 
     } catch (error) {
         dispatch({

@@ -15,8 +15,9 @@ import {
   getClassrooms,
   clearErrors,
 } from "../../../actions/classroomActions"
-import { NEW_SCHEDULE_REQUEST } from "../../../constants/scheduleConstants"
+import { NEW_SCHEDULE_REQUEST, CLEAR_DATA } from "../../../constants/scheduleConstants"
 import PrevNextButtons from './PrevNextButtons';
+import { useNavigate } from "react-router-dom";
 
 export default function Step1({history, activeStep, setActiveStep}) {
   const [title, setTitle] = useState('');
@@ -25,6 +26,7 @@ export default function Step1({history, activeStep, setActiveStep}) {
   const [error, setError] = useState({});
 
   const dispatch = useDispatch()
+  const navigate = useNavigate();
 
   const { loading, classrooms, count } = useSelector((state) => state.classrooms)
   const { schedule } = useSelector((state) => state.newSchedule)
@@ -52,7 +54,7 @@ export default function Step1({history, activeStep, setActiveStep}) {
         ...schedule,
         type,
         classroom_id: classroom,
-        classroom_name: classrooms.find(item => item.id === classroom).name,
+        classroom_name: classrooms.find(item => item.id === classroom)?.name,
         title,
         user_id: 1
       }
@@ -120,7 +122,10 @@ export default function Step1({history, activeStep, setActiveStep}) {
           <Skeleton animation="wave" height={100} />
         )}
 
-        <PrevNextButtons setActiveStep={setActiveStep} isActive={false} text="Next" />
+        <PrevNextButtons setActiveStep={setActiveStep} handleBack={() => {
+           dispatch({type: CLEAR_DATA})
+          navigate(-1)
+        }} isFirst={true} text="Next" />
       </form>
     </Box>
   );

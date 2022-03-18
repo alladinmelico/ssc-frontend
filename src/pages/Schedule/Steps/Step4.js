@@ -34,15 +34,20 @@ export default function Step4({history, activeStep, setActiveStep}) {
   const submit = (event) => {
     event.preventDefault()
     const formData = new FormData()
-    Object.entries(schedule).filter(([key, value]) => key !== 'attachment').map(([key, value]) => {
+    Object.entries(schedule).filter(([key, value]) => !['attachment', 'users', 'days_of_week'].includes(key)).map(([key, value]) => {
       if (key.includes('is_')) {
         return formData.append(key, (value ? 1 : 0))
       }
-      if (key === 'users' || 'days_of_week') {
-        return
-      }
       return formData.append(key, value)
     })
+
+    if (typeof schedule.classroom_id === 'object') {
+      formData.delete('classroom_id')
+    }
+
+    if (!schedule.repeat_by?.length) {
+      formData.delete('repeat_by')
+    }
     
     if (schedule.users) {
       const value = schedule.users

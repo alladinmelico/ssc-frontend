@@ -2,17 +2,17 @@ import React from 'react'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-export default function PrevNextButtons ({text, handleBack, isActive}) {
+export default function PrevNextButtons ({text, handleBack, isActive, isFirst}) {
   return (
    <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
       <Button
         color="inherit"
-        disabled={!isActive}
+        disabled={!isFirst && !isActive}
         onClick={handleBack}
         sx={{ mr: 1 }}
         type="button"
       >
-        {!isActive ? 'Cancel' : 'Back'}
+        {isFirst ? 'Cancel' : 'Back'}
       </Button>
       <Box sx={{ flex: '1 1 auto' }} />
 
