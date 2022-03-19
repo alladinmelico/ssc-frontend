@@ -17,6 +17,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { getAdminCourses } from 'actions/courseActions';
 import { getAdminSections } from 'actions/sectionActions';
 import { Skeleton } from '@mui/material';
+import roles from 'constants/roles'
 
 export default function UserModal ({modalClosed, user}) {
   const [openModal, setOpenModal] = useState(false)
@@ -41,6 +42,7 @@ export default function UserModal ({modalClosed, user}) {
     school_id: yup.string().required("School ID is a required field.").matches(/(TUPT-)\d\d-\d\d\d\d/i, "School ID's format should be: TUPT-**-****"),
     year: yup.number().required("Year must be a number type."),
     course_id: yup.number().required("Course ID is a required field."),
+    role_id: yup.number().nullable()
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
@@ -171,7 +173,7 @@ export default function UserModal ({modalClosed, user}) {
             defaultValue={user ? user.section_id : ''}
           >
             {sections.map(section => (
-              <MenuItem value={section.id}>{section.name}</MenuItem>
+              <MenuItem value={section.id} key={section.id}>{section.name}</MenuItem>
             ))}
           </Select>
           </FormControl>
@@ -192,7 +194,7 @@ export default function UserModal ({modalClosed, user}) {
           
           >
             {courses.map(course => (
-              <MenuItem value={course.id}>{course.name}</MenuItem>
+              <MenuItem value={course.id} key={course.id}>{course.name}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -212,6 +214,22 @@ export default function UserModal ({modalClosed, user}) {
           fullWidth
           required
           />
+        
+        <FormControl fullWidth required margin="normal">
+          <InputLabel id="role-select-label">Role</InputLabel>
+          <Select
+            {...register("role_id")}
+            error={errors.role_id ? true : false}
+            labelId="role-select-label"
+            id="role-select"
+            label="role"
+            defaultValue={user ? user.role_id : ''}          
+          >
+            {roles.map(role => (
+              <MenuItem value={role.value} key={role.value}>{role.label}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
       </FormModal>
     </div>

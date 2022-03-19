@@ -11,6 +11,7 @@ import AdminReportForm from './AdminReportForm'
 import UserBypassForm from './UserBypassForm'
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
+import OverstayedUser from './OverstayedUser'
 
 const Communication = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -84,6 +85,9 @@ const Communication = () => {
             })
           }}
           >Notify users on updated Terms of Service and Policy Policy</Button>
+        </Box>
+        <Box sx={{ p: '0.5rem' }}>
+          <OverstayedUser />
         </Box>
       </Stack>
       {modal === 'REPORT' && <AdminReportForm modalClosed={() => setModal('')} openModal={openModal} setOpenModal={setOpenModal} />}          

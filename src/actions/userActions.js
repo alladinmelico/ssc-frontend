@@ -269,7 +269,7 @@ export const allUsers = () => async (dispatch) => {
 
         dispatch({ type: ALL_USERS_REQUEST })
 
-        const { data } = await API.get('/user')
+        const { data } = await API.get('/user?limit=2000')
 
         dispatch({
             type: ALL_USERS_SUCCESS,

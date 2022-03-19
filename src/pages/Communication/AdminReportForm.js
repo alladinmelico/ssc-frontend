@@ -28,11 +28,7 @@ export default function AdminReportModal ({openModal, setOpenModal, modalClosed}
   const onSubmit = async e => {
     e.preventDefault();
     setLoading(true)
-    await API.post(`admin-report`, {message, reason}, {
-      headers: {
-        Authorization: `Bearer ${auth.token}`
-      }
-    })
+    await API.post(`admin-report`, {message, reason})
     .then(res => {
       if (res.status === 200) {
         enqueueSnackbar('Report successfully sent.', {

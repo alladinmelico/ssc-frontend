@@ -137,7 +137,7 @@ export default function SectionModal ({modalClosed, section}) {
           defaultValue={section ? section.president?.id : ''}
          
         >
-          {users.filter(item => item.role_id === 3 ).map(president => (
+          {users.filter(item => item.role_id === 5 ).map(president => (
             <MenuItem value={president.id}>{president.name}</MenuItem>
           ))}
         </Select>
