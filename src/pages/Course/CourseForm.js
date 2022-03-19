@@ -119,7 +119,7 @@ export default function CourseModal ({ modalClosed, course}) {
           resetForm()
       }}>
         <TextField 
-          {...register("name", { required: true, min: 3 })}
+          {...register("name")}
           error={errors.name ? true : false}
           label="Name"
           variant="outlined"
@@ -130,7 +130,7 @@ export default function CourseModal ({ modalClosed, course}) {
         />
 
         <TextField 
-          {...register("code", { required: true, min: 3 })}
+          {...register("code")}
           error={errors.code ? true : false}
           label="Code"
           variant="outlined"
@@ -141,10 +141,10 @@ export default function CourseModal ({ modalClosed, course}) {
         />
 
       {departments ? (
-      <FormControl fullWidth required margin="normal">
+      <FormControl fullWidth margin="normal">
         <InputLabel id="departments-select-label">Department</InputLabel>
         <Select
-          {...register("department_id", { required: true, min: 3 })}
+          {...register("department_id")}
           error={errors.department_id ? true : false}
           labelId="departments-select-label"
           id="departments-select"

@@ -155,7 +155,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
           resetForm()
       }}>
         <TextField 
-          {...register("name", { required: true, min: 3 })}
+          {...register("name")}
           error={errors.name ? true : false}
           label="Name"
           variant="outlined"
@@ -166,7 +166,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         />
 
         <TextField 
-          {...register("description_heading", { required: true, min: 3 })}
+          {...register("description_heading")}
           error={errors.description_heading ? true : false}
           label="Description Heading"
           variant="outlined"
@@ -177,7 +177,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         />
 
         <TextField 
-          {...register("description", { required: true, min: 3 })}
+          {...register("description")}
           error={errors.description ? true : false}
           label="Description"
           variant="outlined"
@@ -188,10 +188,10 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         />
 
         {count ? (
-        <FormControl fullWidth required margin="normal">
+        <FormControl fullWidth margin="normal">
             <InputLabel id="section-select-label">Section</InputLabel>
             <Select
-            {...register("section_id", { required: true})}
+            {...register("section_id")}
             error={errors.section_id ? true : false}
             labelId="section-select-label"
             id="section-select"
@@ -208,10 +208,10 @@ export default function ClassroomModal ({modalClosed, classroom}) {
           )}
 
       {count ? (
-        <FormControl fullWidth required margin="normal">
+        <FormControl fullWidth margin="normal">
           <InputLabel id="subject-select-label">Subject</InputLabel>
           <Select
-            {...register("subject_id", { required: true, min: 3 })}
+            {...register("subject_id")}
             error={errors.subject_id ? true : false}
             labelId="subject-select-label"
             id="subject-select"
@@ -229,10 +229,10 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         )}
 
         <Box>
-          <FormControl fullWidth required margin="normal">
+          <FormControl fullWidth margin="normal">
             <InputLabel id="section-select-label">Google Classroom</InputLabel>
               <Select
-              {...register("google_classroom_id", { required: false })}
+              {...register("google_classroom_id")}
               error={errors.google_classroom_id ? true : false}
               label="Google Classroom"
               variant="outlined"
@@ -247,7 +247,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         </Box>
         
         {count ? (
-        <FormControl fullWidth required margin="normal">
+        <FormControl fullWidth margin="normal">
           <Autocomplete
             multiple={true}
             id="users-list"

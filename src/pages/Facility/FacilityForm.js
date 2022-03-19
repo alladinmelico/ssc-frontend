@@ -62,7 +62,7 @@ export default function FacilityForm () {
     name: yup.string().required("Name is a required field."),
     code: yup.string().required("Code is a required field."),
     code: yup.string().required("Code is a required field."),
-    capacity: yup.number().required("Capacity is a required field.").max(area ? maxPeople : 1000),
+    capacity: yup.number("Capacity must be a number.").required("Capacity is a required field.").max(area ? maxPeople : 1000),
     type: yup.number().required(),
     building_id: yup.number().required(),
   }).required();
@@ -180,7 +180,7 @@ export default function FacilityForm () {
             ):(
               <Box>
                 <TextField 
-                  {...register("name", { required: true, min: 3 })}
+                  {...register("name")}
                   error={errors.name ? true : false}
                   label="Name"
                   variant="outlined"
@@ -192,7 +192,7 @@ export default function FacilityForm () {
 
                 <Stack direction="row" spacing={2}>
                   <TextField 
-                    {...register("code", { required: true, min: 3 })}
+                    {...register("code")}
                     error={errors.code ? true : false}
                     label="Code"
                     variant="outlined"
@@ -202,10 +202,10 @@ export default function FacilityForm () {
                     fullWidth
                   />
 
-                  <FormControl fullWidth required>
+                  <FormControl fullWidth>
                     <InputLabel id="types-select-label">Type</InputLabel>
                     <Select
-                      {...register("type", { required: true })}
+                      {...register("type")}
                       error={errors.type ? true : false}
                       labelId="types-select-label"
                       id="types-select"
@@ -221,10 +221,10 @@ export default function FacilityForm () {
                 </Stack>
 
 
-                <FormControl fullWidth required margin="normal">
+                <FormControl fullWidth margin="normal">
                   <InputLabel id="building-select-label">Building</InputLabel>
                   <Select
-                    {...register("building_id", { required: true, min: 3 })}
+                    {...register("building_id")}
                     error={errors.building_id ? true : false}
                     labelId="building-select-label"
                     id="building-select"
@@ -238,7 +238,7 @@ export default function FacilityForm () {
                 </FormControl>
                 
                 <TextField 
-                  {...register("capacity", { required: true, min: 3, max: maxPeople })}
+                  {...register("capacity")}
                   error={errors.capacity ? true : false}
                   label="Capacity"
                   variant="outlined"
