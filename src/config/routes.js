@@ -16,8 +16,10 @@ const ScheduleForm = lazy(() => import('../pages/Schedule/ScheduleForm'))
 const User = lazy(() => import('../pages/User'))
 const Rfid = lazy(() => import('../pages/Rfid'))
 const Temperature = lazy(() => import('../pages/Temperature'))
+const Monitor = lazy(() => import('../pages/Monitor'))
 const Subject = lazy(() => import('../pages/Subject'))
 const Facility = lazy(() => import('../pages/Facility'))
+const FacilityForm = lazy(() => import('../pages/Facility/FacilityForm'))
 const Course = lazy(() => import('../pages/Course'))
 const Classroom = lazy(() => import('../pages/Classroom'))
 const Section = lazy(() => import('../pages/Section'))
@@ -29,7 +31,7 @@ const FilterDemo = lazy(() => import('../pages/FilterDemo'))
 const ListPageDemo = lazy(() => import('../pages/ListPageDemo'))
 const TabsDemo = lazy(() => import('../pages/TabsDemo'))
 const MyAccount = lazy(() => import('../pages/MyAccount/MyAccount'))
-const role = JSON.parse(localStorage.getItem('auth')).role
+const role = JSON.parse(localStorage.getItem('auth'))?.role
 
 const routes = [
   {
@@ -137,6 +139,24 @@ const routes = [
     ),
   },
   {
+    path: '/facility/create',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <FacilityForm />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/facility/:id/edit',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <FacilityForm />
+      </AuthorizedRoute>
+    ),
+  },
+  {
     path: '/facility',
     exact: true,
     element: (
@@ -186,7 +206,16 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {role === 1 ? <Rfid /> : <Temperature />}          
+        {role === 1 ? <Temperature /> : <PageNotFound />}          
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/monitor',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        {role === 1 ? <Monitor /> : <PageNotFound />}          
       </AuthorizedRoute>
     ),
   },

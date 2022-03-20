@@ -120,8 +120,11 @@ export default function Step2({history, activeStep, setActiveStep}) {
     setStartTime(schedule.start_at ? dayjs(getTimeMin(schedule.start_at)) : dayjs(new Date(0, 0, 0, 7, 0)))
     setEndTime(schedule.end_at ? dayjs(getTimeMin(schedule.end_at)) : startTime.add(8, 'hour'))
     setStartDate(schedule.start_date ? dayjs(schedule.start_date) : dayjs(new Date()))
-    setEndDate(schedule.end_date ? dayjs(schedule.end_date) : startDate.add(1, 'year'))
-    setIsRecurring(schedule.is_recurring ? !!schedule.is_recurring : false)
+    if (schedule.is_recurring) {
+      setEndDate(schedule.end_date)
+    }
+    setIsRecurring(!!schedule.is_recurring)
+
     setIsEndOfSem(schedule.is_end_of_sem? !!schedule.is_end_of_sem : false)
     setDaysOfWeek(schedule.days_of_week ? typeof schedule.days_of_week === 'string' ? (schedule.days_of_week).split(',') : schedule.days_of_week  : [])
     setRepeatBy(schedule.repeat_by ? schedule.repeat_by : '')
@@ -129,7 +132,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
 
   useEffect(() => {
     if (!count) {
-      dispatch(getAdminFacilities(0, 100))
+      dispatch(getAdminFacilities(0, 1000))
     }
 
     if (schedule) {
@@ -243,7 +246,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 label="Start Date"
                 inputFormat="MM/D/YYYY"
                 minDate={dayjs(new Date())}
-                maxDate={endDate}
+                maxDate={isRecurring ? endDate : null}
                 value={startDate}
                 onChange={(val) => {
                   oneDayDiff()
@@ -268,7 +271,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 />
               </Grid>          
             )}
-            {isRecurring && (
+            {isRecurring && endDate && (
               <Grid item xs={6}>
                 <FormControl fullWidth required>
                   <InputLabel id="repeatBy-select-label">Repeat by</InputLabel>

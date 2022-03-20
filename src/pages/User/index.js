@@ -22,6 +22,7 @@ import {
 import { DELETE_USER_RESET } from "../../constants/userConstants"
 import API from 'config/api';
 import UserShow from './UserShow';
+import roles from 'constants/roles'
 
 const User = ({history}) => {
   const [page, setPage] = useState(0)
@@ -143,27 +144,16 @@ const User = ({history}) => {
     },
   ];
 
-  function getRole(role) {
-    switch (role) {
-      case 1:
-        return 'Admin'
-      case 2:
-        return 'Faculty'
-      case 3:
-        return 'Student'
-      case 4:
-        return 'Guest'
-      default:
-        return 'n/a';
-    }
-  }
-
   return (
     <Page
       pageTitle={intl.formatMessage({ id: 'user', defaultMessage: 'User' })}
     >
       <DataTable
-        rows={users ? users.map(user => ({...user, section:user.section?.name, course_name: user.course?.code, role: getRole(user.role_id) })) : []}
+        rows={users ? users.map(user => ({...user, 
+          section:user.section?.name,
+          course_name: user.course?.code,
+          role: roles.find(item => item.value === user.role_id)?.label
+        })) : []}
         columns={columns}
         count={count}
         loading={loading}

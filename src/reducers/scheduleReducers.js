@@ -21,6 +21,7 @@ import {
   SCHEDULE_DETAILS_SUCCESS,
   SCHEDULE_DETAILS_FAIL,
   CLEAR_ERRORS,
+  CLEAR_DATA,
 } from "../constants/scheduleConstants"
 
 export const schedulesReducer = (state = { schedules: [] }, action) => {
@@ -92,6 +93,12 @@ export const newScheduleReducer = (state = { schedule: {} }, action) => {
     case NEW_SCHEDULE_RESET:
       return {
         ...state,
+        success: false,
+      }
+
+    case CLEAR_DATA:
+      return {
+        schedule: [],
         success: false,
       }
 

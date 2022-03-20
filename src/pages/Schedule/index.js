@@ -53,8 +53,8 @@ const Schedule = ({history}) => {
 
     if (isDeleted) {
       dispatch({ type: DELETE_SCHEDULE_RESET })
-      dispatch(getAdminSchedules())
-      enqueueSnackbar('Schedule successfully added.', {
+      dispatch(getAdminSchedules(page, rowsPerPage))
+      enqueueSnackbar('Schedule successfully deleted.', {
         variant: 'success',
         anchorOrigin: {
           vertical: 'top',

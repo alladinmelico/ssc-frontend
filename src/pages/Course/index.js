@@ -48,7 +48,7 @@ const Course = ({history}) => {
 
     if (isDeleted) {
       dispatch({ type: DELETE_COURSE_RESET })
-      dispatch(getAdminCourses())
+      dispatch(getAdminCourses(page, rowsPerPage))
       enqueueSnackbar('Course successfully deleted.', {
         variant: 'success',
         anchorOrigin: {

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default axios.create({
-  baseURL: `https://safe-and-smart-campus.herokuapp.com/api`,
+  baseURL: `https://phplaravel-745170-2505664.cloudwaysapps.com/api`,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',

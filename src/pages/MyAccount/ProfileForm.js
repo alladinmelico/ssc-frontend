@@ -9,18 +9,17 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Skeleton from '@mui/material/Skeleton';
 import Container from '@mui/material/Container';
-
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup"
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-
 import {
   getAdminCourses,
 } from "../../actions/courseActions"
-
 import {
   getAdminSections,
 } from "../../actions/sectionActions"
@@ -31,18 +30,23 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
   const [loading, setLoading] = useState(false)
   const { courses,  count, error } = useSelector((state) => state.courses)
   const { sections } = useSelector((state) => state.sections)
-  const { register, handleSubmit, watch, formState: { errors } } = useForm(
-    { 
-      defaultValues: { 
-        name: user.name,
-        email: user.email,
-        school_id: user.school_id,
-        course_id: user.course_id,
-        year: user.year,
-        section: user.section,
-      }
-    }
-  );
+
+  const schema = yup.object({
+    name: yup.string().required("Name is a required field."),
+    email: yup.string().required("Email is a required field."),
+    section_id: yup.string().required("Section is a required field."),
+    school_id: yup.string().required("School ID is a required field.").matches(/(TUPT-)\d\d-\d\d\d\d/i, "School ID's format should be: TUPT-**-****"),
+    year: yup.number().required("Year must be a number type."),
+    course_id: yup.number().required("Course ID is a required field."),
+  }).required();
+
+  const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
+    resolver: yupResolver(schema)
+  });
+
+  const resetForm = () => {
+    reset({ name: '', email: '', section_id: '', school_id: '', year: 0, course_id: ''})
+  }
 
   const years = [
     {
@@ -91,6 +95,14 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
     if (!count){
       dispatch(getAdminCourses(0, 1000))
       dispatch(getAdminSections(0, 1000))
+    }
+    if(user.id) {
+      setValue('name', user.name)
+      setValue('email', user.email)
+      setValue('section_id', user.section)
+      setValue('year', user.year)
+      setValue('school_id', user.school_id);
+      setValue('course_id', user.course_id)
     }
   },[count])
 

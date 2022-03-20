@@ -116,7 +116,7 @@ export default function SectionModal ({modalClosed, section}) {
           resetForm()
       }}>
         <TextField 
-          {...register("name", { required: true, min: 3 })}
+          {...register("name")}
           error={errors.name ? true : false}
           label="Name"
           variant="outlined"
@@ -126,10 +126,10 @@ export default function SectionModal ({modalClosed, section}) {
           fullWidth
         />
 
-         <FormControl fullWidth required margin="normal">
+         <FormControl fullWidth margin="normal">
           <InputLabel id="president-select-label">President</InputLabel>
            <Select
-          {...register("president_id", { required: true, min: 3 })}
+          {...register("president_id")}
           error={errors.president_id ? true : false}
           labelId="president-select-label"
           id="president-select"
@@ -137,16 +137,16 @@ export default function SectionModal ({modalClosed, section}) {
           defaultValue={section ? section.president?.id : ''}
          
         >
-          {users.filter(item => item.role_id === 3 ).map(president => (
+          {users.filter(item => item.role_id === 5 ).map(president => (
             <MenuItem value={president.id}>{president.name}</MenuItem>
           ))}
         </Select>
          </FormControl>
 
-         <FormControl fullWidth required margin="normal">
+         <FormControl fullWidth margin="normal">
           <InputLabel id="faculty-select-label">Faculty</InputLabel>
           <Select
-          {...register("faculty_id", { required: true, min: 3 })}
+          {...register("faculty_id")}
           error={errors.faculty_id ? true : false}
           labelId="faculty-select-label"
           id="faculty-select"

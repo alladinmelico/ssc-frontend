@@ -40,7 +40,7 @@ export default function ScheduleForm ({ match }) {
       dispatch(clearErrors())
     }
 
-    if (scheduleId) {
+    if (scheduleId && scheduleId == id) {
       dispatch({
         type: NEW_SCHEDULE_REQUEST,
         payload: {
