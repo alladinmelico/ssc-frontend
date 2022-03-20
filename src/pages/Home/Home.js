@@ -51,7 +51,7 @@ const HomePage = () => {
     setLoading(true)
     try {
       await API.get(`dashboard`).then(res => {
-        setPresentUsers(res.data.present_students)
+        setPresentUsers(res.data.present_students.length)
         setSchedules(res.data.schedules_today)
         setSchedulesCount(res.data.schedules_today.length)
         setSchedulesNow(res.data.schedules_now)
@@ -78,12 +78,12 @@ const HomePage = () => {
       getDashboardData()
       getTemperaturesData()
       window.echo.channel('logging').listen('UserLogging', (e) => {
-        enqueueSnackbar(`${e.rfid.user.name} logged ${e.rfid.is_logged ? 'in' : 'out'}.`, {variant: 'success'})  
-        console.log(e)
-        if (e.rfid.is_logged) {
-          setPresentUsers(prevCount => prevCount + 1)
-        } else {
+        if (presentUsers.find(item => item.id === e.user.id) && !e.rfid.is_logged) {
           setPresentUsers(prevCount => prevCount - 1)
+          enqueueSnackbar(`${e.rfid.user.name} logged out.`, {variant: 'success'})  
+        } else if (!presentUsers.find(item => item.id === e.user.id) && e.rfid.is_logged) {
+          setPresentUsers(prevCount => prevCount + 1)
+          enqueueSnackbar(`${e.rfid.user.name} logged in.`, {variant: 'success'})  
         }
       })
       window.echo.channel('temperature').listen('UserTemperature', (e) => {

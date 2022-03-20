@@ -45,7 +45,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
     section_id: yup.number().required("Section is a required field."),
     subject_id: yup.number().required("Subject is a required field."),
     google_classroom_id: yup.string("Google Classroom ID is a string.")
-  }).required();
+  });
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
     resolver: yupResolver(schema)
@@ -88,7 +88,9 @@ export default function ClassroomModal ({modalClosed, classroom}) {
       setValue('description', classroom.description)
       setValue('section_id', classroom.section?.id)
       setValue('subject_id', classroom.subject_id)
-      setValue('google_classroom_id', classroom.google_classroom_id)
+      if (classroom.google_classroom_id) {
+        setValue('google_classroom_id', classroom.google_classroom_id)
+      }
       setToAddUsers(classroom.users)
     }
 
