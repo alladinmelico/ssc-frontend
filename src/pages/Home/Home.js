@@ -78,8 +78,6 @@ const HomePage = () => {
       getDashboardData()
       getTemperaturesData()
       window.echo.channel('logging').listen('UserLogging', (e) => {
-        console.log(e)
-        console.log(presentUsers)
         if (presentUsers.find(item => item.id === e.rfid.user.id) && !e.rfid.is_logged) {
           setPresentUsers(presentUsers.filter(item => item.id != e.rfid.user.id))
           enqueueSnackbar(`${e.rfid.user.name} logged out.`, {variant: 'success'})  
