@@ -67,7 +67,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
   }
 
   const oneDayDiff = () => {
-    if (endDate.diff(startDate, 'day') <= 1) {
+    if (endDate && endDate.diff(startDate, 'day') <= 1) {
       setIsRecurring(false)
     }
   }
@@ -284,7 +284,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                     required={isRecurring}
                   >
                     {['daily', 'weekly', 'monthly'].filter(item => {
-                      if (endDate.diff(startDate, 'month') < 1) {
+                      if (endDate && endDate.diff(startDate, 'month') < 1) {
                         if (endDate.diff(startDate, 'week') < 1) {
                           return item === 'daily'
                         }

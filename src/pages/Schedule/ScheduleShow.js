@@ -186,7 +186,10 @@ const ScheduleShow = () => {
                     <SchedDetail label="Repeat By" value={schedule.repeat_by} />
                   </Grid>
                   <Grid item xs={4}>
-                  <SchedDetail label="Days of Week" value={typeof schedule.days_of_week === 'string'? schedule.days_of_week : schedule.days_of_week.join(', ')} />
+                    {schedule.days_of_week !== null && (
+                      <SchedDetail label="Days of Week" value={typeof schedule.days_of_week === 'string' ?
+                      schedule.days_of_week : schedule.days_of_week.join(', ')} />
+                    )}
                   </Grid>
                 </Grid>
               </Box>           

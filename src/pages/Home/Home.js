@@ -78,12 +78,12 @@ const HomePage = () => {
       getDashboardData()
       getTemperaturesData()
       window.echo.channel('logging').listen('UserLogging', (e) => {
-        enqueueSnackbar(`${e.rfid.user.name} logged ${e.rfid.is_logged ? 'in' : 'out'}.`, {variant: 'success'})  
-        console.log(e)
-        if (e.rfid.is_logged) {
-          setPresentUsers(prevCount => prevCount + 1)
-        } else {
-          setPresentUsers(prevCount => prevCount - 1)
+        if (presentUsers.find(item => item.id === e.rfid.user.id) && !e.rfid.is_logged) {
+          setPresentUsers(presentUsers.filter(item => item.id != e.rfid.user.id))
+          enqueueSnackbar(`${e.rfid.user.name} logged out.`, {variant: 'success'})  
+        } else if (!presentUsers.find(item => item.id === e.rfid.user.id) && e.rfid.is_logged) {
+          setPresentUsers([...presentUsers, e.rfid.user])
+          enqueueSnackbar(`${e.rfid.user.name} logged in.`, {variant: 'success'})  
         }
       })
       window.echo.channel('temperature').listen('UserTemperature', (e) => {
@@ -102,7 +102,7 @@ const HomePage = () => {
             <Grid container spacing={4}>
               <Grid item xs={12} md={12} lg={6}>
                 <DashboardCard 
-                  number={presentUsers}
+                  number={presentUsers.length}
                   title="Users inside the campus"
                   backgroundColor="#d7ffd9"
                   borderColor="#81c784"

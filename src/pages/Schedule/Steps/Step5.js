@@ -30,7 +30,7 @@ export default function Step5({history}) {
 
   useEffect(() => {
     if (schedule || updatedSchedule) {
-      setUrl(`https://safe-and-smart-campus.herokuapp.com/schedule/${schedule ? schedule.id : updatedSchedule.id}`)
+      setUrl(`https://phplaravel-745170-2505664.cloudwaysapps.com/schedule/${schedule ? schedule.id : updatedSchedule.id}`)
     }
   }, [dispatch, history, schedule, updatedSchedule])
 
@@ -61,9 +61,6 @@ export default function Step5({history}) {
               </Paper>
               <Button onClick={() => exportComponentAsJPEG(componentRef, 'ssc-schedule-qr-code')}>
                 Export As JPEG
-              </Button>
-              <Button onClick={() => exportComponentAsPDF(componentRef, 'ssc-schedule-qr-code')}>
-                Export As PDF
               </Button>
               <Button onClick={() => exportComponentAsPNG(componentRef, 'ssc-schedule-qr-code')}>
                 Export As PNG
