@@ -153,44 +153,50 @@ export default function Step3({history, activeStep, setActiveStep}) {
         </Box>
 
         
-        {count ? (
+        {count || count === 0 ? (
           <Stack direction="row" spacing={2}>
-            <Autocomplete
-              fullWidth
-              disablePortal
-              id="add-user-search"
-              value={toAddUser}
-              getOptionLabel={(item) => item.name}
-              onChange={(event, newVal) => setToAddUser(newVal)}
-              options={users}
-              sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Add User" placeholder="Select user to add" />}
-            />
-            <FormControl fullWidth>
-              <InputLabel id="batch-select-label">Batch</InputLabel>
-              <Select
-                labelId="batch-select-label"
-                id="batch-select"
-                value={selectedBatch}
-                label="Batch"
-                onChange={(e) => setSelectedBatch(e.target.value)}
-              >
-                {batches.map((item, index) => (
-                  <MenuItem value={index} key={index}>{index}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Stack>
-              <Button size='small' onClick={() => addUser()}>Add</Button>
-              <Button size='small' onClick={() => clearFields()}>Clear</Button>
-            </Stack>
+            {count === 0 ? (
+              <Typography variant="h5">No user added to "{schedule.classroom_name}" classroom.</Typography>
+            ) : (
+              <Stack direction="row" spacing={2}>            
+                <Autocomplete
+                  fullWidth
+                  disablePortal
+                  id="add-user-search"
+                  value={toAddUser}
+                  getOptionLabel={(item) => item.name}
+                  onChange={(event, newVal) => setToAddUser(newVal)}
+                  options={users}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => <TextField {...params} label="Add User" placeholder="Select user to add" />}
+                />
+                <FormControl fullWidth>
+                  <InputLabel id="batch-select-label">Batch</InputLabel>
+                  <Select
+                    labelId="batch-select-label"
+                    id="batch-select"
+                    value={selectedBatch}
+                    label="Batch"
+                    onChange={(e) => setSelectedBatch(e.target.value)}
+                  >
+                    {batches.map((item, index) => (
+                      <MenuItem value={index} key={index}>{index}</MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <Stack>
+                  <Button size='small' onClick={() => addUser()}>Add</Button>
+                  <Button size='small' onClick={() => clearFields()}>Clear</Button>
+                </Stack>
+              </Stack>
+            )}
           </Stack>
         ) : 
           <Skeleton animation="wave" height={100} />
         }
         
 
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: '1rem' }}>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography variant="overline" >Students in this Classroom</Typography>
             <small>Students are separated on batches.</small>

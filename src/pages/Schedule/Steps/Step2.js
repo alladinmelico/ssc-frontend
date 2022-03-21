@@ -23,11 +23,17 @@ import {
   getAdminFacilities,
   clearErrors,
 } from "../../../actions/facilityActions"
+import Button from '@mui/material/Button';
 const dayjs = require('dayjs')
+const isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
+const isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
+dayjs.extend(isSameOrBefore)
+dayjs.extend(isSameOrAfter)
 
 export default function Step2({history, activeStep, setActiveStep}) {
   const [type, setType] = useState('');
   const [facility, setFacility] = useState('');
+  const [filteredFacilities, setFilteredFacilities] = useState([]);
   const [classroom, setClassroom] = useState({});
   const [classrooms, setClassrooms] = useState([]);
   const [startTime, setStartTime] = useState(dayjs(new Date(0, 0, 0, 7, 0)));
@@ -130,6 +136,36 @@ export default function Step2({history, activeStep, setActiveStep}) {
     setRepeatBy(schedule.repeat_by ? schedule.repeat_by : '')
   }
 
+  function fetchFilteredFacilities () {
+    setFilteredFacilities(facilities.filter(item => {
+      if (!item.schedules) {
+        return true
+      }
+
+      item.schedules.forEach(sched => {
+        const tStart = dayjs(getTimeMin(sched.start_at))
+        const tEnd = dayjs(getTimeMin(sched.end_at))
+        const dStart = dayjs(sched.start_date)
+        if (!isRecurring) {
+          if ((tStart.isSameOrAfter(startTime) ||
+            tEnd.isSameOrBefore(endTime)) &&
+            dStart.isSame(startDate)) {
+            return false  
+          } 
+        } else {
+          const dEnd = dayjs(sched.end_date)
+          if ((tStart.isSameOrAfter(startTime) ||
+            tEnd.isSameOrBefore(endTime)) &&
+            (dStart.isSameOrAfter(startDate) ||
+            dEnd.isSameOrBefore(endDate))) {
+            return false  
+          }        
+        }
+      });
+      return true
+    }))
+  }
+
   useEffect(() => {
     if (!count) {
       dispatch(getAdminFacilities(0, 1000))
@@ -154,7 +190,11 @@ export default function Step2({history, activeStep, setActiveStep}) {
             id="type-select"
             value={type}
             label="Type"
-            onChange={(e) => setType(e.target.value)}
+            onChange={(e) => {
+              setType(e.target.value)
+              setFilteredFacilities([])
+              setFacility('')
+            }}
           >
             {types.map((type, index) => (
               <MenuItem value={++index} key={index}>{type}</MenuItem>
@@ -164,50 +204,17 @@ export default function Step2({history, activeStep, setActiveStep}) {
       
         <LocalizationProvider dateAdapter={DateAdapter}>
           <Grid container rowSpacing={3} spacing={2}>
-
-            {count ? (
-              <Grid item xs={facility ? 9:12}>
-                {type && (
-                  <FormControl fullWidth required>
-                    <InputLabel id="facility-select-label">Facility</InputLabel>
-                    <Select
-                      labelId="facility-select-label"
-                      id="facility-select"
-                      value={facility || null}
-                      label="Type"
-                      onChange={(e) => setFacility(e.target.value)}
-                      required
-                    >
-                      {type ? facilities.filter(item => item.type.toLowerCase() === types[type - 1].toLowerCase()).map(item => (
-                        <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
-                      )) : ''}
-                    </Select>
-                  </FormControl>
-                )}
-              </Grid>
-            ) : (
-              <Grid item xs={12}>
-                <Skeleton animation="wave" height={100} />
-              </Grid>
-            )}
-            {(count && facility) && (
-              <Grid item xs={3}>
-                <TextField
-                  label="Capacity"
-                  fullWidth
-                  disabled
-                  value={facilities.find(item => item.id === facility)?.capacity}
-                />
-              </Grid>
-            )}
-            
             <Grid item xs={6}>
               <TimePicker
                 label="Start Time"
                 minTime={dayjs(new Date(0, 0, 0, 7, 0))}
                 maxTime={dayjs(new Date(0, 0, 0, 21, 0))}
                 value={startTime}
-                onChange={(val) => setStartTime(val)}
+                onChange={(val) => {
+                  setStartTime(val)
+                  setFilteredFacilities([])
+                  setFacility('')
+                }}
                 helper
                 renderInput={(params) => <TextField helperText="Earliest time to set is 7:00 A.M." required fullWidth {...params} />}
               />
@@ -218,7 +225,11 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 minTime={startTime}
                 maxTime={maxTime()}
                 value={endTime}
-                onChange={(val) => setEndTime(val)}
+                onChange={(val) => {
+                  setEndTime(val)
+                  setFilteredFacilities([])
+                  setFacility('')
+                }}
                 renderInput={(params) => <TextField helperText="Maximum time rage is 8 hours. Maximum time to set is 10:00 P.M." required fullWidth {...params} />}
               />
             </Grid>
@@ -250,6 +261,8 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 value={startDate}
                 onChange={(val) => {
                   oneDayDiff()
+                  setFilteredFacilities([])
+                  setFacility('')
                   return setStartDate(val)
                 }}
                 renderInput={(params) => <TextField required fullWidth {...params} />}
@@ -264,6 +277,8 @@ export default function Step2({history, activeStep, setActiveStep}) {
                   value={endDate}
                   onChange={(val) => {
                     oneDayDiff()
+                    setFilteredFacilities([])
+                    setFacility('')
                     setEndDate(val)
                   }}
                   renderInput={(params) => <TextField required fullWidth {...params} />}
@@ -332,7 +347,44 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 </FormControl>
               </Grid>        
             )}
-            
+            <Grid item xs={6}>
+              <Button color="primary" type="button" onClick={fetchFilteredFacilities}>Check available Facilities</Button>
+            </Grid>
+            {count ? (
+              <Grid item xs={facility ? 9:12}>
+                {type && (
+                  <FormControl fullWidth required>
+                    <InputLabel id="facility-select-label">Facility</InputLabel>
+                    <Select
+                      labelId="facility-select-label"
+                      id="facility-select"
+                      value={facility}
+                      label="Type"
+                      onChange={(e) => setFacility(e.target.value)}
+                      required
+                    >
+                      {type ? filteredFacilities.filter(item => item.type.toLowerCase() === types[type - 1].toLowerCase()).map(item => (
+                        <MenuItem value={item.id} key={item.id}>{item.name} {item.schedules ? `[${item.schedules.length} schedules]` : '[no schedule]'}</MenuItem>
+                      )) : ''}
+                    </Select>
+                  </FormControl>
+                )}
+              </Grid>
+            ) : (
+              <Grid item xs={12}>
+                <Skeleton animation="wave" height={100} />
+              </Grid>
+            )}
+            {(count && facility) && (
+              <Grid item xs={3}>
+                <TextField
+                  label="Capacity"
+                  fullWidth
+                  disabled
+                  value={facilities.find(item => item.id === facility)?.capacity}
+                />
+              </Grid>
+            )}            
           </Grid>
         </LocalizationProvider>
 
