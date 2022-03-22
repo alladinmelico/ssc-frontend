@@ -34,6 +34,7 @@ import AllMap from './AllMap'
 import SecondAllMap from './SecondAllMap'
 import Switch from '@mui/material/Switch'
 import { makeStyles } from '@mui/styles';
+import GalleryModal from '../Modal/GalleryModal';
 
 const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment, showDetails}) => {
   const dispatch = useDispatch()
@@ -83,6 +84,12 @@ const classes = useStyles();
       color: '#ef5350',
     },
   ]
+
+  const [showModal,setShowModal] = useState(false);
+    
+    function showModalHandler(){
+        setShowModal(showModal);
+    }
 
   function formatFacility () {
     const temp = {}
@@ -137,57 +144,52 @@ const classes = useStyles();
             </Box>
           ) : (
             <Box>
-              {(selectedDepartment === 1 && floor == 1) && <Beng 
+              {(selectedDepartment === 1 && floor == 1) && 
+               <div id="map-rot">
+                <Beng 
                 setSelected={setSelected}
                 selected={selected}
                 facilities={formatFacility()}
-                />}
+                />
+                </div>}
               {(selectedDepartment === 1 && floor == 2) && <Auto 
                 setSelected={setSelected}
                 selected={selected}
                 facilities={formatFacility()}
                 />}
-              {(selectedDepartment === 2 && floor == 1) && <Bsad 
+              {(selectedDepartment === 2 && floor == 1) && 
+              <div id="map-rot">
+                <Bsad 
                 setSelected={setSelected}
                 selected={selected}
                 facilities={formatFacility()}
-                />}
-              {(selectedDepartment === 2 && floor == 2) && <Bsad2nd 
+                />
+                </div>}
+              {(selectedDepartment === 2 && floor == 2) && 
+              <div id="map-rot">
+                <Bsad2nd 
                 setSelected={setSelected}
                 selected={selected}
                 facilities={formatFacility()}
-                />}
-              {(selectedDepartment === 3 && floor == 1) && <Civil 
+                />
+                </div>}
+              {(selectedDepartment === 3 && floor == 1) && 
+              <div id="map-rot">
+                <Civil 
                 setSelected={setSelected}
                 selected={selected}
                 facilities={formatFacility()}
-                />}
-              {(selectedDepartment === 3 && floor == 2) && <Comtech 
+                />
+                </div>}
+              {(selectedDepartment === 3 && floor == 2) && 
+              <div id="map-rotate">
+                <Comtech 
                 setSelected={setSelected}
                 selected={selected}
                 facilities={formatFacility()}
-                />}
+                />
+                </div>}
               {(selectedDepartment === 4 && floor == 1) && <Electrical 
-                setSelected={setSelected}
-                selected={selected}
-                facilities={formatFacility()}
-                />}
-              {(selectedDepartment === 5 && floor == 1) && <Mech 
-                setSelected={setSelected}
-                selected={selected}
-                facilities={formatFacility()}
-                />}
-              {(selectedDepartment === 5 && floor == 2) && <Mech2nd 
-                setSelected={setSelected}
-                selected={selected}
-                facilities={formatFacility()}
-                />}
-              {(selectedDepartment === 5 && floor == 3) && <Chemtech 
-                setSelected={setSelected}
-                selected={selected}
-                facilities={formatFacility()}
-                />}
-              {(selectedDepartment === 5 && floor == 4) && <Ndt 
                 setSelected={setSelected}
                 selected={selected}
                 facilities={formatFacility()}
@@ -197,6 +199,39 @@ const classes = useStyles();
                 selected={selected}
                 facilities={formatFacility()}
                 />}            
+              {(selectedDepartment === 5 && floor == 1) && 
+              <div id="map-rot">
+                <Mech 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />
+                </div>}
+              {(selectedDepartment === 5 && floor == 2) && 
+              <div id="map-rot">
+                <Mech2nd 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />
+                </div>}
+              {(selectedDepartment === 5 && floor == 3) && 
+              <div id="map-rot">
+                <Chemtech 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />
+                </div>}
+              {(selectedDepartment === 5 && floor == 4) && 
+              <div id="map-rot">
+                <Ndt 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />
+                </div>
+                }
             </Box>          
           )}
         </Box>
@@ -244,7 +279,8 @@ const classes = useStyles();
               />
             }
             label="Show Campus Map"
-          />         
+          />
+          <GalleryModal/>
           <Button classname={classes.resetButton} variant="outlined" onClick={() => setSelected('')}>Reset Selected Facility</Button>
           </Stack>
         </Box>
