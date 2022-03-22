@@ -25,9 +25,6 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   const { loading: userLoading, users } = useSelector((state) => state.users)
   const { loading: sectionLoading, sections, count } = useSelector((state) => state.sections)
   const [toAddUsers, setToAddUsers] = useState([]);
-  const [toAddSections, setToAddSections] = useState(classroom ? classroom.section : {}); 
-  const [toAddSubjects, setToAddSubjects] = useState(classroom ? classroom.subject : {}); 
-  const [toAddGclassrooms, setToAddGclassrooms] = useState(classroom ? classroom.google_classroom_id : {}); 
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newClassroom)
   const {
@@ -74,9 +71,6 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   }
 
   useEffect(() => {
-    setToAddSections(classroom.section)
-    setToAddSubjects(classroom.subject)
-    setToAddSubjects(classroom.google_classroom_id)
     if (!subjectLoading) {
       dispatch(getAdminSubjects(0, 1000))
     }
@@ -197,69 +191,62 @@ export default function ClassroomModal ({modalClosed, classroom}) {
 
         {count ? (
         <FormControl fullWidth margin="normal">
-          <Autocomplete
-            id="sections-list"
-            name="sections"
-            options={sections}
-            value={toAddSections}
-            getOptionLabel={((option) => option.name)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Sections"
-                placeholder="Sections"
-              />
-            )}
-          onChange={(event, newVal) => setToAddSections(newVal)}
-          />
-        </FormControl>
+            <InputLabel id="section-select-label">Section</InputLabel>
+            <Select
+            {...register("section_id")}
+            error={errors.section_id ? true : false}
+            labelId="section-select-label"
+            id="section-select"
+            label="section"
+            defaultValue={classroom ? classroom.section_id : ''}
+          >
+            {sections.map(section => (
+              <MenuItem value={section.id}>{section.name}</MenuItem>
+            ))}
+          </Select>
+          </FormControl>
           ) : (
             <Skeleton animation="wave" height={100} />
           )}
 
       {count ? (
         <FormControl fullWidth margin="normal">
-          <Autocomplete
-            id="subjects-list"
-            name="subjects"
-            options={subjects}
-            value={toAddSubjects}
-            getOptionLabel={((option) => option.name)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Subjects"
-                placeholder="Subjects"
-              />
-            )}
-          onChange={(event, newVal) => setToAddSubjects(newVal)}
-          />
+          <InputLabel id="subject-select-label">Subject</InputLabel>
+          <Select
+            {...register("subject_id")}
+            error={errors.subject_id ? true : false}
+            labelId="subject-select-label"
+            id="subject-select"
+            label="subject"
+            defaultValue={classroom ? classroom.subject_id : ''}
+          
+          >
+            {subjects.map(subject => (
+              <MenuItem value={subject.id}>{subject.name}</MenuItem>
+            ))}
+          </Select>
         </FormControl>
         ) : (
           <Skeleton animation="wave" height={100} />
         )}
 
-        {count ? (
+        <Box>
           <FormControl fullWidth margin="normal">
-          <Autocomplete
-            id="gclassroom-list"
-            name="google_classroom_id"
-            options={courses}
-            value={toAddGclassrooms}
-            getOptionLabel={((option) => option.name)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Google Classrooms"
-                placeholder="Google Classrooms"
-              />
-            )}
-          onChange={(event, newVal) => setToAddGclassrooms(newVal)}
-          />
+            <InputLabel id="section-select-label">Google Classroom</InputLabel>
+              <Select
+              {...register("google_classroom_id")}
+              error={errors.google_classroom_id ? true : false}
+              label="Google Classroom"
+              variant="outlined"
+              id="gclassroom-select"
+              defaultValue={classroom ? classroom.google_classroom_id : ''}
+            >
+              {courses.map(course => (
+                <MenuItem value={course.id}>{course.name}</MenuItem>
+              ))}
+            </Select>
           </FormControl>
-          ) : (
-          <Skeleton animation="wave" height={100} />
-        )}
+        </Box>
         
         {count ? (
         <FormControl fullWidth margin="normal">
