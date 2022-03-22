@@ -335,16 +335,8 @@ const LandingPage = () => {
             image: "/raspberry-pi-logo.png"
          },
          {
-            name: "Flask",
-            image: "/flask-logo.png"
-         },
-         {
-            name: "jQuery",
-            image: "/jquery-logo.png"
-         },
-         {
-            name: "Websocket",
-            image: "/websocket-logo.png"
+            name: "OneSignal",
+            image: "/onesignal-logo.jpg"
          },
       ],
       [
@@ -757,7 +749,7 @@ const LandingPage = () => {
         </Box>
         <Box sx={{ mx:"auto", mt:"2rem"}} className={classes.profBox}>
           <Typography pt={2} px={1} variant="subtitle1" className={classes.nameText} >
-            Prof. Julius D. Silang
+            Prof. Julius Delfin A. Silang
           </Typography>
           <Typography px={2} pb={2} variant="body2" className={classes.profText} >
             Subject Adviser
