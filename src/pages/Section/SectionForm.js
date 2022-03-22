@@ -17,7 +17,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import {
   allUsers
 } from "../../actions/userActions"
-
+import Button from '@mui/material/Button';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
 export default function SectionModal ({modalClosed, section}) {
   const [openModal, setOpenModal] = useState(false)
@@ -104,6 +105,17 @@ export default function SectionModal ({modalClosed, section}) {
 
   return (
     <div>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => setOpenModal(true)}
+        size="large"
+        aria-label="add"
+        style={{ backgroundColor: 'transparent' }}
+        startIcon={<AddBoxOutlinedIcon />}
+      >
+        Add
+      </Button>
       <FormModal
         title={section && section.id ? 'Edit Section' : 'Add Section'}
         onSubmit={handleSubmit(onSubmit)}

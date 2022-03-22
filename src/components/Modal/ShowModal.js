@@ -27,9 +27,6 @@ const ShowModal = ({title, cancelled, openModal, setOpenModal, children}) => {
         alignItems: 'center',
       }}
     >
-      <Fab onClick={handleOpen} color="primary" aria-label="add" className="fabIcon">
-        <AddIcon />
-      </Fab>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"

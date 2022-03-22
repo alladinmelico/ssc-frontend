@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import API from '../../config/api'
 import { useIntl } from 'react-intl';
 import Page from 'material-ui-shell/lib/containers/Page';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-import FacilityForm from './FacilityForm'
 import { useDispatch, useSelector } from "react-redux"
-import Stack from '@mui/material/Stack';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -24,6 +19,8 @@ import FacilityShow from './FacilityShow';
 import AddIcon from '@mui/icons-material/Add';
 import { Link } from "react-router-dom"
 import Fab from '@mui/material/Fab';
+import {useNavigate} from 'react-router-dom';
+import MainAppBar from 'components/MainAppBar'
 
 const Facility = ({history}) => {
   const [page, setPage] = useState(0)
@@ -34,7 +31,7 @@ const Facility = ({history}) => {
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
-
+  const navigate = useNavigate();
   const { loading, facilities, count, error } = useSelector((state) => state.facilities)
   const { error: deleteError, isDeleted } = useSelector((state) => state.facility)
 
@@ -68,16 +65,15 @@ const Facility = ({history}) => {
 
   function getActions (params) {
     const actions = [
-      <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
-        setFacility(params.row)
-        setEditMode(false)
-      }} label="View" />,
+      <GridActionsCellItem
+        icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/facility/${params.row.id}`)} />}
+        label="View" />,
     ]
 
     if (role === 1) {
       actions.push(
-        <GridActionsCellItem icon={ <Link to={`/facility/${params.row.id}/edit`} style={{ textDecoration: 'none' }}><EditOutlinedIcon color="primary" /></Link>} label="Edit" />,
-        <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
+        <GridActionsCellItem icon={ <EditOutlinedIcon color="primary" onClick={() => navigate(`/facility/${params.row.id}/edit`)} />} label="Edit" />,
+        <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
               id: 'dialog_title',
@@ -109,6 +105,7 @@ const Facility = ({history}) => {
     { field: 'name', headerName: 'Name', flex: 0.5 ,minWidth: 150 },
     { field: 'code', headerName: 'Code', flex: 0.5 ,minWidth: 300 },
     { field: 'capacity', headerName: 'Capacity', width: 150 },
+    { field: 'schedules_count', headerName: 'Total Number of Schedules', width: 150 },
     { field: 'type', headerName: 'Type', width: 150 },
     { field: 'building', headerName: 'Building', width: 150 },
     {
@@ -122,10 +119,10 @@ const Facility = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'facility', defaultMessage: 'Facility' })}
+      appBarContent={<MainAppBar title="Facility" noBack to="/facility/create" />}
     >
       <DataTable
-        rows={facilities ? facilities : []}
+        rows={facilities ? facilities.map(item => ({...item, schedules_count: item.schedules.length})) : []}
         columns={columns}
         count={count}
         loading={loading}
@@ -134,13 +131,6 @@ const Facility = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-      <Box>
-        <Link to="/facility/create">
-          <Fab color="primary" aria-label="add" className="fabIcon">
-            <AddIcon />
-          </Fab>
-        </Link>
-      </Box>
     </Page>
   );
 };

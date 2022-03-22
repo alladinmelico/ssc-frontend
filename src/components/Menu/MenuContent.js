@@ -10,18 +10,31 @@ import { useLocale } from 'base-shell/lib/providers/Locale'
 import { useMenu } from 'material-ui-shell/lib/providers/Menu'
 import { useTheme as useAppTheme } from 'material-ui-shell/lib/providers/Theme'
 import getMenuItems from '../../config/menuItems'
+import API from 'config/api'
 
 const Menu = (props) => {
   const intl = useIntl()
   const navigate = useNavigate()
   const location = useLocation()
-  const auth = useAuth()
+  const auth  = useAuth()
+  const { auth: authData, setAuth }  = useAuth()
   const menuContext = useMenu()
   const a2HSContext = useAddToHomeScreen()
   const { toggleThis, isMiniMode, isMiniSwitchVisibility } = menuContext || {}
   const { appConfig } = useConfig()
   const { setLocale, locale = 'en' } = useLocale()
   const themeContext = useAppTheme()
+
+  // async function me() {
+  //   try {
+  //     const {data} = API.get('/me')
+  //     console.log({...authData, ...data})
+  //     setAuth({...authData, ...data})
+  //   } catch (error) {
+  //     // window.location.replace('/signin')
+  //     console.log(error)
+  //   }
+  // }
 
   const menuItems = getMenuItems({
     intl,

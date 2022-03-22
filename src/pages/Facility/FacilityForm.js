@@ -29,6 +29,7 @@ import {
 } from "../../actions/facilityActions"
 import { Container } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import MainAppBar from 'components/MainAppBar'
 
 export default function FacilityForm () {
   const [area, setArea] = useState(0)
@@ -165,7 +166,7 @@ export default function FacilityForm () {
   }
 
   return (
-    <Page pageTitle="Facility Form">
+    <Page appBarContent={<MainAppBar title="Facility Form" />}>
       <Container>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box sx={{ width: '100%' }}>

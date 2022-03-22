@@ -7,6 +7,7 @@ import { useAuth } from 'base-shell/lib/providers/Auth';
 import API from '../../config/api'
 import { getAdminClassrooms } from "../../actions/classroomActions"
 import { useDispatch, useSelector } from "react-redux"
+import Button from '@mui/material/Button';
 
 export default function ClassroomJoin ({modalClosed, page, rowsPerPage}) {
   const [success, setSuccess] = useState(false)
@@ -58,10 +59,20 @@ export default function ClassroomJoin ({modalClosed, page, rowsPerPage}) {
 
   return (
     <div>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => setOpenModal(true)}
+        size="large"
+        aria-label="add"
+        style={{ backgroundColor: 'transparent', marginRight: '1rem' }}
+        startIcon={<GroupAddOutlinedIcon />}
+      >
+        Join Classroom
+      </Button>
       <FormModal
         title={"Join Classroom"}
         btnType="secondary"
-        btnComponent={<GroupAddOutlinedIcon />}
         onSubmit={onSubmit}
         success={success}
         loading={loading}

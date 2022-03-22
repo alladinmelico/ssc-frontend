@@ -23,16 +23,7 @@ import TypeCards from './TypeCards';
 export default function Step1({history, activeStep, setActiveStep}) {
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
-  const [classroom, setClassroom] = useState({});
-  const [error, setError] = useState({});
-
-  const dispatch = useDispatch()
-  const navigate = useNavigate();
-
-  const { loading, classrooms, count } = useSelector((state) => state.classrooms)
-  const { schedule } = useSelector((state) => state.newSchedule)
-
-  const types = [
+  const [types, setTypes] = useState([
     {
       value: 'whole_class',
       label: 'Create a schedule for the whole class',
@@ -48,7 +39,15 @@ export default function Step1({history, activeStep, setActiveStep}) {
       label: 'Personal Visit',
       image: '/types/location.svg'   
     },
-  ]
+  ]);
+  const [classroom, setClassroom] = useState({});
+  const [error, setError] = useState({});
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
+  const { loading, classrooms, count } = useSelector((state) => state.classrooms)
+  const { schedule } = useSelector((state) => state.newSchedule)
 
   const submit = (event) => {
     event.preventDefault()
@@ -68,13 +67,24 @@ export default function Step1({history, activeStep, setActiveStep}) {
   
 
   useEffect(() => {
-    if (!count) {
+    if (!classrooms) {
       dispatch(getClassrooms())
     }
+
     if (schedule) {
       setTitle(schedule.title)
       setType(schedule.type ? schedule.type : 'whole_class')
       setClassroom(schedule.classroom_id)
+    }
+    if (classrooms && classrooms.length === 0 ) {
+      setTypes([
+        {
+          value: 'personal',
+          label: 'Personal Visit',
+          image: '/types/location.svg'   
+        },
+      ])
+      setType('personal')
     }
   }, [dispatch, history, schedule, count])
 
@@ -91,22 +101,30 @@ export default function Step1({history, activeStep, setActiveStep}) {
           required
           onChange={(e) => setTitle(e.target.value)}
         />
-        {count ? (
-          <FormControl fullWidth required={type !== 'personal'}  margin="normal">
-            <InputLabel id="classroom-select-label">Classroom</InputLabel>
-            <Select
-              labelId="classroom-select-label"
-              id="classroom-select"
-              value={classroom}
-              label="Classroom"
-              onChange={(event) => setClassroom(event.target.value)}
-              m={2}
-            >
-              {classrooms.map(item => (
-                <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        {classrooms ? (
+          <>
+            {classrooms.length === 0 ? (
+              <Box sx={{ m: '1rem' }}>
+                <p>You do not have a classroom yet...</p>
+              </Box>
+            ): (
+              <FormControl fullWidth required={type !== 'personal'}  margin="normal">
+                <InputLabel id="classroom-select-label">Classroom</InputLabel>
+                <Select
+                  labelId="classroom-select-label"
+                  id="classroom-select"
+                  value={classroom}
+                  label="Classroom"
+                  onChange={(event) => setClassroom(event.target.value)}
+                  m={2}
+                >
+                  {classrooms.map(item => (
+                    <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>            
+            )}
+          </>
         ) : (
           <Skeleton animation="wave" height={100} />
         )}

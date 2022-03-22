@@ -33,6 +33,23 @@ dayjs.extend(isSameOrAfter)
 
 export default function Step2({history, activeStep, setActiveStep}) {
   const [type, setType] = useState(1);
+  const [types, setTypes] = useState([
+    {
+      value: 1,
+      label: 'Classroom',
+      image: '/types/professor.svg'   
+    },
+    {
+      value: 2,
+      label: 'Office',
+      image: '/types/working.svg'    
+    },
+    {
+      value: 3,
+      label: 'Others',
+      image: '/types/more.svg'   
+    },
+  ]);
   const [facility, setFacility] = useState('');
   const [filteredFacilities, setFilteredFacilities] = useState([]);
   const [classroom, setClassroom] = useState({});
@@ -51,23 +68,6 @@ export default function Step2({history, activeStep, setActiveStep}) {
   const { loading, facilities, count, error } = useSelector((state) => state.facilities)
   const { schedule } = useSelector((state) => state.newSchedule)
 
-  const types = [
-    {
-      value: 1,
-      label: 'Classroom',
-      image: '/types/professor.svg'   
-    },
-    {
-      value: 2,
-      label: 'Office',
-      image: '/types/working.svg'    
-    },
-    {
-      value: 3,
-      label: 'Others',
-      image: '/types/more.svg'   
-    },
-  ]
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -194,6 +194,22 @@ export default function Step2({history, activeStep, setActiveStep}) {
 
     if (schedule) {
       fetchData(schedule)
+    }
+
+    if (schedule && schedule.type === 'personal') {
+      setTypes([
+        {
+          value: 2,
+          label: 'Office',
+          image: '/types/working.svg'    
+        },
+        {
+          value: 3,
+          label: 'Others',
+          image: '/types/more.svg'   
+        },
+      ])
+      setType(2)
     }
 
     if (error === 'Unauthenticated.') {

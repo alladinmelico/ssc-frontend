@@ -37,9 +37,9 @@ import {
   AssessmentOutlined,
   MonitorOutlined
 } from '@mui/icons-material'
-
 import allLocales from './locales'
 import allThemes from './themes'
+import roles from 'constants/roles'
 
 const getMenuItems = (props) => {
   const {
@@ -70,6 +70,10 @@ const getMenuItems = (props) => {
       leftIcon: <LanguageIcon />,
     }
   })
+
+  function can(type) {
+    return auth.role === 1 || roles.find(item => item.value === auth.role).crud.includes(type)
+  }
 
   const isAuthorised = auth.isAuthenticated
 
@@ -133,49 +137,49 @@ const getMenuItems = (props) => {
     {
       value: '/notification',
       visible: true,
-      primaryText: "Notification",
+      primaryText: "Notifications",
       leftIcon: <NotificationsNoneOutlined />,
     },
     {
       value: '/schedule',
-      visible: true,
+      visible: can('SCHEDULE'),
       primaryText: intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedules' }),
       leftIcon: <CalendarTodayOutlined />,
     },
     {
       forAdmin: true,
       value: '/user',
-      visible: true,
+      visible: can('USER'),
       primaryText: intl.formatMessage({ id: 'user', defaultMessage: 'Users' }),
       leftIcon: <PersonOutlineOutlined />,
     },
     {
       value: '/subject',
-      visible: true,
+      visible: can('SUBJECT'),
       primaryText: intl.formatMessage({ id: 'subject', defaultMessage: 'Subjects' }),
       leftIcon: <LibraryBooksOutlined />,
     },
     {
       value: '/facility',
-      visible: true,
+      visible: can('FACILITY'),
       primaryText: intl.formatMessage({ id: 'facility', defaultMessage: 'Facilties' }),
       leftIcon: <ApartmentOutlined />,
     },
      {
       value: '/course',
-      visible: true,
+      visible: can('COURSE'),
       primaryText: intl.formatMessage({ id: 'course', defaultMessage: 'Courses' }),
       leftIcon: <HistoryEduOutlined />,
     },
     {
       value: '/classroom',
-      visible: true,
+      visible: can('CLASSROOM'),
       primaryText: intl.formatMessage({ id: 'classroom', defaultMessage: 'Classrooms' }),
       leftIcon: <HomeWorkOutlined/>,
     },
     {
       value: '/section',
-      visible: true,
+      visible: can('SECTION'),
       primaryText: intl.formatMessage({ id: 'section', defaultMessage: 'Sections' }),
       leftIcon: <GroupsOutlined />,
     },
@@ -239,26 +243,18 @@ const getMenuItems = (props) => {
               <ChromeReaderMode />
               ),
             },
-            {
-              onClick: () => {
-                toggleThisTheme('isRTL')
-              },
-              primaryText: `${isRTL ? 'LTR' : 'RTL'} mode`,
-              leftIcon: isRTL ? <LTRIcon /> : <RTLIcon />,
-            },
           ],
     },
     {
       forAdmin: true,
       value: '/communication',
-      visible: true,
+      visible: can('COMMUNICATION'),
       primaryText: intl.formatMessage({ id: 'communication', defaultMessage: 'Communication' }),
       leftIcon: <EmailOutlined />,
     },
     {
-      forAdmin: true,
       value: '/report',
-      visible: true,
+      visible: can('REPORT'),
       primaryText: intl.formatMessage({ id: 'report', defaultMessage: 'Report' }),
       leftIcon: <AssessmentOutlined />,
     },
@@ -283,7 +279,7 @@ const getMenuItems = (props) => {
   ]
 
   if (auth.role !== 1) {
-    return mainItems.filter(item => !item.forAdmin )
+    return mainItems.filter(item => !item.forAdmin || item.visible )
   }
 
   return mainItems

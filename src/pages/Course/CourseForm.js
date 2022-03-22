@@ -15,6 +15,8 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Skeleton } from '@mui/material';
+import Button from '@mui/material/Button';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
 export default function CourseModal ({ modalClosed, course}) {
   const [openModal, setOpenModal] = useState(false)
@@ -107,6 +109,17 @@ export default function CourseModal ({ modalClosed, course}) {
 
   return (
     <div>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => setOpenModal(true)}
+        size="large"
+        aria-label="add"
+        style={{ backgroundColor: 'transparent' }}
+        startIcon={<AddBoxOutlinedIcon />}
+      >
+        Add
+      </Button>
       <FormModal
         title={course && course.id ? 'Edit Course' : 'Add Course'}
         onSubmit={handleSubmit(onSubmit)}

@@ -49,6 +49,10 @@ export default function Step4({history, activeStep, setActiveStep}) {
       formData.delete('repeat_by')
     }
     
+    if (!schedule.classroom_id) {
+      formData.delete('classroom_id')
+    }
+    
     if (schedule.users) {
       const value = schedule.users
       for (let i = 0; i < value.length; i++) {

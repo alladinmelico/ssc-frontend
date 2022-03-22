@@ -9,6 +9,8 @@ import { NEW_SUBJECT_RESET, UPDATE_SUBJECT_RESET } from "../../constants/subject
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
+import Button from '@mui/material/Button';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
 export default function SubjectModal ({modalClosed, subject}) {
   const [openModal, setOpenModal] = useState(false)
@@ -86,6 +88,17 @@ export default function SubjectModal ({modalClosed, subject}) {
 
   return (
     <div>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => setOpenModal(true)}
+        size="large"
+        aria-label="add"
+        style={{ backgroundColor: 'transparent' }}
+        startIcon={<AddBoxOutlinedIcon />}
+      >
+        Add
+      </Button>
       <FormModal
         title={subject && subject.id ? 'Edit Subject' : 'Add Subject'}
         onSubmit={handleSubmit(onSubmit)}
