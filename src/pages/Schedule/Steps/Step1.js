@@ -18,6 +18,7 @@ import {
 import { NEW_SCHEDULE_REQUEST, CLEAR_DATA } from "../../../constants/scheduleConstants"
 import PrevNextButtons from './PrevNextButtons';
 import { useNavigate } from "react-router-dom";
+import TypeCards from './TypeCards';
 
 export default function Step1({history, activeStep, setActiveStep}) {
   const [title, setTitle] = useState('');
@@ -34,15 +35,18 @@ export default function Step1({history, activeStep, setActiveStep}) {
   const types = [
     {
       value: 'whole_class',
-      label: 'Create a schedule for the whole class'    
+      label: 'Create a schedule for the whole class',
+      image: '/types/learning.svg'   
     },
     {
       value: 'course_related',
-      label: 'Course Subject Related'    
+      label: 'Course Subject Related',
+      image: '/types/education.svg'    
     },
     {
       value: 'personal',
-      label: 'Personal Visit'    
+      label: 'Personal Visit',
+      image: '/types/location.svg'   
     },
   ]
 
@@ -69,13 +73,14 @@ export default function Step1({history, activeStep, setActiveStep}) {
     }
     if (schedule) {
       setTitle(schedule.title)
-      setType(schedule.type)
+      setType(schedule.type ? schedule.type : 'whole_class')
       setClassroom(schedule.classroom_id)
     }
   }, [dispatch, history, schedule, count])
 
   return (
     <Box sx={{ minWidth: 120 }}>
+      <TypeCards types={types} type={type} setType={setType} />
       <form onSubmit={submit}>
         <TextField
           id="outlined-basic"
@@ -86,22 +91,6 @@ export default function Step1({history, activeStep, setActiveStep}) {
           required
           onChange={(e) => setTitle(e.target.value)}
         />
-        <FormControl fullWidth required margin="normal">
-          <InputLabel id="type-select-label">Type</InputLabel>
-          <Select
-            labelId="type-select-label"
-            id="type-select"
-            value={type}
-            label="Type"
-            onChange={(event) => setType(event.target.value)}
-          >
-            {types.map(type => (
-              <MenuItem value={type.value} key={type.value}>{type.label}</MenuItem>
-            ))}
-          </Select>
-          <FormHelperText>{error.type}</FormHelperText>
-        </FormControl>
-
         {count ? (
           <FormControl fullWidth required={type !== 'personal'}  margin="normal">
             <InputLabel id="classroom-select-label">Classroom</InputLabel>
