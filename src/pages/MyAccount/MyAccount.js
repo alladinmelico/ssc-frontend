@@ -93,7 +93,7 @@ const MyAccount = () => {
         defaultMessage: 'My Account',
       })}
     > {!loading ? (
-      <Typography textAlign="center" sx={{fontWeight:"600", mt:"2rem"}} variant="h5">Hi, {user.name}</Typography> 
+      <Typography textAlign="left" marginLeft="2rem" sx={{fontWeight:"600", mt:"2rem"}} variant="h5">Hi, {user.name}</Typography> 
       ) : (
         <Skeleton sx={{mx:"auto"}} variant="text" animation="wave" width={500} height={100} />
       )}
@@ -123,6 +123,7 @@ const MyAccount = () => {
                     justifyContent: 'flex-start',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    marginTop: '4rem'
                   }}
                 >
               
