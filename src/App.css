@@ -277,3 +277,6 @@ body {
   background-color: #00838f;
 }
 
+.fc-daygrid-event-harness {
+  cursor: pointer !important;
+}

@@ -13,6 +13,7 @@ const Report = lazy(() => import('../pages/Report'))
 const Schedule = lazy(() => import('../pages/Schedule'))
 const ScheduleShow = lazy(() => import('../pages/Schedule/ScheduleShow'))
 const ScheduleForm = lazy(() => import('../pages/Schedule/ScheduleForm'))
+const Calendar = lazy(() => import('../pages/Schedule/Calendar'))
 const User = lazy(() => import('../pages/User'))
 const Rfid = lazy(() => import('../pages/Rfid'))
 const Temperature = lazy(() => import('../pages/Temperature'))
@@ -88,6 +89,15 @@ const routes = [
     path: '/about',
     exact: true,
     element: <About />,
+  },
+  {
+    path: '/calendar',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Calendar />
+      </AuthorizedRoute>
+    ),
   },
   {
     path: '/schedule/:id',
