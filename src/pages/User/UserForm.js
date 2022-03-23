@@ -18,13 +18,16 @@ import { getAdminCourses } from 'actions/courseActions';
 import { getAdminSections } from 'actions/sectionActions';
 import { Skeleton } from '@mui/material';
 import roles from 'constants/roles'
+import { Autocomplete } from '@mui/material';
 
 export default function UserModal ({modalClosed, user}) {
   const [openModal, setOpenModal] = useState(false)
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { courses } = useSelector((state) => state.courses)
-  const { sections, count } = useSelector((state) => state.sections)
+  const { loading : sectionLoading, sections, count } = useSelector((state) => state.sections)
+  const [toAddSection, setToAddSection] = useState(user ? user.section : '');
+  const [toAddCourse, setToAddCourse] = useState(user ? user.course : {});
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newUser)
   const {
@@ -38,10 +41,8 @@ export default function UserModal ({modalClosed, user}) {
   const schema = yup.object({
     name: yup.string().required("Name is a required field."),
     email: yup.string().required("Email is a required field."),
-    section_id: yup.string().required("Section is a required field."),
     school_id: yup.string().required("School ID is a required field.").matches(/(TUPT-)\d\d-\d\d\d\d/i, "School ID's format should be: TUPT-**-****"),
     year: yup.number().required("Year must be a number type."),
-    course_id: yup.number().required("Course ID is a required field."),
     role_id: yup.number().nullable()
   }).required();
 
@@ -55,15 +56,18 @@ export default function UserModal ({modalClosed, user}) {
 
   useEffect(() => {
     dispatch(getAdminCourses(0, 50))
-    dispatch(getAdminSections(0, 50))
+    if (!sectionLoading){
+      dispatch(getAdminSections(0, 50))
+    }
     if(user.id && !openModal) {
       setOpenModal(true)
       setValue('name', user.name)
       setValue('email', user.email)
-      setValue('section_id', user.section)
+      setValue('section_id', user)
       setValue('year', user.year)
       setValue('school_id', user.school_id);
-      setValue('course_id', user.course_id)
+      setToAddSection(sections.find(item => item.id === user.section_id))
+      setToAddCourse(user.course)
     }
 
     if (error || updateError) {
@@ -100,6 +104,8 @@ export default function UserModal ({modalClosed, user}) {
   }, [dispatch, error, updateError, isUpdated, success, user])
 
   const onSubmit = async data => {
+    data.section_id = toAddSection.id
+    data.course_id = toAddCourse.id
     if (user.id) {
       dispatch(updateUser(user.id, data))
     } else {
@@ -163,19 +169,21 @@ export default function UserModal ({modalClosed, user}) {
 
             {count ? (
             <FormControl fullWidth required margin="normal">
-            <InputLabel id="section-select-label">Section</InputLabel>
-            <Select
-            {...register("section_id", { required: true})}
-            error={errors.section_id ? true : false}
-            labelId="section-select-label"
-            id="section-select"
-            label="section"
-            defaultValue={user ? user.section_id : ''}
-          >
-            {sections.map(section => (
-              <MenuItem value={section.id} key={section.id}>{section.name}</MenuItem>
-            ))}
-          </Select>
+              <Autocomplete
+              id="section-list"
+              name="sections"
+              options={sections}
+              value={toAddSection}
+              getOptionLabel={((option) => option.name)}
+              onChange={(event, newVal) => setToAddSection(newVal)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Section"
+                  placeholder="Section"
+                />
+              )}
+            />
           </FormControl>
           ) : (
             <Skeleton animation="wave" height={100} />
@@ -183,20 +191,21 @@ export default function UserModal ({modalClosed, user}) {
         
         {count ? (
         <FormControl fullWidth required margin="normal">
-          <InputLabel id="course-select-label">Course</InputLabel>
-          <Select
-            {...register("course_id", { required: true, min: 3 })}
-            error={errors.course_id ? true : false}
-            labelId="course-select-label"
-            id="course-select"
-            label="course"
-            defaultValue={user ? user.course_id : ''}
-          
-          >
-            {courses.map(course => (
-              <MenuItem value={course.id} key={course.id}>{course.name}</MenuItem>
-            ))}
-          </Select>
+           <Autocomplete
+            id="course-list"
+            name="courses"
+            options={courses}
+            value={toAddCourse}
+            getOptionLabel={((option) => option.name)}
+            onChange={(event, newVal) => setToAddCourse(newVal)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Course"
+                placeholder="Course"
+              />
+            )}
+          />
         </FormControl>
         ) : (
           <Skeleton animation="wave" height={100} />
@@ -223,6 +232,7 @@ export default function UserModal ({modalClosed, user}) {
             labelId="role-select-label"
             id="role-select"
             label="role"
+            helperText={errors.role?.message}
             defaultValue={user ? user.role_id : ''}          
           >
             {roles.map(role => (
