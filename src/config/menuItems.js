@@ -35,7 +35,9 @@ import {
   NotificationsNoneOutlined,
   EmailOutlined,
   AssessmentOutlined,
-  MonitorOutlined
+  MonitorOutlined,
+  TableChartOutlined,
+  CalendarViewMonthOutlined
 } from '@mui/icons-material'
 import allLocales from './locales'
 import allThemes from './themes'
@@ -145,6 +147,26 @@ const getMenuItems = (props) => {
       visible: can('SCHEDULE'),
       primaryText: intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedules' }),
       leftIcon: <CalendarTodayOutlined />,
+    },
+    {
+      visible: can('SCHEDULE'),
+      primaryText: intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedules' }),
+      primaryTogglesNestedList: true,
+      leftIcon: <CalendarTodayOutlined />,
+      nestedItems: [
+        {
+          value: '/schedule',
+          visible: can('SCHEDULE'),
+          primaryText: intl.formatMessage({ id: 'table', defaultMessage: 'Table' }),
+          leftIcon: <TableChartOutlined />,
+        },
+        {
+          value: '/calendar',
+          visible: can('SCHEDULE'),
+          primaryText: intl.formatMessage({ id: 'calendar', defaultMessage: 'Calendar' }),
+          leftIcon: <CalendarViewMonthOutlined />,
+        },
+      ],
     },
     {
       forAdmin: true,
