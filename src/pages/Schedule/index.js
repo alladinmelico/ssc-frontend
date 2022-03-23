@@ -3,15 +3,10 @@ import { useIntl } from 'react-intl';
 import Page from 'material-ui-shell/lib/containers/Page';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
-import ScheduleForm from './ScheduleForm'
 import { useDispatch, useSelector } from "react-redux"
-import Stack from '@mui/material/Stack';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
@@ -23,6 +18,8 @@ import {
 import { DELETE_SCHEDULE_RESET } from "../../constants/scheduleConstants"
 import { Link } from "react-router-dom"
 import ScheduleShow from './ScheduleShow';
+import {useNavigate} from 'react-router-dom';
+import MainAppBar from 'components/MainAppBar'
 
 const Schedule = ({history}) => {
   const [page, setPage] = useState(0)
@@ -33,7 +30,7 @@ const Schedule = ({history}) => {
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
-
+  const navigate = useNavigate();
   const { loading, schedules, count, error } = useSelector((state) => state.schedules)
   const { error: deleteError, isDeleted } = useSelector((state) => state.schedule)
 
@@ -78,7 +75,7 @@ const Schedule = ({history}) => {
       disableExport: true,
       getActions: (params) => [
         <GridActionsCellItem 
-          icon={<Link to={`/schedule/${params.row.id}`} style={{ textDecoration: 'none' }} ><VisibilityOutlinedIcon color="green" /></Link> }
+          icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/schedule/${params.row.id}`)}/>}
           onClick={() => {
           setEditMode(false)
         }} label="View" />,
@@ -112,13 +109,13 @@ const Schedule = ({history}) => {
     },
   ];
 
-  const handleOpen = () => {
-    history.push('/schedule/create')
-  }
-
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedule' })}
+      appBarContent={
+        <MainAppBar
+          title={intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedule' })}
+          to="/schedule/create"
+        />}
     >
       <DataTable
         rows={schedules ? schedules : []}
@@ -130,13 +127,6 @@ const Schedule = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-      <Box>
-        <Link to="/schedule/create">
-          <Fab onClick={handleOpen} color="primary" aria-label="add" className="fabIcon">
-            <AddIcon />
-          </Fab>
-        </Link>
-      </Box>
     </Page>
   );
 };

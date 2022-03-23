@@ -18,10 +18,15 @@ const Rfid = lazy(() => import('../pages/Rfid'))
 const Temperature = lazy(() => import('../pages/Temperature'))
 const Monitor = lazy(() => import('../pages/Monitor'))
 const Subject = lazy(() => import('../pages/Subject'))
+const SubjectShow = lazy(() => import('../pages/Subject/SubjectShow'))
+const SubjectList = lazy(() => import('../pages/Subject/SubjectList'))
 const Facility = lazy(() => import('../pages/Facility'))
+const FacilityShow = lazy(() => import('../pages/Facility/FacilityShow'))
 const FacilityForm = lazy(() => import('../pages/Facility/FacilityForm'))
 const Course = lazy(() => import('../pages/Course'))
 const Classroom = lazy(() => import('../pages/Classroom'))
+const ClassroomShow = lazy(() => import('../pages/Classroom/ClassroomShow'))
+const ClassroomList = lazy(() => import('../pages/Classroom/ClassroomList'))
 const Section = lazy(() => import('../pages/Section'))
 const Notification = lazy(() => import('../pages/Notification'))
 const Home = lazy(() => import('../pages/Home/Home'))
@@ -139,6 +144,33 @@ const routes = [
     ),
   },
   {
+    path: '/subject/:id',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <SubjectShow />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/subjects',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <SubjectList />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/facility/:id',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <FacilityShow />
+      </AuthorizedRoute>
+    ),
+  },
+  {
     path: '/facility/create',
     exact: true,
     element: (
@@ -180,6 +212,24 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Classroom />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/classroom/:id',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <ClassroomShow />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/classrooms',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <ClassroomList />
       </AuthorizedRoute>
     ),
   },

@@ -23,6 +23,7 @@ import { DELETE_USER_RESET } from "../../constants/userConstants"
 import API from 'config/api';
 import UserShow from './UserShow';
 import roles from 'constants/roles'
+import MainAppBar from 'components/MainAppBar'
 
 const User = ({history}) => {
   const [page, setPage] = useState(0)
@@ -56,7 +57,6 @@ const User = ({history}) => {
     }
 
     if (deleteError) {
-      alert.error(deleteError)
       dispatch(clearErrors())
     }
 
@@ -98,7 +98,7 @@ const User = ({history}) => {
           setUser(params.row)
           setEditMode(true)
         }} label="Edit" />,
-        <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
+        <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
               id: 'delete_dialog_title',
@@ -146,7 +146,22 @@ const User = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'user', defaultMessage: 'User' })}
+      appBarContent={
+        <MainAppBar
+          title={intl.formatMessage({ id: 'user', defaultMessage: 'User' })}
+          noBack
+          modal={
+            editMode ? (
+              <UserForm user={user} modalClosed={() => setUser({})} page={page} rowsPerPage={rowsPerPage} />
+            ) : (
+              <UserShow user={user} modalClosed={() => {
+                setUser({})
+                setEditMode(true)
+              }} />
+            )
+          }
+        />
+      }
     >
       <DataTable
         rows={users ? users.map(user => ({...user, 
@@ -162,16 +177,6 @@ const User = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-      <Box>
-        {editMode ? (
-          <UserForm user={user} modalClosed={() => setUser({})} page={page} rowsPerPage={rowsPerPage} />
-        ) : (
-          <UserShow user={user} modalClosed={() => {
-            setUser({})
-            setEditMode(true)
-          }} />
-        )}
-      </Box>
     </Page>
   );
 };

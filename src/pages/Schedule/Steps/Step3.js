@@ -119,7 +119,9 @@ export default function Step3({history, activeStep, setActiveStep}) {
         setBatches(sliceIntoChunks(users, facilityCapacity))
       }
     } else {
-      dispatch(getUsers(schedule.classroom_id))
+      if (schedule && schedule.classroom_id) {
+        dispatch(getUsers(schedule.classroom_id))
+      }
     }
 
     if (schedule) {
@@ -140,110 +142,126 @@ export default function Step3({history, activeStep, setActiveStep}) {
       />
       
       <form onSubmit={submit}>
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 5 }} >
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="overline" >Classroom</Typography>
-            <Typography variant="overline" sx={{ fontWeight: 'bold' }}>{classroom}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="overline" >Capacity</Typography>
-            <Typography variant="overline" sx={{ fontWeight: 'bold' }}>{facilityCapacity}</Typography>
-          </Box>
-        </Box>
-
-        
-        {count ? (
-          <Stack direction="row" spacing={2}>
-            <Autocomplete
-              fullWidth
-              disablePortal
-              id="add-user-search"
-              value={toAddUser}
-              getOptionLabel={(item) => item.name}
-              onChange={(event, newVal) => setToAddUser(newVal)}
-              options={users}
-              sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Add User" placeholder="Select user to add" />}
-            />
-            <FormControl fullWidth>
-              <InputLabel id="batch-select-label">Batch</InputLabel>
-              <Select
-                labelId="batch-select-label"
-                id="batch-select"
-                value={selectedBatch}
-                label="Batch"
-                onChange={(e) => setSelectedBatch(e.target.value)}
-              >
-                {batches.map((item, index) => (
-                  <MenuItem value={index} key={index}>{index}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            <Stack>
-              <Button size='small' onClick={() => addUser()}>Add</Button>
-              <Button size='small' onClick={() => clearFields()}>Clear</Button>
-            </Stack>
-          </Stack>
-        ) : 
-          <Skeleton animation="wave" height={100} />
-        }
-        
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant="overline" >Students in this Classroom</Typography>
-            <small>Students are separated on batches.</small>
-            <small>They will be scheduled alternately until the end of schedule.</small>
-            <small>Each batch is limited by the capacity of the room</small>
-          </Box>
-          <Button color="primary" onClick={shuffleBatches}>Shuffle</Button>
-        </Box>
-
-        
         {hasUser && (
-          <Grid container>
-            {batches.map((batch, index) => (
-              <Grid item xs={6} key={index}>
-              
-                <Box>
-                  <List dense 
-                    subheader={
-                      <ListSubheader component="div" id="nested-list-subheader">
-                        Batch {index}
-                      </ListSubheader>
-                    }
-                  >
-                    {batch.map((row, rowIndex) => (
-                      <ListItem
-                        key={row.id}
-                      >
-                        <ListItemAvatar>
-                          <Avatar alt={row.name} src={row.avatar} />
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={row.name}
-                          secondary={row.school_id}
-                        />
-                        <Box edge="end">
-                          <IconButton edge="end" aria-label="delete" onClick={() => removeItem(index, rowIndex)}>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Box>
-                      </ListItem>
-                    ))}
-                  </List>
+          <Box>
+            {!schedule.classroom_id ? (
+              <p>No Classroom selected...</p>
+            ): (
+              <>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 5 }} >
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="overline" >Classroom</Typography>
+                    <Typography variant="overline" sx={{ fontWeight: 'bold' }}>{classroom}</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="overline" >Capacity</Typography>
+                    <Typography variant="overline" sx={{ fontWeight: 'bold' }}>{facilityCapacity}</Typography>
+                  </Box>
                 </Box>
-              </Grid>
-            ))}
-          </Grid>        
-        )}
 
+                
+                {count || count === 0 ? (
+                  <Stack direction="row" spacing={2}>
+                    {count === 0 ? (
+                      <Typography variant="h5">No user added to "{schedule.classroom_name}" classroom.</Typography>
+                    ) : (
+                      <Stack direction="row" spacing={2}>            
+                        <Autocomplete
+                          fullWidth
+                          disablePortal
+                          id="add-user-search"
+                          value={toAddUser}
+                          getOptionLabel={(item) => item.name}
+                          onChange={(event, newVal) => setToAddUser(newVal)}
+                          options={users}
+                          sx={{ width: 300 }}
+                          renderInput={(params) => <TextField {...params} label="Add User" placeholder="Select user to add" />}
+                        />
+                        <FormControl fullWidth>
+                          <InputLabel id="batch-select-label">Batch</InputLabel>
+                          <Select
+                            labelId="batch-select-label"
+                            id="batch-select"
+                            value={selectedBatch}
+                            label="Batch"
+                            onChange={(e) => setSelectedBatch(e.target.value)}
+                          >
+                            {batches.map((item, index) => (
+                              <MenuItem value={index} key={index}>{index}</MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                        <Stack>
+                          <Button size='small' onClick={() => addUser()}>Add</Button>
+                          <Button size='small' onClick={() => clearFields()}>Clear</Button>
+                        </Stack>
+                      </Stack>
+                    )}
+                  </Stack>
+                ) : 
+                  <Skeleton animation="wave" height={100} />
+                }
+                
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: '1rem' }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="overline" >Students in this Classroom</Typography>
+                    <small>Students are separated on batches.</small>
+                    <small>They will be scheduled alternately until the end of schedule.</small>
+                    <small>Each batch is limited by the capacity of the room</small>
+                  </Box>
+                  <Button color="primary" onClick={shuffleBatches}>Shuffle</Button>
+                </Box>
+
+                
+                {hasUser && (
+                  <Grid container>
+                    {batches.map((batch, index) => (
+                      <Grid item xs={6} key={index}>
+                      
+                        <Box>
+                          <List dense 
+                            subheader={
+                              <ListSubheader component="div" id="nested-list-subheader">
+                                Batch {index}
+                              </ListSubheader>
+                            }
+                          >
+                            {batch.map((row, rowIndex) => (
+                              <ListItem
+                                key={row.id}
+                              >
+                                <ListItemAvatar>
+                                  <Avatar alt={row.name} src={row.avatar} />
+                                </ListItemAvatar>
+                                <ListItemText
+                                  primary={row.name}
+                                  secondary={row.school_id}
+                                />
+                                <Box edge="end">
+                                  <IconButton edge="end" aria-label="delete" onClick={() => removeItem(index, rowIndex)}>
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </Box>
+                              </ListItem>
+                            ))}
+                          </List>
+                        </Box>
+                      </Grid>
+                    ))}
+                  </Grid>        
+                )}
+              </>
+            )}
+          </Box>
+        )}
         <PrevNextButtons handleBack={() => {
           saveData()
           setActiveStep((prevActiveStep) => prevActiveStep - 1);
         }} isActive={true} text="Next" />
-      </form>
+
+      </form>          
+     
     </Box>
   );
 }

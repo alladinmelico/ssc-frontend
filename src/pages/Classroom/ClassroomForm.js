@@ -25,6 +25,9 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   const { loading: userLoading, users } = useSelector((state) => state.users)
   const { loading: sectionLoading, sections, count } = useSelector((state) => state.sections)
   const [toAddUsers, setToAddUsers] = useState([]);
+  const [toAddSections, setToAddSections] = useState(classroom ? classroom.section : ''); 
+  const [toAddSubjects, setToAddSubjects] = useState(classroom ? classroom.subject : ''); 
+  const [toAddGclassrooms, setToAddGclassrooms] = useState(classroom ? classroom.google_classroom_id : ''); 
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newClassroom)
   const {
@@ -42,9 +45,9 @@ export default function ClassroomModal ({modalClosed, classroom}) {
     name: yup.string().required("Name is a required field."),
     description_heading: yup.string().required("Description Heading is a required field."),
     description: yup.string().required("Description is a required field."),
-    section_id: yup.number().required("Section is a required field."),
-    subject_id: yup.number().required("Subject is a required field."),
-    google_classroom_id: yup.string("Google Classroom ID is a string.")
+    // section_id: yup.number().required("Section is a required field."),
+    // subject_id: yup.number().required("Subject is a required field."),
+    // google_classroom_id: yup.string("Google Classroom ID is a string.")
   });
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
@@ -86,12 +89,14 @@ export default function ClassroomModal ({modalClosed, classroom}) {
       setValue('name', classroom.name)
       setValue('description_heading', classroom.description_heading)
       setValue('description', classroom.description)
-      setValue('section_id', classroom.section?.id)
-      setValue('subject_id', classroom.subject_id)
-      if (classroom.google_classroom_id) {
-        setValue('google_classroom_id', classroom.google_classroom_id)
+      if (courses.find(item => item.id === classroom.google_classroom_id)) {
+        setToAddGclassrooms(courses.name)
       }
       setToAddUsers(classroom.users)
+      console.log(classroom.users)
+      setToAddSections(sections.find(item => item.id === classroom.section_id))
+      setToAddSubjects(subjects.find(item => item.id === classroom.subject_id))
+      console.log(setToAddSections)
     }
 
     if (courses.length === 0) {
@@ -103,7 +108,6 @@ export default function ClassroomModal ({modalClosed, classroom}) {
     }
 
     if (success) {
-      resetForm()
       dispatch({ type: NEW_CLASSROOM_RESET })
       dispatch(getAdminClassrooms(0, 50))
       modalClosed()
@@ -114,10 +118,10 @@ export default function ClassroomModal ({modalClosed, classroom}) {
           horizontal: 'center',
         },
       })
+      resetForm()
     }
 
     if (isUpdated) {
-      resetForm()     
       modalClosed() 
       dispatch({ type: UPDATE_CLASSROOM_RESET })
       dispatch(getAdminClassrooms(0, 50))
@@ -128,10 +132,14 @@ export default function ClassroomModal ({modalClosed, classroom}) {
           horizontal: 'center',
         },
       })
+      resetForm()     
     }
   }, [dispatch, error, updateError, isUpdated, success, classroom])
 
   const onSubmit = async data => {
+    data.section_id = toAddSections.id
+    data.course_id = toAddSubjects.id
+    data.google_classroom_id = toAddGclassrooms.id
     if (toAddUsers.length) {
       data.users = toAddUsers.map(item => item.id)
     }
@@ -191,62 +199,69 @@ export default function ClassroomModal ({modalClosed, classroom}) {
 
         {count ? (
         <FormControl fullWidth margin="normal">
-            <InputLabel id="section-select-label">Section</InputLabel>
-            <Select
-            {...register("section_id")}
-            error={errors.section_id ? true : false}
-            labelId="section-select-label"
-            id="section-select"
-            label="section"
-            defaultValue={classroom ? classroom.section_id : ''}
-          >
-            {sections.map(section => (
-              <MenuItem value={section.id}>{section.name}</MenuItem>
-            ))}
-          </Select>
-          </FormControl>
+          <Autocomplete
+            id="sections-list"
+            name="sections"
+            options={sections}
+            value={toAddSections}
+            getOptionLabel={((option) => option.name)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Sections"
+                placeholder="Sections"
+              />
+            )}
+          onChange={(event, newVal) => setToAddSections(newVal)}
+          />
+        </FormControl>
           ) : (
             <Skeleton animation="wave" height={100} />
           )}
 
       {count ? (
         <FormControl fullWidth margin="normal">
-          <InputLabel id="subject-select-label">Subject</InputLabel>
-          <Select
-            {...register("subject_id")}
-            error={errors.subject_id ? true : false}
-            labelId="subject-select-label"
-            id="subject-select"
-            label="subject"
-            defaultValue={classroom ? classroom.subject_id : ''}
-          
-          >
-            {subjects.map(subject => (
-              <MenuItem value={subject.id}>{subject.name}</MenuItem>
-            ))}
-          </Select>
+          <Autocomplete
+            id="subjects-list"
+            name="subjects"
+            options={subjects}
+            value={toAddSubjects}
+            getOptionLabel={((option) => option.name)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Subjects"
+                placeholder="Subjects"
+              />
+            )}
+          onChange={(event, newVal) => setToAddSubjects(newVal)}
+          />
         </FormControl>
         ) : (
           <Skeleton animation="wave" height={100} />
         )}
 
-        <Box>
+        {count ? (
           <FormControl fullWidth margin="normal">
-            <InputLabel id="section-select-label">Google Classroom</InputLabel>
-              <Select
-              {...register("google_classroom_id")}
-              error={errors.google_classroom_id ? true : false}
-              label="Google Classroom"
-              variant="outlined"
-              id="gclassroom-select"
-              defaultValue={classroom ? classroom.google_classroom_id : ''}
-            >
-              {courses.map(course => (
-                <MenuItem value={course.id}>{course.name}</MenuItem>
-              ))}
-            </Select>
+          <Autocomplete
+            id="gclassroom-list"
+            name="google_classroom_id"
+            options={courses}
+            value={toAddGclassrooms}
+            getOptionLabel={((option) => option.name)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Google Classrooms"
+                placeholder="Google Classrooms"
+              />
+            )}
+          onChange={(event, newVal) => setToAddGclassrooms(newVal)}
+          />
           </FormControl>
-        </Box>
+          ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
         
         {count ? (
         <FormControl fullWidth margin="normal">

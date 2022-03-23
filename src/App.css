@@ -245,3 +245,35 @@ body {
 #map-rotate {
   transform: rotate(270deg);
 }
+
+.type-card {
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  width: 150px;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.type-card p {
+  text-align: center;
+  margin: 0;
+}
+
+.type-card-active p {
+  color: white;
+  font-weight: 500;
+}
+
+.type-card-active img {
+  transform: translate(0, -1.5rem);
+}
+
+.type-card:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.type-card-active {
+  background-color: #00838f;
+}
+

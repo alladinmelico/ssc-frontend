@@ -19,6 +19,7 @@ import Step2 from './Steps/Step2';
 import Step3 from './Steps/Step3';
 import Step4 from './Steps/Step4';
 import Step5 from './Steps/Step5';
+import MainAppBar from 'components/MainAppBar'
 
 export default function ScheduleForm ({ match }) {
   const intl = useIntl();
@@ -65,9 +66,7 @@ export default function ScheduleForm ({ match }) {
   }, [dispatch, error, success, enqueueSnackbar, id, scheduleId])
 
   return (
-    <Page
-      pageTitle={intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedule' })}
-    >
+    <Page appBarContent={<MainAppBar title="Schedule Form" />}>
       <ScheduleStepper activeStep={activeStep} />
 
       {loadingDetails ? (

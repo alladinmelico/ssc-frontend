@@ -19,6 +19,7 @@ import API from 'config/api';
 
 const Notification = ({history}) => {
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [notifications, setNotifications] = useState([]);
 
   const getData = async () => {
@@ -26,7 +27,9 @@ const Notification = ({history}) => {
     await API.get(`notifications`).then(res => {
       setNotifications(res.data.data)
       setLoading(false)
+      setSuccess(true)
     }).catch(err => {
+      console.log(true)
     })
   }
 
@@ -49,7 +52,7 @@ const Notification = ({history}) => {
   }
 
   useEffect(() => {
-    if (notifications.length === 0) {
+    if (!success && !loading) {
       getData()
     } 
   }, [notifications]);
@@ -66,29 +69,35 @@ const Notification = ({history}) => {
         </Stack>
       ) : (
         <>
-          <Stack spacing={2} direction="row" justifyContent="flex-end" sx={{ p: "1rem" }}>
-            <Button variant="text" onClick={() => markAllAsRead()}>Mark all as Read</Button>
-          </Stack>
-          <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            {notifications.map(notif => (
-              <ListItem
-                secondaryAction={ !notif.read &&
-                  <IconButton edge="end" aria-label="mark" onClick={() => markAsRead(notif)}>
-                    <CheckBoxOutlinedIcon />
-                  </IconButton>
-                }
-                sx={{ backgroundColor: notif.read ?  '#f5f5f5': '#ffffff' }}
-              >
-                <ListItemAvatar>
-                  <Avatar>
-                    {notif.type === 'schedule' && <InsertInvitationOutlinedIcon />}
-                    {notif.type !== 'schedule' && <NotificationsActiveOutlinedIcon />}
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={notif.type.toUpperCase()} secondary={notif.message} />
-              </ListItem>
-            ))}
-          </List>
+          {notifications.length === 0 ? (
+            <p>Empty Notification...</p>
+          ): (
+            <>
+              <Stack spacing={2} direction="row" justifyContent="flex-end" sx={{ p: "1rem" }}>
+                <Button variant="text" onClick={() => markAllAsRead()}>Mark all as Read</Button>
+              </Stack>
+              <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+                {notifications.map(notif => (
+                  <ListItem
+                    secondaryAction={ !notif.read &&
+                      <IconButton edge="end" aria-label="mark" onClick={() => markAsRead(notif)}>
+                        <CheckBoxOutlinedIcon />
+                      </IconButton>
+                    }
+                    sx={{ backgroundColor: notif.read ?  '#f5f5f5': '#ffffff' }}
+                  >
+                    <ListItemAvatar>
+                      <Avatar>
+                        {notif.type === 'schedule' && <InsertInvitationOutlinedIcon />}
+                        {notif.type !== 'schedule' && <NotificationsActiveOutlinedIcon />}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={notif.type?.toUpperCase()} secondary={notif.message} />
+                  </ListItem>
+                ))}
+              </List> 
+            </>         
+          )}
         </>
       )}
     </Page>

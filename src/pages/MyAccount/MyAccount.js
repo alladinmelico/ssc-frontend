@@ -1,4 +1,4 @@
-import { Avatar, Fab, InputBase, Paper, Zoom, Typography } from '@mui/material';
+import { Avatar, Fab, InputBase, Paper, Zoom, Typography, Box } from '@mui/material';
 import { Camera, Delete, Save, Person as PersonIcon, Edit } from '@mui/icons-material';
 import Page from 'material-ui-shell/lib/containers/Page/Page';
 import React, { useState, useEffect } from 'react';
@@ -93,7 +93,7 @@ const MyAccount = () => {
         defaultMessage: 'My Account',
       })}
     > {!loading ? (
-      <Typography textAlign="center" sx={{fontWeight:"600", mt:"2rem"}} variant="h5">Hi, {user.name}</Typography> 
+      <Typography textAlign="left" marginLeft="2rem" sx={{fontWeight:"600", mt:"2rem"}} variant="h5">Hi, {user.name}</Typography> 
       ) : (
         <Skeleton sx={{mx:"auto"}} variant="text" animation="wave" width={500} height={100} />
       )}
@@ -102,7 +102,6 @@ const MyAccount = () => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          height: '100%',
         }}
       >
         {isEditing ?
@@ -124,6 +123,7 @@ const MyAccount = () => {
                     justifyContent: 'flex-start',
                     flexDirection: 'column',
                     alignItems: 'center',
+                    marginTop: '4rem'
                   }}
                 >
               
@@ -189,20 +189,13 @@ const MyAccount = () => {
                 <Skeleton animation="wave" variant="text" width={100} />
                 <Skeleton animation="wave" variant="text" width={200} />
                 </Stack>
-              )}  
-                
-
-
-              <Zoom in={hasChange}>
-                <Fab
-                  onClick={handleSave}
-                  style={{ marginBottom: -20, marginTop:"1rem" }}
-                  color="primary"
-                  aria-label="save"
-                >
-                  <Save />
-                </Fab>
-              </Zoom>
+              )} 
+                {user.attachment && (
+                  <Box sx={{ mt: '1rem', p: '0.5rem', display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="overline">Vaccine Card</Typography>
+                    <img src={user.attachment} alt="user vaccine card" />
+                  </Box>                
+                )}
             </Paper>
         }
       </div>
