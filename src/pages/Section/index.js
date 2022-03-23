@@ -20,6 +20,7 @@ import {
 } from "../../actions/sectionActions"
 import { DELETE_SECTION_RESET } from "../../constants/sectionConstants"
 import SectionShow from './SectionShow';
+import MainAppBar from 'components/MainAppBar'
 
 const Section = ({history}) => {
   const [page, setPage] = useState(0)
@@ -107,8 +108,22 @@ const Section = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'section', defaultMessage: 'Section' })}
-    >
+      appBarContent={
+        <MainAppBar
+          title={intl.formatMessage({ id: 'section', defaultMessage: 'Section' })}
+          noBack
+          modal={
+            editMode ? (
+              <SectionForm section={section} modalClosed={() => setSection({})} page={page} rowsPerPage={rowsPerPage} />
+            ) : (
+              <SectionShow section={section} modalClosed={() => {
+                setSection({})
+                setEditMode(true)
+              }} />
+            )
+          }
+        />
+    }>
       <DataTable
         rows={sections ? sections : []}
         columns={columns}
@@ -119,16 +134,6 @@ const Section = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-      <Box>
-        {editMode ? (
-          <SectionForm section={section} modalClosed={() => setSection({})} page={page} rowsPerPage={rowsPerPage} />
-        ) : (
-          <SectionShow section={section} modalClosed={() => {
-            setSection({})
-            setEditMode(true)
-          }} />
-        )}
-      </Box>
     </Page>
   );
 };

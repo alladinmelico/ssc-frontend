@@ -18,7 +18,10 @@ const Rfid = lazy(() => import('../pages/Rfid'))
 const Temperature = lazy(() => import('../pages/Temperature'))
 const Monitor = lazy(() => import('../pages/Monitor'))
 const Subject = lazy(() => import('../pages/Subject'))
+const SubjectShow = lazy(() => import('../pages/Subject/SubjectShow'))
+const SubjectList = lazy(() => import('../pages/Subject/SubjectList'))
 const Facility = lazy(() => import('../pages/Facility'))
+const FacilityShow = lazy(() => import('../pages/Facility/FacilityShow'))
 const FacilityForm = lazy(() => import('../pages/Facility/FacilityForm'))
 const Course = lazy(() => import('../pages/Course'))
 const Classroom = lazy(() => import('../pages/Classroom'))
@@ -135,6 +138,33 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Subject />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/subject/:id',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <SubjectShow />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/subjects',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <SubjectList />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/facility/:id',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <FacilityShow />
       </AuthorizedRoute>
     ),
   },

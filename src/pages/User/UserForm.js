@@ -18,6 +18,8 @@ import { getAdminCourses } from 'actions/courseActions';
 import { getAdminSections } from 'actions/sectionActions';
 import { Skeleton } from '@mui/material';
 import roles from 'constants/roles'
+import Button from '@mui/material/Button';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
 export default function UserModal ({modalClosed, user}) {
   const [openModal, setOpenModal] = useState(false)
@@ -60,10 +62,11 @@ export default function UserModal ({modalClosed, user}) {
       setOpenModal(true)
       setValue('name', user.name)
       setValue('email', user.email)
-      setValue('section_id', user.section)
+      setValue('section_id', user.section_id)
       setValue('year', user.year)
       setValue('school_id', user.school_id);
       setValue('course_id', user.course_id)
+      setValue('role_id', user.role_id)
     }
 
     if (error || updateError) {
@@ -110,6 +113,17 @@ export default function UserModal ({modalClosed, user}) {
 
   return (
     <div>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => setOpenModal(true)}
+        size="large"
+        aria-label="add"
+        style={{ backgroundColor: 'transparent' }}
+        startIcon={<AddBoxOutlinedIcon />}
+      >
+        Add
+      </Button>
       <FormModal
         title={user && user.id ? 'Edit User' : 'Add User'}
         onSubmit={handleSubmit(onSubmit)}
@@ -223,7 +237,8 @@ export default function UserModal ({modalClosed, user}) {
             labelId="role-select-label"
             id="role-select"
             label="role"
-            defaultValue={user ? user.role_id : ''}          
+            defaultValue={user ? user.role_id : ''}
+            helperText={errors.role_id?.message}          
           >
             {roles.map(role => (
               <MenuItem value={role.value} key={role.value}>{role.label}</MenuItem>

@@ -25,6 +25,7 @@ import { useSnackbar } from 'notistack'
 import Divider from '@mui/material/Divider';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import Button from '@mui/material/Button';
+import MainAppBar from 'components/MainAppBar'
 
 const ScheduleShow = () => {
   const loc = window.location.pathname
@@ -133,7 +134,7 @@ const ScheduleShow = () => {
 
   return (
      <Page
-      pageTitle="Schedule Details"
+      appBarContent={<MainAppBar title="Schedule Details" to="/schedule/create" />}
     >
       {!schedule ? (
         <Container maxWidth="sm" sx={{ mx: "auto"}}>
@@ -232,9 +233,11 @@ const ScheduleShow = () => {
         </Container>    
       )}
 
-      <AbsentForm successfullySent={() => {
-        getSchedule()
-      }} batch={batch} openModal={openModal} setOpenModal={setOpenModal} />
+      {openModal && (
+        <AbsentForm successfullySent={() => {
+          getSchedule()
+        }} batch={batch} openModal={openModal} setOpenModal={setOpenModal} />
+      )}
     </Page>
   )
 }

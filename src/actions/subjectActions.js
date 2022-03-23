@@ -119,13 +119,13 @@ export const getSubjectDetails = (id) => async (dispatch) => {
 
         dispatch({
             type: SUBJECT_DETAILS_SUCCESS,
-            payload: data.subject
+            payload: data
         })
 
     } catch (error) {
         dispatch({
             type: SUBJECT_DETAILS_FAIL,
-            payload: error.response.data.message
+            payload: error
         })
     }
 }

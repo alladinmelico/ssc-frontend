@@ -38,7 +38,7 @@ export const getClassrooms = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ALL_CLASSROOMS_FAIL,
-            payload: error.response.data.message
+            payload: error
         })
     }
 }

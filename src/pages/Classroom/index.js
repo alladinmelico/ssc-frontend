@@ -19,6 +19,7 @@ import {
 import { DELETE_CLASSROOM_RESET } from "../../constants/classroomConstants"
 import ClassroomShow from './ClassroomShow';
 import ClassroomJoin from './ClassroomJoin';
+import MainAppBar from 'components/MainAppBar'
 
 const Classroom = ({history}) => {
   const [page, setPage] = useState(0)
@@ -109,8 +110,25 @@ const Classroom = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'classroom', defaultMessage: 'Classroom' })}
-    >
+      appBarContent={
+        <MainAppBar
+          title={intl.formatMessage({ id: 'classroom', defaultMessage: 'Classroom' })}
+          noBack
+          modal={
+            editMode ? (
+              <ClassroomForm classroom={classroom} modalClosed={() => setClassroom({})} page={page} rowsPerPage={rowsPerPage} />
+            ) : (
+              <ClassroomShow classroom={classroom} modalClosed={() => {
+                setClassroom({})
+                setEditMode(true)
+              }} />
+            )
+          }
+          tools={
+            <ClassroomJoin modalClosed={() => setClassroom({})} page={page} rowsPerPage={rowsPerPage}/>
+          }
+        />
+    }>
       <DataTable
         rows={classrooms ? classrooms.map(classroom => ({...classroom, section:classroom.section?.name })) : []}
         columns={columns}
@@ -121,17 +139,6 @@ const Classroom = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-      <Box>
-        {editMode ? (
-          <ClassroomForm classroom={classroom} modalClosed={() => setClassroom({})} page={page} rowsPerPage={rowsPerPage} />
-        ) : (
-          <ClassroomShow classroom={classroom} modalClosed={() => {
-            setClassroom({})
-            setEditMode(true)
-          }} />
-        )}
-        <ClassroomJoin modalClosed={() => setClassroom({})} page={page} rowsPerPage={rowsPerPage}/>
-      </Box>
     </Page>
   );
 };
