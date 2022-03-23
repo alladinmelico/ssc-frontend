@@ -33,11 +33,21 @@ export const classroomsReducer = (state = { classrooms: [] }, action) => {
       }
 
     case ALL_CLASSROOMS_SUCCESS:
+      return {
+        loading: false,
+        classrooms: action.payload.classrooms,
+        classroomsCount: action.payload.classroomsCount,
+        resPerPage: action.payload.resPerPage,
+        filteredClassroomsCount: action.payload.filteredClassroomsCount,
+      }
+
     case ADMIN_CLASSROOMS_SUCCESS:
       return {
         loading: false,
         classrooms: action.payload.data,
-        count: action.payload.meta.total
+        count: action.payload.meta.total,
+        currentPage: action.payload.meta.current_page,
+        lastPage: action.payload.meta.last_page,
       }
 
     case ALL_CLASSROOMS_FAIL:
@@ -160,7 +170,7 @@ export const classroomDetailsReducer = (state = { classroom: {} }, action) => {
     case CLASSROOM_DETAILS_SUCCESS:
       return {
         loading: false,
-        classroom: action.payload,
+        classroom: action.payload.data,
       }
 
     case CLASSROOM_DETAILS_FAIL:
