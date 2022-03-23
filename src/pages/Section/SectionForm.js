@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import FormModal from '../../components/Modal/FormModal'
 import { useForm } from "react-hook-form";
-import TextField from '@mui/material/TextField';
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import { useDispatch, useSelector } from "react-redux"
 import { getAdminSections, newSection, updateSection, clearErrors } from "../../actions/sectionActions"
 import { NEW_SECTION_RESET, UPDATE_SECTION_RESET } from "../../constants/sectionConstants"
 import { useSnackbar } from 'notistack'
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from "yup"
+import { Skeleton } from '@mui/material';
+import { Autocomplete } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import * as yup from "yup"
 import {
   allUsers
 } from "../../actions/userActions"
@@ -22,6 +24,9 @@ import {
 export default function SectionModal ({modalClosed, section}) {
   const [openModal, setOpenModal] = useState(false)
   const dispatch = useDispatch()
+  const { users, count  } = useSelector((state) => state.allUsers)
+  const [toAddPresident, setToAddPresident] = useState(section? section.user : {});
+  const [toAddFaculty, setToAddFaculty] = useState(section? section.user : {});
   const { loading, error, success } = useSelector((state) => state.newSection)
   const {
     loading: updateLoading,
@@ -32,9 +37,7 @@ export default function SectionModal ({modalClosed, section}) {
   const { enqueueSnackbar } = useSnackbar()
 
   const schema = yup.object({
-    name: yup.string().required("Name is a required field."),
-    president_id: yup.string().required(),
-    faculty_id: yup.string().required(),
+    name: yup.string().required("Name is a required field.")
   }).required();
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
@@ -43,23 +46,26 @@ export default function SectionModal ({modalClosed, section}) {
 
   const resetForm = () => {
     reset({ name: '', president_id: 0, faculty_id: 0})
+    setToAddFaculty('')
+    setToAddPresident('')
   }
 
-  const { loading: userLoading, users } = useSelector((state) => state.allUsers)
+  const { loading: userLoading } = useSelector((state) => state.allUsers)
 
   useEffect(() => {  
-    if (!userLoading) {
+    if (!count) {
       dispatch(allUsers())
     }
     
     if(section.id && !openModal) {
       setOpenModal(true)
       setValue('name', section.name)
-      setValue('president_id', section.president_id)
-      setValue('faculty_id', section.faculty_id)
+      setToAddPresident(users.find(item => item.id === section.president.id))
+      setToAddFaculty(users.find(item => item.id === section.faculty.id))
+      // setToAddPresident(section.find(item => item.id === section.president_id))
     }
-   
 
+   
     if (error || updateError) {
       dispatch(clearErrors())
     }
@@ -94,6 +100,8 @@ export default function SectionModal ({modalClosed, section}) {
   }, [dispatch, error, updateError, isUpdated, success, section])
 
   const onSubmit = async data => {
+    data.president_id = toAddPresident.id
+    data.faculty_id = toAddFaculty.id
     if (section.id) {
       dispatch(updateSection(section.id, data))
     } else {
@@ -126,42 +134,50 @@ export default function SectionModal ({modalClosed, section}) {
           fullWidth
         />
 
-         <FormControl fullWidth margin="normal">
-          <InputLabel id="president-select-label">President</InputLabel>
-           <Select
-          {...register("president_id")}
-          error={errors.president_id ? true : false}
-          labelId="president-select-label"
-          id="president-select"
-          label="president"
-          defaultValue={section ? section.president?.id : ''}
-         
-        >
-          {users.filter(item => item.role_id === 5 ).map(president => (
-            <MenuItem value={president.id}>{president.name}</MenuItem>
-          ))}
-        </Select>
-         </FormControl>
+        {users && users.length ? (
+        <FormControl fullWidth required margin="normal">
+          <Autocomplete
+            id="presidents-list"
+            name="presidents"
+            options={users.filter(item => item.role_id === 5 )}
+            value={toAddPresident}
+            getOptionLabel={((option) => option.name)}
+            onChange={(event, newVal) => setToAddPresident(newVal)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="President"
+                placeholder="President"
+              />
+            )}
+          />
+        </FormControl>
+        ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
 
-         <FormControl fullWidth margin="normal">
-          <InputLabel id="faculty-select-label">Faculty</InputLabel>
-          <Select
-          {...register("faculty_id")}
-          error={errors.faculty_id ? true : false}
-          labelId="faculty-select-label"
-          id="faculty-select"
-          label="faculty"
-          defaultValue={section ? section.faculty?.id : ''}
-         
-        >
-          {users.filter(item => item.role_id === 2 ).map(faculty => (
-            <MenuItem value={faculty.id}>{faculty.name}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      {users && users.length ? (
+        <FormControl fullWidth required margin="normal">
+          <Autocomplete
+            id="faculty-list"
+            name="faculty"
+            options={users.filter(item => item.role_id === 2 )}
+            value={toAddFaculty}
+            getOptionLabel={((option) => option.name)}
+            onChange={(event, newVal) => setToAddFaculty(newVal)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Faculty"
+                placeholder="Faculty"
+              />
+            )}
+          />
+        </FormControl>
+        ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
       </FormModal>
-      
-     
     </div>
   );
 }
