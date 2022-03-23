@@ -17,6 +17,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { Autocomplete, Box, Chip, OutlinedInput, Skeleton } from '@mui/material';
 import { getAdminSections } from 'actions/sectionActions';
+import Button from '@mui/material/Button';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
 export default function ClassroomModal ({modalClosed, classroom}) {
   const [openModal, setOpenModal] = useState(false)
@@ -145,6 +147,17 @@ export default function ClassroomModal ({modalClosed, classroom}) {
 
   return (
     <div>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => setOpenModal(true)}
+        size="large"
+        aria-label="add"
+        style={{ backgroundColor: 'transparent' }}
+        startIcon={<AddBoxOutlinedIcon />}
+      >
+        Add
+      </Button>
       <FormModal
         title={classroom && classroom.id ? 'Edit Classroom' : 'Add Classroom'}
         onSubmit={handleSubmit(onSubmit)}

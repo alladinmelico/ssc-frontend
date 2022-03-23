@@ -11,9 +11,9 @@ import Stack from '@mui/material/Stack';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SaveIcon from '@mui/icons-material/Save';
 import Button from '@mui/material/Button';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
-export default function FormModal ({title, onSubmit, success, loading, cancelled, openModal, setOpenModal, children, noFab, btnType, btnComponent}) {
-  const handleOpen = () => setOpenModal(true);
+export default function FormModal ({title, onSubmit, success, loading, cancelled, openModal, setOpenModal, children}) {
   const handleClose = () => setOpenModal(false);
 
   useEffect(() => {
@@ -34,11 +34,6 @@ export default function FormModal ({title, onSubmit, success, loading, cancelled
         alignItems: 'center',
       }}
     >
-      {!noFab && (
-        <Fab onClick={handleOpen} color="primary" aria-label="add" className={btnType && btnType === 'secondary' ? 'fabIconSecondary':'fabIcon'}>
-          {btnComponent ? btnComponent : <AddIcon />}
-        </Fab>
-      )}
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -62,7 +57,7 @@ export default function FormModal ({title, onSubmit, success, loading, cancelled
                 <Button onClick={() => {
                   setOpenModal(false)
                   cancelled()
-                }} variant="outlined" color="secondary">Cancel</Button>
+                }} variant="outlined" color="error">Cancel</Button>
                 <LoadingButton
                   loading={loading}
                   loadingPosition="start"
