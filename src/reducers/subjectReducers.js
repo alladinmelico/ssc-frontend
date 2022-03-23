@@ -45,7 +45,9 @@ export const subjectsReducer = (state = { subjects: [] }, action) => {
       return {
         loading: false,
         subjects: action.payload.data,
-        count: action.payload.meta.total
+        count: action.payload.meta.total,
+        currentPage: action.payload.meta.current_page,
+        lastPage: action.payload.meta.last_page,
       }
 
     case ALL_SUBJECTS_FAIL:
@@ -168,7 +170,7 @@ export const subjectDetailsReducer = (state = { subject: {} }, action) => {
     case SUBJECT_DETAILS_SUCCESS:
       return {
         loading: false,
-        subject: action.payload,
+        subject: action.payload.data,
       }
 
     case SUBJECT_DETAILS_FAIL:
