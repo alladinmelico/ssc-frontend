@@ -38,7 +38,7 @@ export const getClassrooms = () => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: ALL_CLASSROOMS_FAIL,
-            payload: error.response.data.message
+            payload: error
         })
     }
 }
@@ -117,13 +117,13 @@ export const getClassroomDetails = (id) => async (dispatch) => {
 
         dispatch({
             type: CLASSROOM_DETAILS_SUCCESS,
-            payload: data.classroom
+            payload: data
         })
 
     } catch (error) {
         dispatch({
             type: CLASSROOM_DETAILS_FAIL,
-            payload: error.response.data.message
+            payload: error
         })
     }
 }

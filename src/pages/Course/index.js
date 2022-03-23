@@ -3,7 +3,6 @@ import { useIntl } from 'react-intl';
 import Page from 'material-ui-shell/lib/containers/Page';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
-import Box from '@mui/material/Box';
 import CourseForm from './CourseForm'
 import { useDispatch, useSelector } from "react-redux"
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -18,6 +17,7 @@ import {
 } from "../../actions/courseActions"
 import { DELETE_COURSE_RESET } from "../../constants/courseConstants"
 import CourseShow from './CourseShow';
+import MainAppBar from 'components/MainAppBar'
 
 const Course = ({history}) => {
   const [page, setPage] = useState(0)
@@ -116,8 +116,22 @@ const Course = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'course', defaultMessage: 'Course' })}
-    >
+      appBarContent={
+        <MainAppBar
+          title={intl.formatMessage({ id: 'course', defaultMessage: 'Course' })}
+          noBack
+          modal={
+            editMode ? (
+              <CourseForm course={course} modalClosed={() => setCourse({})} page={page} rowsPerPage={rowsPerPage} />
+            ) : (
+              <CourseShow course={course} modalClosed={() => {
+                setCourse({})
+                setEditMode(true)
+              }} />
+            )
+          }
+        />
+    }>
       <DataTable
         rows={courses ? courses : []}
         columns={columns}
@@ -128,16 +142,6 @@ const Course = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-     <Box>
-        {editMode ? (
-          <CourseForm course={course} modalClosed={() => setCourse({})} page={page} rowsPerPage={rowsPerPage} />
-        ) : (
-          <CourseShow course={course} modalClosed={() => {
-            setCourse({})
-            setEditMode(true)
-          }} />
-        )}
-      </Box>
     </Page>
   );
 };

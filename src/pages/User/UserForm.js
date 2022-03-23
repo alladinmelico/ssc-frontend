@@ -19,6 +19,8 @@ import { getAdminSections } from 'actions/sectionActions';
 import { Skeleton } from '@mui/material';
 import roles from 'constants/roles'
 import { Autocomplete } from '@mui/material';
+import Button from '@mui/material/Button';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
 export default function UserModal ({modalClosed, user}) {
   const [openModal, setOpenModal] = useState(false)
@@ -116,6 +118,17 @@ export default function UserModal ({modalClosed, user}) {
 
   return (
     <div>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => setOpenModal(true)}
+        size="large"
+        aria-label="add"
+        style={{ backgroundColor: 'transparent' }}
+        startIcon={<AddBoxOutlinedIcon />}
+      >
+        Add
+      </Button>
       <FormModal
         title={user && user.id ? 'Edit User' : 'Add User'}
         onSubmit={handleSubmit(onSubmit)}

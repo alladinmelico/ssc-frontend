@@ -24,6 +24,7 @@ import {
   clearErrors,
 } from "../../../actions/facilityActions"
 import Button from '@mui/material/Button';
+import TypeCards from './TypeCards';
 const dayjs = require('dayjs')
 const isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
 const isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
@@ -31,7 +32,24 @@ dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
 
 export default function Step2({history, activeStep, setActiveStep}) {
-  const [type, setType] = useState('');
+  const [type, setType] = useState(1);
+  const [types, setTypes] = useState([
+    {
+      value: 1,
+      label: 'Classroom',
+      image: '/types/professor.svg'   
+    },
+    {
+      value: 2,
+      label: 'Office',
+      image: '/types/working.svg'    
+    },
+    {
+      value: 3,
+      label: 'Others',
+      image: '/types/more.svg'   
+    },
+  ]);
   const [facility, setFacility] = useState('');
   const [filteredFacilities, setFilteredFacilities] = useState([]);
   const [classroom, setClassroom] = useState({});
@@ -50,7 +68,6 @@ export default function Step2({history, activeStep, setActiveStep}) {
   const { loading, facilities, count, error } = useSelector((state) => state.facilities)
   const { schedule } = useSelector((state) => state.newSchedule)
 
-  const types = ['Classroom', 'Office', 'Others']
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -104,6 +121,10 @@ export default function Step2({history, activeStep, setActiveStep}) {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
 
+  function disableWeekends(date) {
+    return date.day() === 0 || date.day() === 6;
+  }
+
   function getTimeMin (time) {
     const tempDate = new Date()
     const timeSplit = time.split(':')
@@ -114,10 +135,10 @@ export default function Step2({history, activeStep, setActiveStep}) {
 
   const fetchData = (schedule) => {
     if (schedule.facility) {
-      setType(schedule.facility ? (types.findIndex(item => item === schedule.facility.type) + 1) : '')
+      setType(schedule.facility ? schedule.facility.type : '')
       setFacility(schedule.facility ? schedule.facility.id : '')
     } else {
-      setType(schedule.facility_type ? schedule.facility_type : '')
+      setType(schedule.facility_type ? schedule.facility_type : 1)
       setFacility(schedule.facility_id ? schedule.facility_id : '')
       // if (facility && type.length === 0) {
       //   setType(facilities.find(item => item.id === facility)?.type)
@@ -127,7 +148,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
     setEndTime(schedule.end_at ? dayjs(getTimeMin(schedule.end_at)) : startTime.add(8, 'hour'))
     setStartDate(schedule.start_date ? dayjs(schedule.start_date) : dayjs(new Date()))
     if (schedule.is_recurring) {
-      setEndDate(schedule.end_date)
+      setEndDate(dayjs(schedule.end_date))
     }
     setIsRecurring(!!schedule.is_recurring)
 
@@ -175,6 +196,22 @@ export default function Step2({history, activeStep, setActiveStep}) {
       fetchData(schedule)
     }
 
+    if (schedule && schedule.type === 'personal') {
+      setTypes([
+        {
+          value: 2,
+          label: 'Office',
+          image: '/types/working.svg'    
+        },
+        {
+          value: 3,
+          label: 'Others',
+          image: '/types/more.svg'   
+        },
+      ])
+      setType(2)
+    }
+
     if (error === 'Unauthenticated.') {
       history.push('/signin')
     }
@@ -182,26 +219,8 @@ export default function Step2({history, activeStep, setActiveStep}) {
 
   return (
     <Box sx={{ minWidth: 120 }}>
-      <form onSubmit={submit}>
-        <FormControl fullWidth required sx={{ my: 2 }}>
-          <InputLabel id="type-select-label">Type</InputLabel>
-          <Select
-            labelId="type-select-label"
-            id="type-select"
-            value={type}
-            label="Type"
-            onChange={(e) => {
-              setType(e.target.value)
-              setFilteredFacilities([])
-              setFacility('')
-            }}
-          >
-            {types.map((type, index) => (
-              <MenuItem value={++index} key={index}>{type}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      
+      <TypeCards types={types} type={type} setType={setType} />
+      <form onSubmit={submit}>      
         <LocalizationProvider dateAdapter={DateAdapter}>
           <Grid container rowSpacing={3} spacing={2}>
             <Grid item xs={6}>
@@ -259,6 +278,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 minDate={dayjs(new Date())}
                 maxDate={isRecurring ? endDate : null}
                 value={startDate}
+                shouldDisableDate={disableWeekends}
                 onChange={(val) => {
                   oneDayDiff()
                   setFilteredFacilities([])
@@ -275,6 +295,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                   inputFormat="MM/D/YYYY"
                   minDate={startDate}
                   value={endDate}
+                  shouldDisableDate={disableWeekends}
                   onChange={(val) => {
                     oneDayDiff()
                     setFilteredFacilities([])
@@ -315,9 +336,9 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 </FormControl>
               </Grid>     
             )}
-            {isRecurring && (
+            {isRecurring && repeatBy && repeatBy === 'weekly' && (
               <Grid item xs={6}>
-                <FormControl required={isRecurring} fullWidth>
+                <FormControl required={isRecurring && repeatBy && repeatBy === 'weekly'} fullWidth>
                   <InputLabel id="daysOfWeek-select-label">Days of Week</InputLabel>
                   <Select
                     labelId="daysOfWeek-select-label"
@@ -363,7 +384,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                       onChange={(e) => setFacility(e.target.value)}
                       required
                     >
-                      {type ? filteredFacilities.filter(item => item.type.toLowerCase() === types[type - 1].toLowerCase()).map(item => (
+                      {type ? filteredFacilities.filter(item => item.type.toLowerCase() === types.find(item => item.value === type).label.toLowerCase()).map(item => (
                         <MenuItem value={item.id} key={item.id}>{item.name} {item.schedules ? `[${item.schedules.length} schedules]` : '[no schedule]'}</MenuItem>
                       )) : ''}
                     </Select>

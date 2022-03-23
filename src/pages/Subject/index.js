@@ -3,8 +3,6 @@ import { useIntl } from 'react-intl';
 import Page from 'material-ui-shell/lib/containers/Page';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import DataTable from '../../components/DataTable';
-import IconButton from '@mui/material/IconButton';
-import Box from '@mui/material/Box';
 import SubjectForm from './SubjectForm'
 import { useDispatch, useSelector } from "react-redux"
 import Stack from '@mui/material/Stack';
@@ -20,6 +18,7 @@ import {
 } from "../../actions/subjectActions"
 import { DELETE_SUBJECT_RESET } from "../../constants/subjectConstants"
 import SubjectShow from './SubjectShow';
+import MainAppBar from 'components/MainAppBar'
 
 const Subject = ({history}) => {
   const [page, setPage] = useState(0)
@@ -120,8 +119,22 @@ const Subject = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'subject', defaultMessage: 'Subject' })}
-    >
+      appBarContent={
+        <MainAppBar
+          title={intl.formatMessage({ id: 'subject', defaultMessage: 'Subject' })}
+          noBack
+          modal={
+            editMode ? (
+              <SubjectForm subject={subject} modalClosed={() => setSubject({})} page={page} rowsPerPage={rowsPerPage} />
+            ) : (
+              <SubjectShow subject={subject} modalClosed={() => {
+                setSubject({})
+                setEditMode(true)
+              }} />
+            )
+          }
+        />
+    }>
       <DataTable
         rows={subjects ? subjects : []}
         columns={columns}
@@ -132,16 +145,6 @@ const Subject = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-      <Box>
-        {editMode ? (
-          <SubjectForm subject={subject} modalClosed={() => setSubject({})} page={page} rowsPerPage={rowsPerPage} />
-        ) : (
-          <SubjectShow subject={subject} modalClosed={() => {
-            setSubject({})
-            setEditMode(true)
-          }} />
-        )}
-      </Box>
     </Page>
   );
 };
