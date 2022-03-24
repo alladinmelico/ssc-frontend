@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from "react";
+import { Container, Stack, Grid } from "@mui/material";
 import ShowModal from 'components/Modal/ShowModal'
-import { Grid, Stack } from "@mui/material";
 import ItemDetail from "components/Modal/ItemDetail";
-import Container from '@mui/material/Container';
 import Page from 'material-ui-shell/lib/containers/Page';
+import { useDispatch, useSelector } from "react-redux"
+import Skeleton from '@mui/material/Skeleton';
 import {
   getFacilityDetails,
   clearErrors,
 } from "actions/facilityActions"
-import { useDispatch, useSelector } from "react-redux"
-import Skeleton from '@mui/material/Skeleton';
 import { Box } from "@mui/system";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -23,6 +22,7 @@ const FacilityShow = () => {
   const loc = window.location.pathname
   const id = loc.substring(loc.lastIndexOf('/') + 1);
   const { loading, facility } = useSelector((state) => state.facilityDetails)
+
   const dispatch = useDispatch()
   const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ const FacilityShow = () => {
 
   return (
     <Page
-      appBarContent={<MainAppBar title="Facility Details" to="/facility/create" />}
+      appBarContent={<MainAppBar title="Facility Details" to="/facility/create" />} 
     >
       {loading || !facility.id ? (
         <Container maxWidth="lg" sx={{ mx: "auto"}}>

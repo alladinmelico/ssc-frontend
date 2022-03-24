@@ -115,17 +115,17 @@ export const getFacilityDetails = (id) => async (dispatch) => {
 
         dispatch({ type: FACILITY_DETAILS_REQUEST })
 
-        const { data } = await API.get(`facility/${id}`)
+        const { data } = await API.get(`facility/${id}?has_schedule=true`)
 
         dispatch({
             type: FACILITY_DETAILS_SUCCESS,
-            payload: data.data
+            payload: data
         })
 
     } catch (error) {
         dispatch({
             type: FACILITY_DETAILS_FAIL,
-            payload: error.response.data.message
+            payload: error
         })
     }
 }

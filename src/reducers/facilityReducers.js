@@ -45,7 +45,9 @@ export const facilitiesReducer = (state = { facilities: [] }, action) => {
       return {
         loading: false,
         facilities: action.payload.data,
-        count: action.payload.meta?.total
+        count: action.payload.meta.total,
+        currentPage: action.payload.meta.current_page,
+        lastPage: action.payload.meta.last_page,
       }
 
     case ALL_FACILITIES_FAIL:
@@ -168,7 +170,7 @@ export const facilityDetailsReducer = (state = { facility: {} }, action) => {
     case FACILITY_DETAILS_SUCCESS:
       return {
         loading: false,
-        facility: action.payload,
+        facility: action.payload.data,
       }
 
     case FACILITY_DETAILS_FAIL:
