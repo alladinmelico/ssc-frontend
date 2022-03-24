@@ -226,6 +226,25 @@ const getMenuItems = (props) => {
         },
       ],
     },
+    { divider: true, visible: auth.role !== 1 },
+    {
+      value: '/subjects',
+      visible: auth.role !== 1,
+      primaryText: intl.formatMessage({ id: 'subject', defaultMessage: 'Subjects' }),
+      leftIcon: <LibraryBooksOutlined />,
+    },
+    {
+      value: '/facilities',
+      visible: auth.role !== 1,
+      primaryText: intl.formatMessage({ id: 'facility', defaultMessage: 'Facilties' }),
+      leftIcon: <ApartmentOutlined />,
+    },
+     {
+      value: '/courses',
+      visible: auth.role !== 1,
+      primaryText: intl.formatMessage({ id: 'course', defaultMessage: 'Courses' }),
+      leftIcon: <HistoryEduOutlined />,
+    },
     { divider: true },
     {
       primaryText: intl.formatMessage({ id: 'settings' }),

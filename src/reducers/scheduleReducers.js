@@ -126,7 +126,7 @@ export const scheduleReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
-        isDeleted: action.payload,
+        isDeleted: action.payload.data,
       }
 
     case UPDATE_SCHEDULE_SUCCESS:
@@ -190,6 +190,12 @@ export const scheduleDetailsReducer = (state = { schedule: {} }, action) => {
       return {
         ...state,
         error: null,
+      }
+      
+    case CLEAR_DATA:
+      return {
+        schedule: [],
+        success: false,
       }
 
     default:
