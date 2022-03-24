@@ -17,7 +17,10 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const FacilityChart = () => {
   const { facilities } = useSelector((state) => state.facilities)
 
-  let filteredData = [...facilities]
+  let filteredData = []
+  if (facilities) {
+    filteredData = [...facilities]
+  }
   filteredData = filteredData.sort((first, second) => first.capacity - second.capacity).splice(0, 10)
 
   const labels = [...filteredData.map((facility) => facility.code)]

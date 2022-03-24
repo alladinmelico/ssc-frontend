@@ -22,7 +22,7 @@ const GalleryModal = ({label}) => {
 
   return (
     <>
-    <Button variant='contained'onClick={handleOpen}><CollectionsOutlinedIcon/></Button>
+    <Button variant='outlined'onClick={handleOpen}><CollectionsOutlinedIcon/></Button>
       <Paper
       elevation={16}
       style={{

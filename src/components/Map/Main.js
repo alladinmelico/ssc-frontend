@@ -42,7 +42,7 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
   const [floor, setFloor] = useState(1)
   const [showWholeMap, setShowWholeMap] = useState(false)
 
-  const { facilities } = useSelector((state) => state.facilities)
+  const { facilities, count } = useSelector((state) => state.facilities)
   
   const departments = ['Bachelor of Engineering and Allied Department',
     'Basic Arts and Sciences Department',
@@ -103,7 +103,7 @@ const classes = useStyles();
   }
 
   useEffect(() => {
-    if (facilities.length === 0) {
+    if (!count) {
       dispatch(getAdminFacilities(0, 100, 'has_schedule=true'))
     }
   }, [dispatch])
@@ -127,7 +127,7 @@ const classes = useStyles();
           </Select>
         </FormControl>
       </Stack>
-      {facilities.length ? (
+      {facilities && facilities.length ? (
         <Box>
           {(showWholeMap) ? (
             <Box>
