@@ -13,6 +13,7 @@ const Report = lazy(() => import('../pages/Report'))
 const Schedule = lazy(() => import('../pages/Schedule'))
 const ScheduleShow = lazy(() => import('../pages/Schedule/ScheduleShow'))
 const ScheduleForm = lazy(() => import('../pages/Schedule/ScheduleForm'))
+const Calendar = lazy(() => import('../pages/Schedule/Calendar'))
 const User = lazy(() => import('../pages/User'))
 const Rfid = lazy(() => import('../pages/Rfid'))
 const Temperature = lazy(() => import('../pages/Temperature'))
@@ -25,6 +26,8 @@ const FacilityShow = lazy(() => import('../pages/Facility/FacilityShow'))
 const FacilityForm = lazy(() => import('../pages/Facility/FacilityForm'))
 const Course = lazy(() => import('../pages/Course'))
 const Classroom = lazy(() => import('../pages/Classroom'))
+const ClassroomShow = lazy(() => import('../pages/Classroom/ClassroomShow'))
+const ClassroomList = lazy(() => import('../pages/Classroom/ClassroomList'))
 const Section = lazy(() => import('../pages/Section'))
 const Notification = lazy(() => import('../pages/Notification'))
 const Home = lazy(() => import('../pages/Home/Home'))
@@ -86,6 +89,15 @@ const routes = [
     path: '/about',
     exact: true,
     element: <About />,
+  },
+  {
+    path: '/calendar',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <Calendar />
+      </AuthorizedRoute>
+    ),
   },
   {
     path: '/schedule/:id',
@@ -210,6 +222,24 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Classroom />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/classroom/:id',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <ClassroomShow />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/classrooms',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <ClassroomList />
       </AuthorizedRoute>
     ),
   },

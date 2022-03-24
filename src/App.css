@@ -238,6 +238,14 @@ body {
   transform: rotate(180deg);
 }
 
+#map-rot {
+  transform: rotate(180deg);
+}
+
+#map-rotate {
+  transform: rotate(270deg);
+}
+
 .type-card {
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -267,4 +275,8 @@ body {
 
 .type-card-active {
   background-color: #00838f;
+}
+
+.fc-daygrid-event-harness {
+  cursor: pointer !important;
 }

@@ -147,7 +147,7 @@ export const getAdminSchedules = (page = 1, limit = 10, data = null) => async (d
     } catch (error) {
         dispatch({
             type: ADMIN_SCHEDULES_FAIL,
-            payload: error.response.data.message
+            payload: error
         })
     }
 }
