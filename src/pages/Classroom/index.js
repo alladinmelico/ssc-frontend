@@ -83,7 +83,7 @@ const Classroom = ({history}) => {
           setClassroom(params.row)
           setEditMode(true)
         }} label="Edit" />,
-        <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
+        <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
               id: 'dialog_title',
