@@ -59,7 +59,7 @@ const SubjectShow = () => {
         </Stack>
         {subject.classrooms ? (            
               <Box sx={{ my: '2rem' }}>
-                <Typography color="primary" variant="h5">Schedules: </Typography>
+                <Typography color="primary" variant="h5">Classrooms: </Typography>
                 <Grid container sx={{width: '100%', mt: "1rem"}} spacing={{ xs:2, sm:3, md:4}} >
                   {subject.classrooms.map(classroom => (
                     <Grid item xs={12} sm={12} md={3} lg={4} sx={{mt: "1rem"}}>
@@ -78,7 +78,7 @@ const SubjectShow = () => {
                             <strong>Google Classroom:</strong> {classroom.google_classroom_id}
                           </Typography>
                           <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
-                            <strong>Section:</strong> {classroom.section}
+                            <strong>Section:</strong> {classroom.section?.name}
                           </Typography>
                         </CardContent>
                         <CardActions>

@@ -84,7 +84,7 @@ const Schedule = ({history}) => {
             <EditOutlinedIcon color="primary" />
           </Link>
         } label="Edit" />,
-        <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
+        <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
               id: 'dialog_title',
