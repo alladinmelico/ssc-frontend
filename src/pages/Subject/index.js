@@ -11,6 +11,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
+import {useNavigate} from 'react-router-dom';
+
 import {
   getAdminSubjects,
   deleteSubject,
@@ -25,6 +27,8 @@ const Subject = ({history}) => {
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [subject, setSubject] = useState({})
   const [editMode, setEditMode] = useState(true)
+  const navigate = useNavigate();
+
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -65,10 +69,9 @@ const Subject = ({history}) => {
 
   function getActions (params) {
     const actions = [
-      <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
-        setSubject(params.row)
-        setEditMode(false)
-      }} label="View" />,    
+      <GridActionsCellItem
+      icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/subject/${params.row.id}`)} />}
+      label="View" />,
     ]
 
     if (role === 1) {
@@ -77,7 +80,7 @@ const Subject = ({history}) => {
           setSubject(params.row)
           setEditMode(true)
         }} label="Edit" />,
-        <GridActionsCellItem icon={<DeleteOutlinedIcon color="secondary" />} onClick={() => 
+        <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
           openDialog({
             title: intl.formatMessage({
               id: 'dialog_title',
