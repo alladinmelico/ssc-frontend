@@ -45,7 +45,7 @@ const FacilityShow = () => {
       appBarContent={<MainAppBar title="Facility Details" to="/facility/create" />}
     >
       {loading || !facility.id ? (
-        <Container maxWidth="md" sx={{ mx: "auto"}}>
+        <Container maxWidth="lg" sx={{ mx: "auto"}}>
           <Stack spacing={2}>
             <Skeleton animation="wave" height={100} />
             <Skeleton animation="wave" height={100} />
@@ -65,10 +65,10 @@ const FacilityShow = () => {
             {facility.schedules ? (            
               <Box sx={{ my: '2rem' }}>
                 <Typography color="primary" variant="h5">Schedules: </Typography>
-                <Grid container rowSpacing={3} spacing={2}>
+                <Grid container sx={{width: '100%', mt: "1rem"}} spacing={{ xs:2, sm:3, md:4}} >
                   {facility.schedules.map(schedule => (
-                    <Grid item xs={4}>
-                      <Card sx={{ minWidth: 275 }}>
+                    <Grid item xs={12} sm={12} md={3} lg={4} sx={{mt: "1rem"}}>
+                      <Card sx={{ height: '100%' }} >
                         <CardContent>
                           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                           {titleCase(schedule.type)}
@@ -76,7 +76,7 @@ const FacilityShow = () => {
                           <Typography variant="body1" component="div">
                             {schedule.title}
                           </Typography>
-                          <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
+                          <Typography sx={{ mt: 1.5, mb: 1.5, fontSize: 12 }} color="text.secondary">
                             <strong>Start Time:</strong> {schedule.start_at}
                           </Typography>
                           <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
@@ -95,12 +95,12 @@ const FacilityShow = () => {
                           <Button size="small" color="primary" onClick={() => navigate(`/schedule/${schedule.id}`)}>Learn More</Button>
                         </CardActions>
                       </Card>  
-                    </Grid>          
+                    </Grid>        
                   ))}            
                 </Grid>            
               </Box>
             ): (
-               <Typography color="primary" variant="caption">No schedule for this facility...</Typography>
+               <Typography color="primary" variant="caption">No Schedule for this Facility...</Typography>
             )}
         </Container>
       )}
