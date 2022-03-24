@@ -280,7 +280,7 @@ const classes = useStyles();
             }
             label="Show Campus Map"
           />
-          <GalleryModal/>
+          <GalleryModal selectedDepartment={selectedDepartment} />
           <Button classname={classes.resetButton} variant="outlined" onClick={() => setSelected('')}>Reset Selected Facility</Button>
           </Stack>
         </Box>

@@ -1,13 +1,13 @@
 const gallery = [
   {
     name: 'IECEP',
-    image: '/gallery/ee.jpg',
-    department: 3,
+    image: '/gallery/ee1.jpg',
+    department: 4,
   },
   {
-    name: 'IECEP',
-    image: '/gallery/ee.jpg',
-    department: 3,
+    name: 'Non-destructive Testing Engineering',
+    image: '/gallery/ndt1.jpg',
+    department: 1,
   }
 ]
 

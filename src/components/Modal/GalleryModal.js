@@ -4,17 +4,21 @@ import Backdrop from '@mui/material/Backdrop';
 import Typography from '@mui/material/Typography';
 import CollectionsOutlinedIcon from '@mui/icons-material/CollectionsOutlined';
 import { Button, Fade, Modal, Paper } from '@mui/material';
+import gallery from 'constants/gallery'
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import ListSubheader from '@mui/material/ListSubheader';
 
-const GalleryModal = ({label}) => {
+const GalleryModal = ({selectedDepartment}) => {
 
-  const style = {
-    position: 'relative',
-        borderRadius: 18,
-        display: 'flex',
-        justifyContent: 'flex-start',
-        flexDirection: 'column',
-        alignItems: 'center',
-  };
+  const departments = [
+    'Bachelor of Engineering and Allied Department',
+    'Basic Arts and Sciences Department',
+    'Civil and Allied Department',
+    'Electrical and Allied Department',
+    'Mechanical and Allied Department',
+  ]
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -49,8 +53,20 @@ const GalleryModal = ({label}) => {
         <Fade in={open}>
           <Box className="formModal" style={{bgcolor: 'background.paper'}}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              PICTURE
+              {departments[selectedDepartment-1]} Gallery
             </Typography>
+            <ImageList sx={{ width: 500, height: 450 }} variant="quilted" cols={1}>
+              {gallery.filter(item => item.department === selectedDepartment).map((item) => (
+                <ImageListItem key={item.img}>
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    loading="lazy"
+                  />
+                  <ImageListItemBar title={item.name} />
+                </ImageListItem>
+              ))}
+            </ImageList>
           </Box>
         </Fade>
       </Modal>
