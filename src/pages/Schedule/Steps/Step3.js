@@ -112,11 +112,11 @@ export default function Step3({history, activeStep, setActiveStep}) {
   }
 
   useEffect(() => {
-    if (count || count === 0) {
+    if (count || count !== 0) {
       if (schedule.users) {
-        setBatches(sliceIntoChunks(schedule.users, facilityCapacity))
+        setBatches(sliceIntoChunks(schedule.users, schedule.facility_capacity))
       } else if (schedule && schedule.type === 'whole_class') {
-        setBatches(sliceIntoChunks(users, facilityCapacity))
+        setBatches(sliceIntoChunks(users, schedule.facility_capacity))
       }
     } else {
       if (schedule && schedule.classroom_id) {

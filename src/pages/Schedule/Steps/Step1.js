@@ -70,12 +70,7 @@ export default function Step1({history, activeStep, setActiveStep}) {
     if (!classrooms) {
       dispatch(getClassrooms())
     }
-
-    if (schedule) {
-      setTitle(schedule.title)
-      setType(schedule.type ? schedule.type : 'whole_class')
-      setClassroom(schedule.classroom_id)
-    }
+    
     if (classrooms && classrooms.length === 0 ) {
       setTypes([
         {
@@ -85,6 +80,12 @@ export default function Step1({history, activeStep, setActiveStep}) {
         },
       ])
       setType('personal')
+    }
+
+    if (schedule) {
+      setTitle(schedule.title)
+      setType(schedule.type ? schedule.type : 'whole_class')
+      setClassroom(schedule.classroom_id)
     }
   }, [dispatch, history, schedule, count])
 
