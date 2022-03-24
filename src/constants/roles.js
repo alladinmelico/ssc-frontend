@@ -7,7 +7,7 @@ const roles = [
     {
       value: 3,
       label: 'Student',
-      crud: ['SCHEDULE', 'SUBJECT', 'CLASSROOM']  
+      crud: ['SCHEDULE', 'CLASSROOM']  
     },
     {
       value: 4,
