@@ -38,7 +38,7 @@ import GalleryModal from '../Modal/GalleryModal';
 
 const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment, showDetails}) => {
   const dispatch = useDispatch()
-
+  const [view, setView] = useState('/map/map-outline.png')
   const [floor, setFloor] = useState(1)
   const [showWholeMap, setShowWholeMap] = useState(false)
 
@@ -82,6 +82,21 @@ const classes = useStyles();
     {
       label: '81% - 100% occupied',
       color: '#ef5350',
+    },
+  ]
+
+   const views = [
+    {
+     value: 'Outline',
+     map: '/map/map-outline.png'
+    },
+    {
+     value: 'Colored',
+     map: '/map/map-color.png'
+    },
+    {
+     value: 'Satellite',
+     map: '/map/map-satellite.png'
     },
   ]
 
@@ -135,11 +150,13 @@ const classes = useStyles();
                 setSelected={setSelected}
                 selected={selected}
                 facilities={formatFacility()}
+                view={view}
                 />}
               {(floor == 2) && <SecondAllMap
                 setSelected={setSelected}
                 selected={selected}
                 facilities={formatFacility()}
+                view={view}
                 />}
             </Box>
           ) : (
@@ -268,6 +285,21 @@ const classes = useStyles();
               <FormControlLabel value={4} control={<Radio />} label="NDT" />}
           </RadioGroup>
         </FormControl>
+        {showWholeMap && (
+          <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label">View</FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              name="radio-buttons-group"
+              value={view}
+              onChange={(event) => setView(event.target.value)}
+            >
+              {views.map(view => (
+                <FormControlLabel key={view.value} value={view.map} control={<Radio size="small" />} label={view.value} />
+              ))}
+            </RadioGroup>
+          </FormControl>
+        )}
         <Box sx={{mx:"auto", mt:"1rem"}}>
           <Stack  direction={{ xs: 'column', md: 'row', lg: 'row', }}  spacing={2}>
             <FormControlLabel sx={{mx:"auto"}}
