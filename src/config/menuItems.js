@@ -142,12 +142,7 @@ const getMenuItems = (props) => {
       primaryText: "Notifications",
       leftIcon: <NotificationsNoneOutlined />,
     },
-    {
-      value: '/schedule',
-      visible: can('SCHEDULE'),
-      primaryText: intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedules' }),
-      leftIcon: <CalendarTodayOutlined />,
-    },
+
     {
       visible: can('SCHEDULE'),
       primaryText: intl.formatMessage({ id: 'schedule', defaultMessage: 'Schedules' }),
