@@ -33,7 +33,7 @@ const ClassroomShow = () => {
           </Stack>
         </Container>
       ): (
-      <Container>
+      <Container maxWidth="md" sx={{mx:"auto", mt:'2rem'}}>
         <Stack spacing={2}>
         <ItemDetail label="Name" value={classroom.name} />
         <ItemDetail label="Description Heading" value={classroom.description_heading} />
