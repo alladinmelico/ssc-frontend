@@ -20,6 +20,7 @@ import { DELETE_CLASSROOM_RESET } from "../../constants/classroomConstants"
 import ClassroomShow from './ClassroomShow';
 import ClassroomJoin from './ClassroomJoin';
 import MainAppBar from 'components/MainAppBar'
+import { useNavigate } from 'react-router-dom';
 
 const Classroom = ({history}) => {
   const [page, setPage] = useState(0)
@@ -30,6 +31,7 @@ const Classroom = ({history}) => {
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
+  const navigate = useNavigate()
 
   const { loading, classrooms, count, error } = useSelector((state) => state.classrooms)
   const { error: deleteError, isDeleted } = useSelector((state) => state.classroom)
@@ -75,10 +77,8 @@ const Classroom = ({history}) => {
       type: 'actions',
       disableExport: true,
       getActions: (params) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
-          setClassroom(params.row)
-          setEditMode(false)
-        }} label="View" />,
+        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/classroom/${params.row.id}`)
+        }/>}  label="View" />,
         <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
           setClassroom(params.row)
           setEditMode(true)
