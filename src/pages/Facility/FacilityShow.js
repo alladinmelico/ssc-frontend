@@ -55,6 +55,16 @@ const FacilityShow = () => {
         </Container>
       ): (
         <Container maxWidth="md" sx={{ mx: "auto", mt: '2rem'}}>
+          {facility.cover && (
+            <div className="image-cover">
+              <img src={facility.cover}  alt={facility.name} />
+              <p className="title">{facility.name}</p>
+              <div className="code">
+                <Typography color="primary" variant="overline">Code:</Typography>
+                <Typography color="primary" variant="body1">{facility.code}</Typography>
+              </div>
+            </div>        
+          )}
           <Stack spacing={2}>
             <ItemDetail label="Name" value={facility.name} />
             <ItemDetail label="Code" value={facility.code} />

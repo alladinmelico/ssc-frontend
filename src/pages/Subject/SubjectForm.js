@@ -11,9 +11,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 import Button from '@mui/material/Button';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
+import Unsplash from 'components/Unsplash'
 
 export default function SubjectModal ({modalClosed, subject}) {
   const [openModal, setOpenModal] = useState(false)
+  const [cover, setCover] = useState('')
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newSubject)
   const {
@@ -78,6 +80,10 @@ export default function SubjectModal ({modalClosed, subject}) {
   }, [dispatch, error, updateError, isUpdated, success, subject])
 
   const onSubmit = async data => {
+    if (cover) {
+      data.cover = JSON.stringify(cover)
+    }
+
     if (subject.id) {
       dispatch(updateSubject(subject.id, data))
     } else {
@@ -110,6 +116,7 @@ export default function SubjectModal ({modalClosed, subject}) {
           modalClosed()
           resetForm()
       }}>
+        <Unsplash selectedPhoto={cover} setSelectedPhoto={setCover} />
         <TextField 
           {...register("name", { required: true, min: 3 })}
           error={errors.name ? true : false}

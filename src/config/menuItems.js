@@ -54,11 +54,12 @@ const getMenuItems = (props) => {
     auth: authData,
   } = props
 
+  const { auth, setAuth } = authData
+
   const { toggleThis, isDesktop, isAuthMenuOpen, isMiniSwitchVisibility } =
     menuContext
   const { themeID, setThemeID, isRTL, toggleThisTheme } = themeContext
 
-  const { auth, setAuth } = authData
   const { isAppInstallable, isAppInstalled, deferredPrompt } = a2HSContext
 
   const localeItems = allLocales.map((l) => {

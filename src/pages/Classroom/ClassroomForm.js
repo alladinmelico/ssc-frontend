@@ -141,10 +141,13 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   const onSubmit = async data => {
     data.section_id = toAddSections.id
     data.course_id = toAddSubjects.id
-    data.google_classroom_id = toAddGclassrooms.id
+    if (toAddGclassrooms) {
+      data.google_classroom_id = toAddGclassrooms.id
+    }
     if (toAddUsers.length) {
       data.users = toAddUsers.map(item => item.id)
     }
+    data.users.push(auth.id) // add currently authenticated user to the class being created
     if (classroom.id) {
       dispatch(updateClassroom(classroom.id, data))
     } else {

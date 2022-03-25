@@ -16,8 +16,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
-
+import CardMedia from '@mui/material/CardMedia';
 
 const SubjectShow = () => {
   const loc = window.location.pathname
@@ -53,10 +52,16 @@ const SubjectShow = () => {
         </Container>
       ): (
       <Container maxWidth="md" sx={{ mx: "auto", mt: '2rem'}}>
-        <Stack spacing={2}>
-          <ItemDetail label="Name" value={subject.name} />
-          <ItemDetail label="Code" value={subject.code} />
-        </Stack>
+        {subject.cover && (
+          <div className="image-cover">
+            <img src={subject.cover?.urls.regular}  alt={subject.cover?.alt_description} />
+            <p className="title">{subject.name}</p>
+            <div className="code">
+              <Typography color="primary" variant="overline">Code:</Typography>
+              <Typography color="primary" variant="body1">{subject.code}</Typography>
+            </div>
+          </div>        
+        )}
         {subject.classrooms ? (            
               <Box sx={{ my: '2rem' }}>
                 <Typography color="primary" variant="h5">Classrooms: </Typography>
