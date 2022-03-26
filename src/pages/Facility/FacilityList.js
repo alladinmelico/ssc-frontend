@@ -36,7 +36,7 @@ const FacilityList = () => {
   return (
     <Page pageTitle="Facilities">
       <Container sx={{ pt: '1rem', display: 'flex', flexDirection: 'column', height: '100%' }} >
-        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2} sx={{ flexGrow: 1 }} justifyContent="center" alignItems="center">
           {facilities.map(facility => (
             <Grid item xs={6} sm={4} md={6} lg={3} sx={{ px: "1rem", pb: "1rem" }}>
                 <Card sx={{ minWidth: 275 }}>
@@ -54,7 +54,7 @@ const FacilityList = () => {
                       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         {facility.code}
                       </Typography>
-                      <Typography variant="h5" component="div">
+                      <Typography variant="h5" component="div" color="primary">
                         {facility.name}
                       </Typography>
                     </CardContent>

@@ -17,6 +17,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import {useNavigate} from 'react-router-dom';
 import MainAppBar from 'components/MainAppBar'
+import { CardActionArea } from '@mui/material';
 
 const FacilityShow = () => {
   const loc = window.location.pathname
@@ -42,7 +43,7 @@ const FacilityShow = () => {
 
   return (
     <Page
-      appBarContent={<MainAppBar title="Facility Details" to="/facility/create" />} 
+      appBarContent={<MainAppBar title="Facility Details" />} 
     >
       {loading || !facility.id ? (
         <Container maxWidth="lg" sx={{ mx: "auto"}}>
@@ -79,31 +80,30 @@ const FacilityShow = () => {
                   {facility.schedules.map(schedule => (
                     <Grid item xs={12} sm={12} md={3} lg={4} sx={{mt: "1rem"}}>
                       <Card sx={{ height: '100%' }} >
-                        <CardContent>
-                          <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                          {titleCase(schedule.type)}
-                          </Typography>
-                          <Typography variant="body1" component="div">
-                            {schedule.title}
-                          </Typography>
-                          <Typography sx={{ mt: 1.5, mb: 1.5, fontSize: 12 }} color="text.secondary">
-                            <strong>Start Time:</strong> {schedule.start_at}
-                          </Typography>
-                          <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
-                            <strong>End Time:</strong> {schedule.end_at}
-                          </Typography>
-                          <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
-                            <strong>Start Date:</strong> {schedule.start_date}
-                          </Typography>
-                          {schedule.start_date && (
+                        <CardActionArea onClick={() => navigate(`/schedule/${schedule.id}`)}>
+                          <CardContent>
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                            {titleCase(schedule.type)}
+                            </Typography>
+                            <Typography variant="body1" component="div">
+                              {schedule.title}
+                            </Typography>
+                            <Typography sx={{ mt: 1.5, mb: 1.5, fontSize: 12 }} color="text.secondary">
+                              <strong>Start Time:</strong> {schedule.start_at}
+                            </Typography>
                             <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
-                              <strong>Start Time:</strong> {schedule.start_date}
-                            </Typography>                  
-                          )}
-                        </CardContent>
-                        <CardActions>
-                          <Button size="small" color="primary" onClick={() => navigate(`/schedule/${schedule.id}`)}>Learn More</Button>
-                        </CardActions>
+                              <strong>End Time:</strong> {schedule.end_at}
+                            </Typography>
+                            <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
+                              <strong>Start Date:</strong> {schedule.start_date}
+                            </Typography>
+                            {schedule.start_date && (
+                              <Typography sx={{ mb: 1.5, fontSize: 12 }} color="text.secondary">
+                                <strong>Start Time:</strong> {schedule.start_date}
+                              </Typography>                  
+                            )}
+                          </CardContent>
+                        </CardActionArea>
                       </Card>  
                     </Grid>        
                   ))}            

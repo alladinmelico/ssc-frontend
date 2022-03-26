@@ -27,6 +27,7 @@ const FacilityShow = lazy(() => import('../pages/Facility/FacilityShow'))
 const FacilityForm = lazy(() => import('../pages/Facility/FacilityForm'))
 const FacilityList = lazy(() => import('../pages/Facility/FacilityList'))
 const Course = lazy(() => import('../pages/Course'))
+const CourseList = lazy(() => import('../pages/Course/CourseList'))
 const Classroom = lazy(() => import('../pages/Classroom'))
 const ClassroomShow = lazy(() => import('../pages/Classroom/ClassroomShow'))
 const ClassroomList = lazy(() => import('../pages/Classroom/ClassroomList'))
@@ -177,7 +178,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {can('FACILITY') ? <FacilityShow /> :  <PageNotFound />}
+        <FacilityShow />
       </AuthorizedRoute>
     ),
   },
@@ -223,6 +224,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         {can('COURSE') ? <Course /> :  <PageNotFound />}
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/courses',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <CourseList />
       </AuthorizedRoute>
     ),
   },

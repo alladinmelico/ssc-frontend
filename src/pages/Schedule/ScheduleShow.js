@@ -134,7 +134,7 @@ const ScheduleShow = () => {
 
   return (
      <Page
-      appBarContent={<MainAppBar title="Schedule Details" to="/schedule/create" />}
+      appBarContent={<MainAppBar title="Schedule Details" />}
     >
       {!schedule ? (
         <Container maxWidth="sm" sx={{ mx: "auto"}}>
