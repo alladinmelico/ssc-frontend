@@ -126,7 +126,7 @@ export const scheduleReducer = (state = {}, action) => {
       return {
         ...state,
         loading: false,
-        isDeleted: action.payload.data,
+        isDeleted: action.payload,
       }
 
     case UPDATE_SCHEDULE_SUCCESS:
