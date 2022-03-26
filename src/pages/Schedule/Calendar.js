@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux"
 import dayjs from 'dayjs';
 import { Container } from '@mui/material';
 import {useNavigate} from 'react-router-dom';
+import rrulePlugin from '@fullcalendar/rrule'
 
 const Calendar = () => {
   const dispatch = useDispatch()
@@ -45,8 +46,8 @@ const Calendar = () => {
 
   function getRule (sched) {
     const data = {}
-    data.dtstart = sched.start_date
-    data.until = sched.end_date
+    data.dtstart = new Date(sched.start_date + 'T' + sched.start_at)
+    data.until = new Date(sched.end_date + 'T' + sched.end_at)
 
     if (sched.is_recurring && sched.repeat_by) {
       data.freq = sched.repeat_by
@@ -72,8 +73,8 @@ const Calendar = () => {
     <Page appBarContent={<MainAppBar title="Schedule Calendar" to="/schedule/create" />}>
       <Container sx={{ my: '1rem' }}>
         <FullCalendar
-          plugins={[ dayGridPlugin, timeGridWeek ]}
-          weekends={false}
+          plugins={[ dayGridPlugin, timeGridWeek, rrulePlugin ]}
+          weekends={true}
           headerToolbar={{
             left: 'dayGridMonth,timeGridWeek,timeGridDay',
             center: 'title',
@@ -85,7 +86,6 @@ const Calendar = () => {
             right: 'prev,next'
           }}
           dayMaxEvents={true}
-          themeSystem="Lumen"
           eventClick={(event) => navigate(`/schedule/${event.event.id}`)}
           customButtons={{
             max10: {
@@ -111,20 +111,20 @@ const Calendar = () => {
             const data = {
               id: schedule.id,
               title: schedule.title,
-              groupId: schedule.id,
               allDay: false,           
-              startTime: schedule.start_at,
-              endTime: schedule.end_at,
               editable: false,
+              start: new Date(schedule.start_date + 'T' + schedule.start_at),
+              end: new Date(schedule.start_date + 'T' + schedule.end_at)
             }
             if (schedule.is_recurring) {
-              // data.rrule = getRule(schedule)
-              data.daysOfWeek = getDaysOfWeek(schedule.days_of_week, true)
-              data.startRecur = schedule.start_date
-              data.endRecur = schedule.end_date
-            } else {
-              data.start = schedule.start_date
-              data.end = schedule.end_date
+              data.rrule = getRule(schedule)
+              // if (schedule.repeat_by === 'daily') {
+              //   data.daysOfWeek = [0,1,2,3,4,5]
+              // } else {
+              //   data.daysOfWeek = getDaysOfWeek(schedule.days_of_week, true)
+              // }
+              // data.startRecur = new Date(schedule.start_date + 'T' + schedule.start_at)
+              // data.endRecur = new Date(schedule.end_date + 'T' + schedule.end_at)
             }
             return data;
           })}
