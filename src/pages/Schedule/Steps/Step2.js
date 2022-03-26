@@ -24,6 +24,7 @@ import {
   clearErrors,
 } from "../../../actions/facilityActions"
 import Button from '@mui/material/Button';
+import API from 'config/api'
 import TypeCards from './TypeCards';
 import FormHelperText from '@mui/material/FormHelperText';
 const dayjs = require('dayjs')
@@ -80,6 +81,23 @@ export default function Step2({history, activeStep, setActiveStep}) {
       },
     },
   };
+
+  async function getAvailableFacilities () {
+    try {
+      const params = {
+        start_time: startTime.format('HH:mm'),
+        end_time: endTime.format('HH:mm'),
+        start_date: startDate.format('YYYY-MM-DD'),
+        end_date: endDate.format('YYYY-MM-DD'),
+        type: types.find(item => item.value === type)?.label?.toLowerCase()
+      }
+      const {data} = await API.get('availability/facility', {params})
+      await console.log(data)
+      await setFilteredFacilities(data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const maxTime = () => {
     const max = dayjs(new Date(0, 0, 0, 22, 0))
@@ -164,35 +182,35 @@ export default function Step2({history, activeStep, setActiveStep}) {
     setRepeatBy(schedule.repeat_by ? schedule.repeat_by : '')
   }
 
-  function fetchFilteredFacilities () {
-    setFilteredFacilities(facilities.filter(item => {
-      if (!item.schedules) {
-        return true
-      }
+  // function fetchFilteredFacilities () {
+  //   setFilteredFacilities(facilities.filter(item => {
+  //     if (!item.schedules) {
+  //       return true
+  //     }
 
-      item.schedules.forEach(sched => {
-        const tStart = dayjs(getTimeMin(sched.start_at))
-        const tEnd = dayjs(getTimeMin(sched.end_at))
-        const dStart = dayjs(sched.start_date)
-        if (!isRecurring) {
-          if ((tStart.isSameOrAfter(startTime) ||
-            tEnd.isSameOrBefore(endTime)) &&
-            dStart.isSame(startDate)) {
-            return false  
-          } 
-        } else {
-          const dEnd = dayjs(sched.end_date)
-          if ((tStart.isSameOrAfter(startTime) ||
-            tEnd.isSameOrBefore(endTime)) &&
-            (dStart.isSameOrAfter(startDate) ||
-            dEnd.isSameOrBefore(endDate))) {
-            return false  
-          }        
-        }
-      });
-      return true
-    }))
-  }
+  //     item.schedules.forEach(sched => {
+  //       const tStart = dayjs(getTimeMin(sched.start_at))
+  //       const tEnd = dayjs(getTimeMin(sched.end_at))
+  //       const dStart = dayjs(sched.start_date)
+  //       if (!isRecurring) {
+  //         if ((tStart.isSameOrAfter(startTime) ||
+  //           tEnd.isSameOrBefore(endTime)) &&
+  //           dStart.isSame(startDate)) {
+  //           return false  
+  //         } 
+  //       } else {
+  //         const dEnd = dayjs(sched.end_date)
+  //         if ((tStart.isSameOrAfter(startTime) ||
+  //           tEnd.isSameOrBefore(endTime)) &&
+  //           (dStart.isSameOrAfter(startDate) ||
+  //           dEnd.isSameOrBefore(endDate))) {
+  //           return false  
+  //         }        
+  //       }
+  //     });
+  //     return true
+  //   }))
+  // }
 
   useEffect(() => {
     if (!count) {
@@ -378,7 +396,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
               </Grid>        
             )}
             <Grid item xs={6}>
-              <Button color="primary" type="button" onClick={fetchFilteredFacilities}>Check available Facilities</Button>
+              <Button color="primary" type="button" onClick={() => getAvailableFacilities()}>Check available Facilities</Button>
             </Grid>
             {count ? (
               <Grid item xs={facility ? 9:12}>
