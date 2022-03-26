@@ -19,7 +19,7 @@ const UserShow = ({modalClosed, user}) => {
       setOpenModal={setOpenModal}
       cancelled={modalClosed}
     >
-      <Stack spacing={2}>
+      <Stack sx={{mt: "1rem"}} spacing={2}>
         <ItemDetail label="Name" value={user.name} />
         <ItemDetail label="Email" value={user.email} />
         <ItemDetail label="Year" value={user.year} />

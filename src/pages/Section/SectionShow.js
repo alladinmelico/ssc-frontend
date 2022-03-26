@@ -19,7 +19,7 @@ const SectionShow = ({modalClosed, section}) => {
       setOpenModal={setOpenModal}
       cancelled={modalClosed}
     >
-      <Stack spacing={2}>
+      <Stack sx={{mt: "1rem"}} spacing={2}>
         <ItemDetail label="Name" value={section.name} />
         <ItemDetail label="President" value={section.president_name} />
         <ItemDetail label="Faculty" value={section.faculty_name} />
