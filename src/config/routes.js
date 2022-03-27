@@ -38,7 +38,7 @@ const MyAccount = lazy(() => import('../pages/MyAccount/MyAccount'))
 const role = JSON.parse(localStorage.getItem('auth'))?.role
 
 const can = (type) => {
-  return role === 1 || roles.find(item => item.value === role).crud.includes(type)
+  return role === 1 || roles.find(item => item.value === role)?.crud.includes(type)
 }
 
 const routes = [

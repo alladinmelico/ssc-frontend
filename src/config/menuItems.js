@@ -75,7 +75,7 @@ const getMenuItems = (props) => {
   })
 
   function can(type) {
-    return auth.role === 1 || roles.find(item => item.value === auth.role).crud.includes(type)
+    return auth.role === 1 || roles.find(item => item.value === auth.role)?.crud.includes(type)
   }
 
   const isAuthorised = auth.isAuthenticated
