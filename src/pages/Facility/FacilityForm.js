@@ -166,7 +166,11 @@ export default function FacilityForm () {
       Object.entries(data).map(([key, value]) => {
         return formData.append(key, value)
       })
-      formData.append('cover', cover)
+      if (cover) {
+        formData.append('cover', cover)
+      } else {
+        formData.delete('cover')
+      }
       formData.append('department_id', selectedDepartment)
       formData.append('svg_key', selected)
 
