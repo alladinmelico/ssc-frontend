@@ -233,7 +233,7 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
         <Stack  marginTop="1rem" marginBottom="1rem" direction="row" spacing={2} justifyContent="flex-end" alignItems="center">
           <Button onClick={() =>  { 
             setIsEditing(false)
-          }} variant="outlined" color="secondary">Cancel</Button>
+          }} variant="outlined" color="error">Cancel</Button>
 
           <LoadingButton
             loading={loading}

@@ -20,7 +20,7 @@ const CourseShow = ({modalClosed, course}) => {
       setOpenModal={setOpenModal}
       cancelled={modalClosed}
     >
-      <Stack spacing={2}>
+      <Stack sx={{mt: "1rem"}} spacing={2}>
         {course.cover && (
           <div className="image-cover">
             <img src={course.cover?.urls.regular}  alt={course.cover?.alt_description} />
