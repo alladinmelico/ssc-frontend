@@ -33,11 +33,11 @@ const CourseList = () => {
   }, [dispatch, page, rowsPerPage, page, error]);
   return (
     <Page pageTitle="Courses">
-      <Container sx={{ pt: '1rem', display: 'flex', flexDirection: 'column', height: '100%' }} >
-        <Grid container spacing={2} sx={{ flexGrow: 1 }} justifyContent="center" alignItems="center">
+      <Container sx={{ pt: '3rem', display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <Grid container sx={{ flexGrow: 1 }} spacing={{ xs:2, sm:3, md:3}} justifyContent="center" alignItems="center">
           {courses.map(course => (
-            <Grid item xs={6} sm={4} md={6} lg={3} sx={{ px: "1rem", pb: "1rem" }}>
-              <Card sx={{ minWidth: 275 }}>                               
+            <Grid item xs={12} sm={6} md={4} lg={3} sx={{ pb: "1rem" }}>
+              <Card sx={{ maxWidth: 300, height: 400, mx:"auto" }}>                               
                 {course.cover && (
                   <CardMedia
                     component="img"
@@ -51,13 +51,13 @@ const CourseList = () => {
                   <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     {course.code}
                   </Typography>
-                  <Typography variant="h5" component="div" color="primary">
+                  <Typography sx={{ fontSize: 16, fontWeight: 500 }} component="div" color="primary">
                     {course.name}
                   </Typography>
-                  <Typography variant="body" component="div" sx={{ my: '1rem' }}>
+                  <Typography sx={{ fontSize: 12, mt: '14px' }} component="div" gutterBottom>
                     {course.users_count} users
                   </Typography>
-                  <Typography variant="overline">
+                  <Typography sx={{ fontSize: 14,  mt: '1rem' }}>
                     {course.department}
                   </Typography>
                 </CardContent>
