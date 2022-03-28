@@ -170,9 +170,10 @@ const MyAccount = () => {
                 marginLeft="1rem"
             >
                 <Typography sx={{fontWeight:"600", mt:"1rem"}} variant="h5">{user.name}</Typography>
-                <Typography style={{mt:"14px"}} variant="body1">{user.course_name}</Typography>
-                <Typography style={{mt:"14px"}}  variant="body1">{user.section?.name}-{user.year}</Typography>
-                <Typography sx={{mt:"1rem"}} variant="body2">{user.email}</Typography>
+                <Typography variant="body1">{user.course?.name}</Typography>
+                <Typography variant="body1">{user.section?.name}-{user.year}</Typography>
+                <Typography sx={{fontWeight:"500", mt:"1rem"}} variant="body1">{user.school_id}</Typography>
+                <Typography variant="body2">{user.email}</Typography>
                 </Stack>
               </div>
                ) : (
@@ -193,7 +194,7 @@ const MyAccount = () => {
                 {user.attachment && (
                   <Box sx={{ mt: '1rem', p: '0.5rem', display: 'flex', flexDirection: 'column' }}>
                     <Typography variant="overline">Vaccine Card</Typography>
-                    <img src={user.attachment} alt="user vaccine card" />
+                    <img width={500} src={user.attachment} alt="user vaccine card" />
                   </Box>                
                 )}
             </Paper>
