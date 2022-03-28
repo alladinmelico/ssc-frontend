@@ -99,11 +99,13 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
     Object.entries(data).map(([key, value]) => {
       return formData.append(key, value)
     })
+
     if (attachment) {
       formData.append('attachment', attachment)
     } else {
       formData.delete('attachment')
     }
+
     await API.post(`profile-registration`, formData)
       .then(res => {
         if (res.status === 200) {
@@ -126,7 +128,7 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
     if(user.id) {
       setValue('name', user.name)
       setValue('email', user.email)
-      setValue('section_id', user.section)
+      setValue('section_id', user.section_id)
       setValue('year', user.year)
       setValue('school_id', user.school_id);
       setValue('course_id', user.course_id)
@@ -196,7 +198,7 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
             defaultValue={user ? user.section_id : ''}
           >
             {sections.map(section => (
-              <MenuItem value={section.id} key={section.id}>{section.name}</MenuItem>
+              <MenuItem value={section.id}>{section.name}</MenuItem>
             ))}
           </Select>
           </FormControl>
@@ -206,10 +208,10 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
 
         <Box sx={{ mt: '1rem' }}>
           {user.attachment && (
-            <Box sx={{ mt: '1rem', p: '0.5rem', display: 'flex', flexDirection: 'column'}}>
+            <Box sx={{ mt: '1rem', p: '0.5rem', display: 'flex', flexDirection: 'column', }}>
               <Typography variant="overline">Current Vaccine Card</Typography>
               <div>
-                <img src={user.attachment} alt="user vaccine card" />
+                <img width={500} src={user.attachment} alt="user vaccine card" />
               </div>
             </Box>                
           )}
