@@ -91,8 +91,9 @@ export const updateFacility = (id, facilityData) => async (dispatch) => {
     try {
 
         dispatch({ type: UPDATE_FACILITY_REQUEST })
+        facilityData.append('_method', 'PUT')
 
-        const { data } = await API.put(`facility/${id}`, facilityData)   
+        const { data } = await API.post(`facility/${id}`, facilityData)   
 
         dispatch({
             type: UPDATE_FACILITY_SUCCESS,
