@@ -51,6 +51,10 @@ export default function SectionModal ({modalClosed, section}) {
     setToAddPresident('')
   }
 
+  const clearForm = () => {
+    reset({ name: ''})
+  }
+
   const { loading: userLoading } = useSelector((state) => state.allUsers)
 
   useEffect(() => {  
@@ -133,7 +137,7 @@ export default function SectionModal ({modalClosed, section}) {
         setOpenModal={setOpenModal}
         cancelled={() => {
           modalClosed()
-          resetForm()
+          clearForm()
       }}>
         <TextField 
           {...register("name")}
@@ -155,6 +159,7 @@ export default function SectionModal ({modalClosed, section}) {
             value={toAddPresident}
             getOptionLabel={((option) => option.name)}
             onChange={(event, newVal) => setToAddPresident(newVal)}
+            helperText={errors.president_id?.message}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -177,6 +182,7 @@ export default function SectionModal ({modalClosed, section}) {
             value={toAddFaculty}
             getOptionLabel={((option) => option.name)}
             onChange={(event, newVal) => setToAddFaculty(newVal)}
+            helperText={errors.faculty_id?.message}
             renderInput={(params) => (
               <TextField
                 {...params}

@@ -99,12 +99,13 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
     Object.entries(data).map(([key, value]) => {
       return formData.append(key, value)
     })
-    if(attachment){
+
+    if (attachment) {
       formData.append('attachment', attachment)
-    }else{
+    } else {
       formData.delete('attachment')
     }
-   
+
     await API.post(`profile-registration`, formData)
       .then(res => {
         if (res.status === 200) {

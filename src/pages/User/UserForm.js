@@ -56,6 +56,10 @@ export default function UserModal ({modalClosed, user}) {
     reset({ name: '', email: '', section_id: '', school_id: '', year: 0, course_id: ''})
   }
 
+  const clearForm = () => {
+    reset({ name: '', email: '', school_id: '', year: 0})
+  }
+
   useEffect(() => {
     dispatch(getAdminCourses(0, 50))
     if (!sectionLoading){
@@ -138,7 +142,7 @@ export default function UserModal ({modalClosed, user}) {
         setOpenModal={setOpenModal}
         cancelled={() => {
           modalClosed()
-          resetForm()
+          clearForm()
       }}>
         <TextField 
           {...register("name", { required: true, min: 3 })}
@@ -189,6 +193,7 @@ export default function UserModal ({modalClosed, user}) {
               value={toAddSection}
               getOptionLabel={((option) => option.name)}
               onChange={(event, newVal) => setToAddSection(newVal)}
+              helperText={errors.section_id?.message}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -211,6 +216,7 @@ export default function UserModal ({modalClosed, user}) {
             value={toAddCourse}
             getOptionLabel={((option) => option.name)}
             onChange={(event, newVal) => setToAddCourse(newVal)}
+            helperText={errors.course?.message}
             renderInput={(params) => (
               <TextField
                 {...params}

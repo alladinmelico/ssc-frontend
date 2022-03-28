@@ -53,7 +53,11 @@ export default function ClassroomModal ({modalClosed, classroom}) {
   });
 
   const resetForm = () => {
-    reset({ name: '', description_heading: '', description: '', section_id: '', subject_id: '', google_classroom_id: ''})
+    reset({ name: '', description_heading: '', description: '', section_id: '', subject_id: '', google_classroom_id: '', users:[]})
+  }
+
+  const clearForm = () => {
+    reset({ name: '', description_heading: '', description: '', users:[]})
   }
 
   function getClasses() {
@@ -140,10 +144,12 @@ export default function ClassroomModal ({modalClosed, classroom}) {
 
   const onSubmit = async data => {
     data.section_id = toAddSections.id
-    data.course_id = toAddSubjects.id
+
+    data.subject_id = toAddSubjects.id
     if (toAddGclassrooms) {
       data.google_classroom_id = toAddGclassrooms.id
     }
+
     if (toAddUsers.length) {
       data.users = toAddUsers.map(item => item.id)
     }
@@ -178,7 +184,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         setOpenModal={setOpenModal}
         cancelled={() => {
           modalClosed()
-          resetForm()
+          clearForm()
       }}>
           {courses && courses.length ? (
             <FormControl fullWidth margin="normal">
@@ -240,6 +246,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         {count ? (
         <FormControl fullWidth margin="normal">
           <Autocomplete
+            required
             id="sections-list"
             name="sections"
             options={sections}
@@ -253,6 +260,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
               />
             )}
           onChange={(event, newVal) => setToAddSections(newVal)}
+          helperText={errors.section_id?.message}
           />
         </FormControl>
           ) : (
@@ -262,6 +270,7 @@ export default function ClassroomModal ({modalClosed, classroom}) {
       {count ? (
         <FormControl fullWidth margin="normal">
           <Autocomplete
+          required
             id="subjects-list"
             name="subjects"
             options={subjects}
@@ -275,9 +284,34 @@ export default function ClassroomModal ({modalClosed, classroom}) {
               />
             )}
           onChange={(event, newVal) => setToAddSubjects(newVal)}
+          helperText={errors.subject_id?.message}
           />
         </FormControl>
         ) : (
+          <Skeleton animation="wave" height={100} />
+        )}
+
+        {count ? (
+          <FormControl fullWidth margin="normal">
+          <Autocomplete
+            required
+            id="gclassroom-list"
+            name="google_classroom_id"
+            options={courses}
+            value={toAddGclassrooms}
+            getOptionLabel={((option) => option.name)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Google Classrooms"
+                placeholder="Google Classrooms"
+              />
+            )}
+          onChange={(event, newVal) => setToAddGclassrooms(newVal)}
+          helperText={errors.google_classroom_id?.message}
+          />
+          </FormControl>
+          ) : (
           <Skeleton animation="wave" height={100} />
         )}
         
@@ -294,10 +328,11 @@ export default function ClassroomModal ({modalClosed, classroom}) {
               <TextField
                 {...params}
                 label="Users"
-                placeholder="User"
+                placeholder="Users"
               />
             )}
             onChange={(event, newVal) => setToAddUsers(newVal)}
+            helperText={errors.users?.message}
           />
         </FormControl>
         ) : (
