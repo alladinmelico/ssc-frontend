@@ -54,11 +54,12 @@ const getMenuItems = (props) => {
     auth: authData,
   } = props
 
+  const { auth, setAuth } = authData
+
   const { toggleThis, isDesktop, isAuthMenuOpen, isMiniSwitchVisibility } =
     menuContext
   const { themeID, setThemeID, isRTL, toggleThisTheme } = themeContext
 
-  const { auth, setAuth } = authData
   const { isAppInstallable, isAppInstalled, deferredPrompt } = a2HSContext
 
   const localeItems = allLocales.map((l) => {
@@ -74,7 +75,7 @@ const getMenuItems = (props) => {
   })
 
   function can(type) {
-    return auth.role === 1 || roles.find(item => item.value === auth.role).crud.includes(type)
+    return auth.role === 1 || roles.find(item => item.value === auth.role)?.crud.includes(type)
   }
 
   const isAuthorised = auth.isAuthenticated
@@ -225,6 +226,25 @@ const getMenuItems = (props) => {
           leftIcon: <ThermostatOutlined />,
         },
       ],
+    },
+    { divider: true, visible: auth.role !== 1 },
+    {
+      value: '/subjects',
+      visible: auth.role !== 1,
+      primaryText: intl.formatMessage({ id: 'subject', defaultMessage: 'Subjects' }),
+      leftIcon: <LibraryBooksOutlined />,
+    },
+    {
+      value: '/facilities',
+      visible: auth.role !== 1,
+      primaryText: intl.formatMessage({ id: 'facility', defaultMessage: 'Facilties' }),
+      leftIcon: <ApartmentOutlined />,
+    },
+     {
+      value: '/courses',
+      visible: auth.role !== 1,
+      primaryText: intl.formatMessage({ id: 'course', defaultMessage: 'Courses' }),
+      leftIcon: <HistoryEduOutlined />,
     },
     { divider: true },
     {

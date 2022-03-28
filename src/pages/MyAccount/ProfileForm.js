@@ -99,7 +99,11 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
     Object.entries(data).map(([key, value]) => {
       return formData.append(key, value)
     })
-    formData.append('attachment', attachment)
+    if (attachment) {
+      formData.append('attachment', attachment)
+    } else {
+      formData.delete('attachment')
+    }
     await API.post(`profile-registration`, formData)
       .then(res => {
         if (res.status === 200) {
@@ -233,7 +237,7 @@ export default function ProfileForm ({user, onSubmitHandler, setIsEditing }) {
         <Stack  marginTop="1rem" marginBottom="1rem" direction="row" spacing={2} justifyContent="flex-end" alignItems="center">
           <Button onClick={() =>  { 
             setIsEditing(false)
-          }} variant="outlined" color="secondary">Cancel</Button>
+          }} variant="outlined" color="error">Cancel</Button>
 
           <LoadingButton
             loading={loading}

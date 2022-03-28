@@ -24,7 +24,9 @@ import {
   clearErrors,
 } from "../../../actions/facilityActions"
 import Button from '@mui/material/Button';
+import API from 'config/api'
 import TypeCards from './TypeCards';
+import FormHelperText from '@mui/material/FormHelperText';
 const dayjs = require('dayjs')
 const isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
 const isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
@@ -33,6 +35,7 @@ dayjs.extend(isSameOrAfter)
 
 export default function Step2({history, activeStep, setActiveStep}) {
   const [type, setType] = useState(1);
+  const [errors, setErrors] = useState('');
   const [types, setTypes] = useState([
     {
       value: 1,
@@ -79,6 +82,23 @@ export default function Step2({history, activeStep, setActiveStep}) {
     },
   };
 
+  async function getAvailableFacilities () {
+    try {
+      const params = {
+        start_time: startTime.format('HH:mm'),
+        end_time: endTime.format('HH:mm'),
+        start_date: startDate.format('YYYY-MM-DD'),
+        end_date: endDate.format('YYYY-MM-DD'),
+        type: types.find(item => item.value === type)?.label?.toLowerCase()
+      }
+      const {data} = await API.get('availability/facility', {params})
+      await console.log(data)
+      await setFilteredFacilities(data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const maxTime = () => {
     const max = dayjs(new Date(0, 0, 0, 22, 0))
 
@@ -117,8 +137,13 @@ export default function Step2({history, activeStep, setActiveStep}) {
 
   const submit = (event) => {
     event.preventDefault()
-    saveData()
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (filteredFacilities.length === 0) {
+      setErrors({facility: 'Please fetch the list available of facilities.'})
+    } else {
+      setErrors('')
+      saveData()
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   }
 
   function disableWeekends(date) {
@@ -134,15 +159,15 @@ export default function Step2({history, activeStep, setActiveStep}) {
   }
 
   const fetchData = (schedule) => {
-    if (schedule.facility) {
-      setType(schedule.facility ? schedule.facility.type : '')
-      setFacility(schedule.facility ? schedule.facility.id : '')
-    } else {
-      setType(schedule.facility_type ? schedule.facility_type : 1)
-      setFacility(schedule.facility_id ? schedule.facility_id : '')
-      // if (facility && type.length === 0) {
-      //   setType(facilities.find(item => item.id === facility)?.type)
-      // }
+
+    if (schedule.facility_id && schedule.facility_type) {
+      setType(schedule.facility_type)
+      setFacility(schedule.facility_id)
+      setFilteredFacilities(facilities.filter(item => item.id === schedule.facility_id))
+    } else if(schedule.facility) {
+      setType(types.find(item => item.label.toLowerCase() === schedule.facility.type.toLowerCase())?.value)
+      setFacility(schedule.facility.id)
+      setFilteredFacilities(facilities.filter(item => item.id === schedule.facility.id))
     }
     setStartTime(schedule.start_at ? dayjs(getTimeMin(schedule.start_at)) : dayjs(new Date(0, 0, 0, 7, 0)))
     setEndTime(schedule.end_at ? dayjs(getTimeMin(schedule.end_at)) : startTime.add(8, 'hour'))
@@ -157,39 +182,41 @@ export default function Step2({history, activeStep, setActiveStep}) {
     setRepeatBy(schedule.repeat_by ? schedule.repeat_by : '')
   }
 
-  function fetchFilteredFacilities () {
-    setFilteredFacilities(facilities.filter(item => {
-      if (!item.schedules) {
-        return true
-      }
+  // function fetchFilteredFacilities () {
+  //   setFilteredFacilities(facilities.filter(item => {
+  //     if (!item.schedules) {
+  //       return true
+  //     }
 
-      item.schedules.forEach(sched => {
-        const tStart = dayjs(getTimeMin(sched.start_at))
-        const tEnd = dayjs(getTimeMin(sched.end_at))
-        const dStart = dayjs(sched.start_date)
-        if (!isRecurring) {
-          if ((tStart.isSameOrAfter(startTime) ||
-            tEnd.isSameOrBefore(endTime)) &&
-            dStart.isSame(startDate)) {
-            return false  
-          } 
-        } else {
-          const dEnd = dayjs(sched.end_date)
-          if ((tStart.isSameOrAfter(startTime) ||
-            tEnd.isSameOrBefore(endTime)) &&
-            (dStart.isSameOrAfter(startDate) ||
-            dEnd.isSameOrBefore(endDate))) {
-            return false  
-          }        
-        }
-      });
-      return true
-    }))
-  }
+  //     item.schedules.forEach(sched => {
+  //       const tStart = dayjs(getTimeMin(sched.start_at))
+  //       const tEnd = dayjs(getTimeMin(sched.end_at))
+  //       const dStart = dayjs(sched.start_date)
+  //       if (!isRecurring) {
+  //         if ((tStart.isSameOrAfter(startTime) ||
+  //           tEnd.isSameOrBefore(endTime)) &&
+  //           dStart.isSame(startDate)) {
+  //           return false  
+  //         } 
+  //       } else {
+  //         const dEnd = dayjs(sched.end_date)
+  //         if ((tStart.isSameOrAfter(startTime) ||
+  //           tEnd.isSameOrBefore(endTime)) &&
+  //           (dStart.isSameOrAfter(startDate) ||
+  //           dEnd.isSameOrBefore(endDate))) {
+  //           return false  
+  //         }        
+  //       }
+  //     });
+  //     return true
+  //   }))
+  // }
 
   useEffect(() => {
     if (!count) {
       dispatch(getAdminFacilities(0, 1000))
+    } else if (facility && filteredFacilities.length === 0) {
+      setFilteredFacilities(facilities.filter(item => item.id === facility))
     }
 
     if (schedule) {
@@ -369,25 +396,33 @@ export default function Step2({history, activeStep, setActiveStep}) {
               </Grid>        
             )}
             <Grid item xs={6}>
-              <Button color="primary" type="button" onClick={fetchFilteredFacilities}>Check available Facilities</Button>
+              <Button color="primary" type="button" onClick={() => getAvailableFacilities()}>Check available Facilities</Button>
             </Grid>
             {count ? (
               <Grid item xs={facility ? 9:12}>
                 {type && (
-                  <FormControl fullWidth required>
+                  <FormControl fullWidth required >
                     <InputLabel id="facility-select-label">Facility</InputLabel>
                     <Select
                       labelId="facility-select-label"
                       id="facility-select"
                       value={facility}
                       label="Type"
-                      onChange={(e) => setFacility(e.target.value)}
+                      onChange={(e) => {
+                        setErrors('')
+                        setFacility(e.target.value)
+                      }}
+                      error={!!errors.facility}
+                      aria-describedby="facility-helper-text" 
                       required
                     >
-                      {type ? filteredFacilities.filter(item => item.type.toLowerCase() === types.find(item => item.value === type).label.toLowerCase()).map(item => (
+                      {type ? filteredFacilities.filter(item => item.type.toLowerCase() === types.find(item => item.value === type)?.label.toLowerCase()).map(item => (
                         <MenuItem value={item.id} key={item.id}>{item.name} {item.schedules ? `[${item.schedules.length} schedules]` : '[no schedule]'}</MenuItem>
                       )) : ''}
                     </Select>
+                    {errors && errors.facility && (
+                      <FormHelperText error id="facility-helper-text">{errors.facility}</FormHelperText>                    
+                    )}
                   </FormControl>
                 )}
               </Grid>
@@ -396,7 +431,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 <Skeleton animation="wave" height={100} />
               </Grid>
             )}
-            {(count && facility) && (
+            {(count && facility && !errors) && (
               <Grid item xs={3}>
                 <TextField
                   label="Capacity"

@@ -12,10 +12,10 @@ import Skeleton from '@mui/material/Skeleton';
 import FormHelperText from '@mui/material/FormHelperText';
 import Button from '@mui/material/Button';
 import {
-  getClassrooms,
+  getAdminClassrooms,
   clearErrors,
-} from "../../../actions/classroomActions"
-import { NEW_SCHEDULE_REQUEST, CLEAR_DATA } from "../../../constants/scheduleConstants"
+} from "actions/classroomActions"
+import { NEW_SCHEDULE_REQUEST, CLEAR_DATA } from "constants/scheduleConstants"
 import PrevNextButtons from './PrevNextButtons';
 import { useNavigate } from "react-router-dom";
 import TypeCards from './TypeCards';
@@ -23,6 +23,7 @@ import TypeCards from './TypeCards';
 export default function Step1({history, activeStep, setActiveStep}) {
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
+  const [errors, setErrors] = useState('');
   const [types, setTypes] = useState([
     {
       value: 'whole_class',
@@ -51,27 +52,30 @@ export default function Step1({history, activeStep, setActiveStep}) {
 
   const submit = (event) => {
     event.preventDefault()
-    dispatch({
-      type: NEW_SCHEDULE_REQUEST,
-      payload: {
-        ...schedule,
-        type,
-        classroom_id: classroom,
-        classroom_name: classrooms.find(item => item.id === classroom)?.name,
-        title,
-        user_id: 1
-      }
-    })
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (type !== 'personal' && !classroom) {
+      setErrors({classroom: 'Classroom is required for non-personal purposes.'})
+    } else {
+      setErrors('')
+      dispatch({
+        type: NEW_SCHEDULE_REQUEST,
+        payload: {
+          ...schedule,
+          type,
+          classroom_id: classroom,
+          classroom_name: classrooms.find(item => item.id === classroom)?.name,
+          title,
+          user_id: 1
+        }
+      })
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   }
   
 
   useEffect(() => {
-    if (!classrooms) {
-      dispatch(getClassrooms())
-    }
-    
-    if (classrooms && classrooms.length === 0 ) {
+    if (typeof count !== 'number') {
+      dispatch(getAdminClassrooms(0, 100))
+    } else if (count === 0 ) {
       setTypes([
         {
           value: 'personal',
@@ -109,20 +113,27 @@ export default function Step1({history, activeStep, setActiveStep}) {
                 <p>You do not have a classroom yet...</p>
               </Box>
             ): (
-              <FormControl fullWidth required={type !== 'personal'}  margin="normal">
+              <FormControl fullWidth margin="normal">
                 <InputLabel id="classroom-select-label">Classroom</InputLabel>
                 <Select
                   labelId="classroom-select-label"
                   id="classroom-select"
                   value={classroom}
                   label="Classroom"
-                  onChange={(event) => setClassroom(event.target.value)}
+                  error={errors.classroom}
+                  onChange={(event) => {
+                    setErrors('')
+                    setClassroom(event.target.value)
+                  }}
                   m={2}
                 >
                   {classrooms.map(item => (
                     <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
                   ))}
                 </Select>
+                {errors && errors.classroom && (
+                  <FormHelperText error id="classroom-helper-text">{errors.classroom}</FormHelperText>                    
+                )}
               </FormControl>            
             )}
           </>

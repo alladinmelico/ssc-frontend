@@ -72,37 +72,32 @@ const Subject = ({history}) => {
       <GridActionsCellItem
       icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/subject/${params.row.id}`)} />}
       label="View" />,
-    ]
-
-    if (role === 1) {
-      actions.push(
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
+      <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
           setSubject(params.row)
           setEditMode(true)
         }} label="Edit" />,
-        <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
-          openDialog({
-            title: intl.formatMessage({
-              id: 'dialog_title',
-              defaultMessage: 'Dialog Item',
-            }),
-            message: intl.formatMessage({
-              id: 'dialog_message',
-              defaultMessage:
-                'Are you sure you want to delete this item?',
-            }),
-            action: intl.formatMessage({
-              id: 'dialog_action',
-              defaultMessage: 'YES, Delete',
-            }),
-            handleAction: (handleClose) => {
-              dispatch(deleteSubject(params.id))
-              handleClose()
-            },
-          })
-        } label="Delete" />,
-      )
-    }
+      <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
+        openDialog({
+          title: intl.formatMessage({
+            id: 'dialog_title',
+            defaultMessage: 'Dialog Item',
+          }),
+          message: intl.formatMessage({
+            id: 'dialog_message',
+            defaultMessage:
+              'Are you sure you want to delete this item?',
+          }),
+          action: intl.formatMessage({
+            id: 'dialog_action',
+            defaultMessage: 'YES, Delete',
+          }),
+          handleAction: (handleClose) => {
+            dispatch(deleteSubject(params.id))
+            handleClose()
+          },
+        })
+      } label="Delete" />,      
+    ]
 
     return actions;
   }

@@ -382,7 +382,7 @@ const LandingPage = () => {
               </Typography>
               <Typography variant="body1" gutterBottom textAlign="justify">
               With modern software technologies, we can make face-to-face classes safe again. 
-              This scheduling system integrating various mobile, web, cloud, and IoT technologies.
+              This scheduling system integrates various mobile, web, cloud, and IoT technologies.
               </Typography>
               </Box>
               <Box sx={{mt: "1rem", mx:"auto"}} className={classes.signInBtn} >

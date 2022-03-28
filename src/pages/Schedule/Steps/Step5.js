@@ -5,20 +5,19 @@ import Skeleton from '@mui/material/Skeleton';
 import Button from '@mui/material/Button';
 import QRCode from "react-qr-code";
 import { useAuth } from 'base-shell/lib/providers/Auth';
-import { Avatar, Paper, Typography } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import { exportComponentAsJPEG, exportComponentAsPDF, exportComponentAsPNG } from 'react-component-export-image';
-import {
-  newSchedule,
-  clearErrors,
-} from "../../../actions/scheduleActions"
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { CLEAR_DATA } from 'constants/scheduleConstants';
 
 export default function Step5({history}) {
   const [url, setUrl] = useState('');
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const componentRef =  React.createRef();
   const { schedule } = useSelector((state) => state.newSchedule)
-  const { schedule: updatedSchedule, isUpdated } = useSelector((state) => state.schedule)
+  const { isUpdated } = useSelector((state) => state.schedule)
 
   const { auth } = useAuth();
   const {
@@ -29,10 +28,10 @@ export default function Step5({history}) {
 
 
   useEffect(() => {
-    if (schedule || updatedSchedule) {
-      setUrl(`https://phplaravel-745170-2505664.cloudwaysapps.com/schedule/${schedule ? schedule.id : updatedSchedule.id}`)
+    if ((schedule && schedule.id) || isUpdated) {
+      setUrl(`https://phplaravel-745170-2505664.cloudwaysapps.com/schedule/${schedule && schedule.id ? schedule.id : isUpdated.id}`)
     }
-  }, [dispatch, history, schedule, updatedSchedule])
+  }, [dispatch, history, schedule, isUpdated])
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -52,8 +51,8 @@ export default function Step5({history}) {
                   <div>
                     <Typography variant='h5' >{currentDisplayName}</Typography>
                     <Typography variant='h6' >{email}</Typography>
-                    <Typography variant='overline' display="block">Time in: {schedule.start_at}</Typography>
-                    <Typography variant='overline' display="block">Time out: {schedule.end_at}</Typography>
+                    <Typography variant='overline' display="block">Time in: {schedule ? schedule.start_at : isUpdated.start_at}</Typography>
+                    <Typography variant='overline' display="block">Time out: {schedule ? schedule.end_at : isUpdated.end_at}</Typography>
                   </div>
                   <QRCode value={url} size={200} fgColor="#005662" />
                 </Box>
@@ -77,9 +76,10 @@ export default function Step5({history}) {
           )}
 
         <Box sx={{ display: 'flex', flexDirection: 'row-reverse', mt: 3 }}>
-          <Link to="/schedule" style={{ textDecoration: 'none' }} >
-            <Button color="primary" variant="contained">Done</Button>
-          </Link>
+          <Button color="primary" variant="contained" onClick={() => {
+            dispatch({ type: CLEAR_DATA })
+            navigate('/schedule')
+          }}>Done</Button>
         </Box>
     </Box>
   );

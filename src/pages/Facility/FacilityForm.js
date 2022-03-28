@@ -30,6 +30,7 @@ import {
 import { Container } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import MainAppBar from 'components/MainAppBar'
+import FileUpload from "react-mui-fileuploader"
 
 export default function FacilityForm () {
   const [area, setArea] = useState(0)
@@ -39,6 +40,7 @@ export default function FacilityForm () {
   const [selectedTab, setSelectedTab] = useState(0)
   const [selected, setSelected] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState(1)
+  const [cover, setCover] = useState('');
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newFacility)
   const { loading: loadingDetails, facility, error: errorDetails } = useSelector((state) => state.facilityDetails)
@@ -74,6 +76,10 @@ export default function FacilityForm () {
 
   const resetForm = () => {
     reset({ name: '', code: '', capacity: 0, type: '', building_id: ''})
+    setMaxPeople(0)
+    setArea(0)
+    setCover('')
+    setSelected('')
   }
 
   const getBuildings = async () => {
@@ -90,6 +96,25 @@ export default function FacilityForm () {
       await setfacilityTypes(data)
     } catch (error) {
      }
+  }
+
+  const handleFileUploadError = (error) => {
+    // Do something...
+  }
+  
+  const handleFilesChange = (files) => {
+    if (files.length > 0) {
+      const file = files.pop()
+
+      if (file && file.path) {
+        fetch(file.path)
+        .then(res => res.blob())
+        .then(blob => {
+          const fileObj = new File([blob], file.name,{ type: file.contentType })
+          setCover(fileObj)
+        })
+      }    
+    }
   }
 
   useEffect(( ) => {
@@ -141,12 +166,22 @@ export default function FacilityForm () {
 
   const onSubmit = async data => {
     if (selected) {
-      data.department_id = selectedDepartment
-      data.svg_key = selected
-      if (facility.id) {
-        dispatch(updateFacility(facility.id, data))
+      const formData = new FormData()
+      Object.entries(data).map(([key, value]) => {
+        return formData.append(key, value)
+      })
+      if (cover) {
+        formData.append('cover', cover)
       } else {
-        dispatch(newFacility(data))
+        formData.delete('cover')
+      }
+      formData.append('department_id', selectedDepartment)
+      formData.append('svg_key', selected)
+
+      if (facility.id) {
+        dispatch(updateFacility(facility.id, formData))
+      } else {
+        dispatch(newFacility(formData))
       }
     } else {
       enqueueSnackbar('Please select a room on the Map.', {
@@ -180,6 +215,25 @@ export default function FacilityForm () {
               <Main selected={selected} setSelected={setSelected} selectedDepartment={selectedDepartment} setSelectedDepartment={setSelectedDepartment}/>
             ):(
               <Box>
+                 <FileUpload
+                  multiFile={false}
+                  disabled={false}
+                  title="Cover"
+                  header="[Drag to drop]"
+                  leftLabel="or"
+                  rightLabel="to select file"
+                  buttonLabel="click here"
+                  maxFileSize={10}
+                  maxUploadFiles={0}
+                  maxFilesContainerHeight={357}
+                  errorSizeMessage={'File is too large.'}
+                  allowedExtensions={['jpg', 'jpeg', 'png', 'pdf']}
+                  onFilesChange={handleFilesChange}
+                  onError={handleFileUploadError}
+                  imageSrc={'/logo192.png'}
+                  bannerProps={{ elevation: 0, variant: "outlined", sx: {background: '#005662'} }}
+                  containerProps={{ elevation: 0, variant: "outlined" }}
+                />
                 <TextField 
                   {...register("name")}
                   error={errors.name ? true : false}
@@ -275,9 +329,10 @@ export default function FacilityForm () {
             )}
           </Box> 
           <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="center" sx={{ py: '1rem' }}>
-            <Link to="/facility" style={{ textDecoration: 'none' }}>
-              <Button variant="outlined" color="secondary">Cancel</Button>
-            </Link>
+            <Button variant="outlined" color="secondary" onClick={() => {
+              resetForm()
+              navigate('/facility')
+            }}>Cancel</Button>
             <LoadingButton
               loading={loading}
               loadingPosition="start"

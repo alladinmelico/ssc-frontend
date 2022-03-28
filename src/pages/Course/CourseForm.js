@@ -17,10 +17,12 @@ import MenuItem from '@mui/material/MenuItem';
 import { Skeleton } from '@mui/material';
 import Button from '@mui/material/Button';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
+import Unsplash from 'components/Unsplash'
 
 export default function CourseModal ({ modalClosed, course}) {
   const [openModal, setOpenModal] = useState(false)
   const [departments, setcourseDepartments] = useState([])
+  const [cover, setCover] = useState('')
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newCourse)
   const {
@@ -99,6 +101,10 @@ export default function CourseModal ({ modalClosed, course}) {
   }, [dispatch, error, updateError, isUpdated, success, course])
 
   const onSubmit = async data => {
+    if (cover) {
+      data.cover = JSON.stringify(cover)
+    }
+
     if (course.id) {
       dispatch(updateCourse(course.id, data))
     } else {
@@ -131,6 +137,7 @@ export default function CourseModal ({ modalClosed, course}) {
           modalClosed()
           resetForm()
       }}>
+        <Unsplash selectedPhoto={cover} setSelectedPhoto={setCover} />
         <TextField 
           {...register("name")}
           error={errors.name ? true : false}

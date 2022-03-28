@@ -2,6 +2,7 @@
 import React, { lazy } from 'react'
 import AuthorizedRoute from 'base-shell/lib/components/AuthorizedRoute'
 import UnauthorizedRoute from 'base-shell/lib/components/UnauthorizedRoute'
+import roles from 'constants/roles'
 
 const PageNotFound = lazy(() => import('../pages/PageNotFound/PageNotFound'))
 const SignIn = lazy(() => import('../pages/SignIn/SignIn'))
@@ -26,19 +27,19 @@ const FacilityShow = lazy(() => import('../pages/Facility/FacilityShow'))
 const FacilityForm = lazy(() => import('../pages/Facility/FacilityForm'))
 const FacilityList = lazy(() => import('../pages/Facility/FacilityList'))
 const Course = lazy(() => import('../pages/Course'))
+const CourseList = lazy(() => import('../pages/Course/CourseList'))
 const Classroom = lazy(() => import('../pages/Classroom'))
 const ClassroomShow = lazy(() => import('../pages/Classroom/ClassroomShow'))
 const ClassroomList = lazy(() => import('../pages/Classroom/ClassroomList'))
 const Section = lazy(() => import('../pages/Section'))
 const Notification = lazy(() => import('../pages/Notification'))
 const Home = lazy(() => import('../pages/Home/Home'))
-const DialogDemo = lazy(() => import('../pages/DialogDemo/DialogDemo'))
-const ToastDemo = lazy(() => import('../pages/ToastDemo/ToastDemo'))
-const FilterDemo = lazy(() => import('../pages/FilterDemo'))
-const ListPageDemo = lazy(() => import('../pages/ListPageDemo'))
-const TabsDemo = lazy(() => import('../pages/TabsDemo'))
 const MyAccount = lazy(() => import('../pages/MyAccount/MyAccount'))
 const role = JSON.parse(localStorage.getItem('auth'))?.role
+
+const can = (type) => {
+  return role === 1 || roles.find(item => item.value === role)?.crud.includes(type)
+}
 
 const routes = [
   {
@@ -96,7 +97,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Calendar />
+        {can('SCHEDULE') ? <Calendar /> :  <PageNotFound />}        
       </AuthorizedRoute>
     ),
   },
@@ -114,7 +115,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <ScheduleForm />
+        {can('SCHEDULE') ? <ScheduleForm /> :  <PageNotFound />}        
       </AuthorizedRoute>
     ),
   },
@@ -123,7 +124,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <ScheduleForm />
+        {can('SCHEDULE') ? <ScheduleForm /> :  <PageNotFound />}        
       </AuthorizedRoute>
     ),
   },
@@ -132,7 +133,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Schedule />
+        {can('SCHEDULE') ? <Schedule /> :  <PageNotFound />}        
       </AuthorizedRoute>
     ),
   },
@@ -150,7 +151,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Subject />
+        {can('SUBJECT') ? <Subject /> :  <PageNotFound />} 
       </AuthorizedRoute>
     ),
   },
@@ -195,7 +196,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <FacilityForm />
+        {can('FACILITY') ? <FacilityForm /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },
@@ -204,7 +205,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <FacilityForm />
+        {can('FACILITY') ? <FacilityForm /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },
@@ -213,7 +214,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Facility />
+        {can('FACILITY') ? <Facility /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },
@@ -222,7 +223,16 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Course />
+        {can('COURSE') ? <Course /> :  <PageNotFound />}
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/courses',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <CourseList />
       </AuthorizedRoute>
     ),
   },
@@ -231,7 +241,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Classroom />
+        {can('CLASSROOM') ? <Classroom /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },
@@ -258,7 +268,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        <Section />
+        {can('SECTION') ? <Section /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },
@@ -313,51 +323,6 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <Home /> 
-      </AuthorizedRoute>
-    ),
-  },
-  {
-    path: '/dialog_demo',
-    exact: true,
-    element: (
-      <AuthorizedRoute>
-        <DialogDemo />
-      </AuthorizedRoute>
-    ),
-  },
-  {
-    path: '/toast_demo',
-    exact: true,
-    element: (
-      <AuthorizedRoute>
-        <ToastDemo />
-      </AuthorizedRoute>
-    ),
-  },
-  {
-    path: '/filter_demo',
-    exact: true,
-    element: (
-      <AuthorizedRoute>
-        <FilterDemo />
-      </AuthorizedRoute>
-    ),
-  },
-  {
-    path: '/list_page_demo',
-    exact: true,
-    element: (
-      <AuthorizedRoute>
-        <ListPageDemo />
-      </AuthorizedRoute>
-    ),
-  },
-  {
-    path: '/tabs_demo',
-    exact: true,
-    element: (
-      <AuthorizedRoute>
-        <TabsDemo />
       </AuthorizedRoute>
     ),
   },

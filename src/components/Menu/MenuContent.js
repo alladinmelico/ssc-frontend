@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import Scrollbar from 'material-ui-shell/lib/components/Scrollbar/Scrollbar'
 import SelectableMenuList from 'material-ui-shell/lib/containers/SelectableMenuList'
 import { useAddToHomeScreen } from 'base-shell/lib/providers/AddToHomeScreen'
@@ -25,16 +25,14 @@ const Menu = (props) => {
   const { setLocale, locale = 'en' } = useLocale()
   const themeContext = useAppTheme()
 
-  // async function me() {
-  //   try {
-  //     const {data} = API.get('/me')
-  //     console.log({...authData, ...data})
-  //     setAuth({...authData, ...data})
-  //   } catch (error) {
-  //     // window.location.replace('/signin')
-  //     console.log(error)
-  //   }
-  // }
+  async function getMe () {
+    const {data} = await API.get('/me')
+    await setAuth({...authData, role: data.data.role_id, email: data.data.email})
+  }
+
+  useEffect(() => {
+    getMe()
+  }, [])
 
   const menuItems = getMenuItems({
     intl,

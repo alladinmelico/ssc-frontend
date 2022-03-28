@@ -46,9 +46,6 @@ export default function ClassroomModal ({modalClosed, classroom}) {
     name: yup.string().required("Name is a required field."),
     description_heading: yup.string().required("Description Heading is a required field."),
     description: yup.string().required("Description is a required field."),
-    // section_id: yup.number().required("Section is a required field."),
-    // subject_id: yup.number().required("Subject is a required field."),
-    // google_classroom_id: yup.string("Google Classroom ID is a string.")
   });
 
   const { register, handleSubmit, reset, setError, setValue, formState: { errors } } = useForm({
@@ -78,6 +75,12 @@ export default function ClassroomModal ({modalClosed, classroom}) {
     }
   }
 
+  function fetchGClassroomData (data) {
+    setValue('name', data.name)
+    setValue('description_heading', data.descriptionHeading)
+    setValue('description', data.section)
+  }
+
   useEffect(() => {
     if (!subjectLoading) {
       dispatch(getAdminSubjects(0, 1000))
@@ -98,10 +101,8 @@ export default function ClassroomModal ({modalClosed, classroom}) {
         setToAddGclassrooms(courses.name)
       }
       setToAddUsers(classroom.users)
-      console.log(classroom.users)
       setToAddSections(sections.find(item => item.id === classroom.section_id))
       setToAddSubjects(subjects.find(item => item.id === classroom.subject_id))
-      console.log(setToAddSections)
     }
 
     if (courses.length === 0) {
@@ -143,11 +144,16 @@ export default function ClassroomModal ({modalClosed, classroom}) {
 
   const onSubmit = async data => {
     data.section_id = toAddSections.id
+
     data.subject_id = toAddSubjects.id
-    data.google_classroom_id = toAddGclassrooms.id
+    if (toAddGclassrooms) {
+      data.google_classroom_id = toAddGclassrooms.id
+    }
+
     if (toAddUsers.length) {
       data.users = toAddUsers.map(item => item.id)
     }
+    data.users.push(auth.id) // add currently authenticated user to the class being created
     if (classroom.id) {
       dispatch(updateClassroom(classroom.id, data))
     } else {
@@ -180,6 +186,30 @@ export default function ClassroomModal ({modalClosed, classroom}) {
           modalClosed()
           clearForm()
       }}>
+          {courses && courses.length ? (
+            <FormControl fullWidth margin="normal">
+              <Autocomplete
+                id="gclassroom-list"
+                name="google_classroom_id"
+                options={courses}
+                value={toAddGclassrooms}
+                getOptionLabel={((option) => option.name)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Google Classrooms"
+                    placeholder="Google Classrooms"
+                  />
+                )}
+                onChange={(event, newVal) => {
+                  setToAddGclassrooms(newVal)
+                  fetchGClassroomData(newVal)
+                }}
+              />
+            </FormControl>
+            ) : (
+            <Skeleton animation="wave" height={100} />
+          )}
         <TextField 
           {...register("name")}
           error={errors.name ? true : false}

@@ -191,6 +191,12 @@ export const scheduleDetailsReducer = (state = { schedule: {} }, action) => {
         ...state,
         error: null,
       }
+      
+    case CLEAR_DATA:
+      return {
+        schedule: [],
+        success: false,
+      }
 
     default:
       return state
