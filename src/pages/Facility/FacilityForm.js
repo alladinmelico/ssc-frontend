@@ -76,6 +76,10 @@ export default function FacilityForm () {
 
   const resetForm = () => {
     reset({ name: '', code: '', capacity: 0, type: '', building_id: ''})
+    setMaxPeople(0)
+    setArea(0)
+    setCover('')
+    setSelected('')
   }
 
   const getBuildings = async () => {
@@ -325,9 +329,10 @@ export default function FacilityForm () {
             )}
           </Box> 
           <Stack direction="row" spacing={2} justifyContent="flex-end" alignItems="center" sx={{ py: '1rem' }}>
-            <Link to="/facility" style={{ textDecoration: 'none' }}>
-              <Button variant="outlined" color="secondary">Cancel</Button>
-            </Link>
+            <Button variant="outlined" color="secondary" onClick={() => {
+              resetForm()
+              navigate('/facility')
+            }}>Cancel</Button>
             <LoadingButton
               loading={loading}
               loadingPosition="start"
