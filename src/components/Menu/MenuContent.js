@@ -31,7 +31,9 @@ const Menu = (props) => {
   }
 
   useEffect(() => {
-    getMe()
+    if ((JSON.parse(localStorage.getItem('auth'))).isAuthenticated) {
+      getMe()
+    }
   }, [])
 
   const menuItems = getMenuItems({
