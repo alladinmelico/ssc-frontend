@@ -35,11 +35,11 @@ const FacilityList = () => {
   }, [dispatch, page, rowsPerPage, page, error]);
   return (
     <Page pageTitle="Facilities">
-      <Container sx={{ pt: '1rem', display: 'flex', flexDirection: 'column', height: '100%' }} >
-        <Grid container spacing={2} sx={{ flexGrow: 1 }} justifyContent="center" alignItems="center">
+      <Container sx={{ pt: '3rem', display: 'flex', flexDirection: 'column', height: '100%' }} >
+        <Grid container sx={{ flexGrow: 1 }} spacing={{ xs:2, sm:3, md:3}} justifyContent="center" alignItems="center">
           {facilities.map(facility => (
-            <Grid item xs={6} sm={4} md={6} lg={3} sx={{ px: "1rem", pb: "1rem" }}>
-                <Card sx={{ minWidth: 275 }}>
+            <Grid item xs={12} sm={6} md={4} lg={3} sx={{ pb: "1rem" }}>
+                <Card sx={{ maxWidth: 300, height: 320, mx:"auto" }}>
                   <CardActionArea onClick={() => navigate(`/facility/${facility.id}`)}>
                     {facility.cover && (
                       <CardMedia
@@ -54,7 +54,7 @@ const FacilityList = () => {
                       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         {facility.code}
                       </Typography>
-                      <Typography variant="h5" component="div" color="primary">
+                      <Typography sx={{ fontSize: 16 }} component="div" color="primary">
                         {facility.name}
                       </Typography>
                     </CardContent>
