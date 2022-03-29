@@ -35,14 +35,21 @@ import SecondAllMap from './SecondAllMap'
 import Switch from '@mui/material/Switch'
 import { makeStyles } from '@mui/styles';
 import GalleryModal from '../Modal/GalleryModal';
+import FacilityMapDetailsModal from './FacilityMapDetailsModal'
 
 const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment, showDetails}) => {
   const dispatch = useDispatch()
   const [view, setView] = useState('/map/map-outline.png')
   const [floor, setFloor] = useState(1)
   const [showWholeMap, setShowWholeMap] = useState(false)
+  const [viewModal, setViewModal] = useState(false)
+  const [data, setData] = useState({})
 
   const { facilities, count } = useSelector((state) => state.facilities)
+
+  const facility = () => {
+    setData(facilities.find(item => item.svg_key === selected));
+  }
   
   const departments = ['Bachelor of Engineering and Allied Department',
     'Basic Arts and Sciences Department',
@@ -120,6 +127,7 @@ const classes = useStyles();
   useEffect(() => {
     if (!count) {
       dispatch(getAdminFacilities(0, 100, 'has_schedule=true'))
+      console.log(selected)
     }
   }, [dispatch])
 
@@ -263,7 +271,12 @@ const classes = useStyles();
                 Name
               </Typography>
               <Typography variant="body1" >
-                {facilities.find(item => item.svg_key === selected)?.name}
+              <Button onClick={() => {
+                facility()
+            setViewModal(true)}}>
+            {facilities.find(item => item.svg_key === selected)?.name}</Button>
+            {viewModal && <FacilityMapDetailsModal facility={data} modalClosed={() => {setViewModal(false) }}/>}
+                
               </Typography>
             </Stack>
           </Box>
