@@ -208,7 +208,13 @@ export default function ClassroomModal ({modalClosed, classroom}) {
               />
             </FormControl>
             ) : (
-            <Skeleton animation="wave" height={100} />
+              <>
+                {courses.length === 0 ? (
+                  <small>No courses retrieved. You need to reauthenticate if you want to fetch details from Google Classroom.</small>
+                ) : (
+                  <Skeleton animation="wave" height={100} />
+                )}
+              </>
           )}
         <TextField 
           {...register("name")}
@@ -288,30 +294,6 @@ export default function ClassroomModal ({modalClosed, classroom}) {
           />
         </FormControl>
         ) : (
-          <Skeleton animation="wave" height={100} />
-        )}
-
-        {count ? (
-          <FormControl fullWidth margin="normal">
-          <Autocomplete
-            required
-            id="gclassroom-list"
-            name="google_classroom_id"
-            options={courses}
-            value={toAddGclassrooms}
-            getOptionLabel={((option) => option.name)}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Google Classrooms"
-                placeholder="Google Classrooms"
-              />
-            )}
-          onChange={(event, newVal) => setToAddGclassrooms(newVal)}
-          helperText={errors.google_classroom_id?.message}
-          />
-          </FormControl>
-          ) : (
           <Skeleton animation="wave" height={100} />
         )}
         
