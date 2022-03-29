@@ -12,7 +12,7 @@ import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
 import {useNavigate} from 'react-router-dom';
-
+import API from 'config/api'
 import {
   getAdminSubjects,
   deleteSubject,
@@ -21,6 +21,7 @@ import {
 import { DELETE_SUBJECT_RESET } from "../../constants/subjectConstants"
 import SubjectShow from './SubjectShow';
 import MainAppBar from 'components/MainAppBar'
+import RestoreFromTrashOutlinedIcon from '@mui/icons-material/RestoreFromTrashOutlined';
 
 const Subject = ({history}) => {
   const [page, setPage] = useState(0)
@@ -66,9 +67,26 @@ const Subject = ({history}) => {
   }, [dispatch, deleteError, isDeleted, page, rowsPerPage, error])
 
   
+  async function restore (id) {
+    await API.put(`/subject/${id}/restore`).then(response => {
+      if (response.data) {
+         dispatch(getAdminSubjects(page, rowsPerPage))
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 
   function getActions (params) {
-    const actions = [
+    if (params.row.deleted_at) {
+      return [
+         <GridActionsCellItem icon={<RestoreFromTrashOutlinedIcon color="success" />} onClick={() => {
+          restore(params.row.id)
+        }} label="View" />,
+      ]
+    }
+
+    return [
       <GridActionsCellItem
       icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/subject/${params.row.id}`)} />}
       label="View" />,
@@ -98,8 +116,6 @@ const Subject = ({history}) => {
         })
       } label="Delete" />,      
     ]
-
-    return actions;
   }
 
   const columns = [
