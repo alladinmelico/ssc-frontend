@@ -10,6 +10,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
+import API from 'config/api'
 import {
   getAdminCourses,
   deleteCourse,
@@ -18,6 +19,7 @@ import {
 import { DELETE_COURSE_RESET } from "../../constants/courseConstants"
 import CourseShow from './CourseShow';
 import MainAppBar from 'components/MainAppBar'
+import RestoreFromTrashOutlinedIcon from '@mui/icons-material/RestoreFromTrashOutlined';
 
 const Course = ({history}) => {
   const [page, setPage] = useState(0)
@@ -58,9 +60,24 @@ const Course = ({history}) => {
       })
     }
   }, [dispatch, deleteError, isDeleted, page, rowsPerPage, error])
-
+  async function restore (id) {
+    await API.put(`/course/${id}/restore`).then(response => {
+      if (response.data) {
+         dispatch(getAdminCourses(page, rowsPerPage))
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
   const role = JSON.parse(localStorage.getItem('auth')).role
   function getActions (params) {
+    if (params.row.deleted_at) {
+      return [
+         <GridActionsCellItem icon={<RestoreFromTrashOutlinedIcon color="success" />} onClick={() => {
+          restore(params.row.id)
+        }} label="View" />,
+      ]
+    }
     const actions = [
       <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
         setCourse(params.row)

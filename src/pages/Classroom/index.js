@@ -11,6 +11,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
+import API from 'config/api'
 import {
   getAdminClassrooms,
   deleteClassroom,
@@ -21,6 +22,7 @@ import ClassroomShow from './ClassroomShow';
 import ClassroomJoin from './ClassroomJoin';
 import MainAppBar from 'components/MainAppBar'
 import { useNavigate } from 'react-router-dom';
+import RestoreFromTrashOutlinedIcon from '@mui/icons-material/RestoreFromTrashOutlined';
 
 const Classroom = ({history}) => {
   const [page, setPage] = useState(0)
@@ -62,21 +64,26 @@ const Classroom = ({history}) => {
       })
     }
   }, [dispatch, deleteError, isDeleted, page, rowsPerPage, error])
+  
+      async function restore (id) {
+        await API.put(`/classroom/${id}/restore`).then(response => {
+          if (response.data) {
+            dispatch(getAdminClassrooms(page, rowsPerPage))
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }
 
-  const columns = [
-    { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'name', headerName: 'Name', flex: 0.5 , minWidth: 150 },
-    { field: 'description_heading', headerName: 'Description Heading', flex: 0.5 ,minWidth: 300 },
-    { field: 'description', headerName: 'Description', flex: 0.5 ,minWidth: 150 },
-    { field: 'google_classroom_id', headerName: 'Google Classroom ID', width: 150 },
-    { field: 'section', headerName: 'Section', width: 150 },
-    { field: 'subject_name', headerName: 'Subject', flex: 0.5 , minWidth: 150 },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      type: 'actions',
-      disableExport: true,
-      getActions: (params) => [
+      function getActions (params) {
+        if (params.row.deleted_at) {
+          return [
+             <GridActionsCellItem icon={<RestoreFromTrashOutlinedIcon color="success" />} onClick={() => {
+              restore(params.row.id)
+            }} label="View" />,
+          ]
+        }
+        return [
         <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/classroom/${params.row.id}`)
         }/>}  label="View" />,
         <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
@@ -105,7 +112,22 @@ const Classroom = ({history}) => {
           })
         } label="Delete" />,
       ]
-    },
+    }
+    const columns = [
+      { field: 'id', headerName: 'ID', width: 100, type: 'number'},
+      { field: 'name', headerName: 'Name', flex: 0.5 , minWidth: 150 },
+      { field: 'description_heading', headerName: 'Description Heading', flex: 0.5 ,minWidth: 300 },
+      { field: 'description', headerName: 'Description', flex: 0.5 ,minWidth: 150 },
+      { field: 'google_classroom_id', headerName: 'Google Classroom ID', width: 150 },
+      { field: 'section', headerName: 'Section', width: 150 },
+      { field: 'subject_name', headerName: 'Subject', flex: 0.5 , minWidth: 150 },
+      {
+        field: 'actions',
+        headerName: 'Actions',
+        type: 'actions',
+        disableExport: true,
+        getActions
+      }
   ];
 
   return (
