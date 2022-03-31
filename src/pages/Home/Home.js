@@ -59,10 +59,6 @@ const HomePage = () => {
         setLoading(false)
         setSuccess(true)
       }).catch(error => {
-        if (error.response && error.response.status === 401) {
-          localStorage.setItem('auth',JSON.stringify({ isAuthenticated: false }));
-          window.location.reload();        
-        }
       })
     } catch (error) {
       console.log('err', error)
@@ -74,7 +70,7 @@ const HomePage = () => {
     if (!API.defaults.headers.Authorization.includes(auth.token)) {
       window.location.reload()
     }
-    if (!success) {
+    if (!success && auth.token) {
       getDashboardData()
       getTemperaturesData()
       window.echo.channel('logging').listen('UserLogging', (e) => {
