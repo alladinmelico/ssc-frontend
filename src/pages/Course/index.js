@@ -60,6 +60,7 @@ const Course = ({history}) => {
       })
     }
   }, [dispatch, deleteError, isDeleted, page, rowsPerPage, error])
+
   async function restore (id) {
     await API.put(`/course/${id}/restore`).then(response => {
       if (response.data) {
@@ -69,6 +70,7 @@ const Course = ({history}) => {
       console.log(err)
     })
   }
+  
   const role = JSON.parse(localStorage.getItem('auth')).role
   function getActions (params) {
     if (params.row.deleted_at) {
