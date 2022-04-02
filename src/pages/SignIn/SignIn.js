@@ -19,7 +19,7 @@ const SignIn = ({ redirectTo = '/' }) => {
   const navigate = useNavigate()
   let location = useLocation()
   const { toggleThis } = useMenu()
-  const { setAuth } = useAuth()
+  const { setAuth, auth } = useAuth()
 
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +34,7 @@ const SignIn = ({ redirectTo = '/' }) => {
           avatar_original: response.profileObj.imageUrl        
         }).then(res => {
           setLoading(false)
-          authenticate({
+          localStorage.setItem('auth',JSON.stringify({
             ...response.profileObj,
             displayName: response.profileObj.name,
             googleToken: response.accessToken,
@@ -42,9 +42,10 @@ const SignIn = ({ redirectTo = '/' }) => {
             photoURL: response.profileObj.imageUrl,
             hasProfile: res.data.hasProfile,
             id: res.data.id,
-            role: res.data.role_id
-          })
-          window.location.reload()
+            role: res.data.role_id,
+            isAuthenticated: true
+          }));
+          window.location = '/home'
       }).catch(err => {
       })
     } else {
@@ -52,7 +53,7 @@ const SignIn = ({ redirectTo = '/' }) => {
   }
 
   const authenticate = (user) => {
-    setAuth({ isAuthenticated: true, ...user })
+    // setAuth({ isAuthenticated: true, ...user })
     toggleThis('isAuthMenuOpen', false)
 
     let from = new URLSearchParams(location.search).get('from')
