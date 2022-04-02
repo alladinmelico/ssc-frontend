@@ -30,8 +30,9 @@ const Calendar = () => {
     }
     let convertedDays = [] 
     if (typeof daysOfWeek === 'object') {
+      console.log(daysOfWeek)
       daysOfWeek.forEach(day => {
-        convertedDays.push(day.toLowerString().substring(0, 2))
+        convertedDays.push(day.toLowerCase().substring(0, 2))
       });
       return convertedDays
     }
@@ -117,14 +118,14 @@ const Calendar = () => {
               end: new Date(schedule.start_date + 'T' + schedule.end_at)
             }
             if (schedule.is_recurring) {
-              data.rrule = getRule(schedule)
-              // if (schedule.repeat_by === 'daily') {
-              //   data.daysOfWeek = [0,1,2,3,4,5]
-              // } else {
-              //   data.daysOfWeek = getDaysOfWeek(schedule.days_of_week, true)
-              // }
-              // data.startRecur = new Date(schedule.start_date + 'T' + schedule.start_at)
-              // data.endRecur = new Date(schedule.end_date + 'T' + schedule.end_at)
+              // data.rrule = getRule(schedule)
+              if (schedule.repeat_by === 'daily') {
+                data.daysOfWeek = [1,2,3,4,5]
+              } else {
+                data.daysOfWeek = getDaysOfWeek(schedule.days_of_week, true)
+              }
+              data.startRecur = new Date(schedule.start_date + 'T' + schedule.start_at)
+              data.endRecur = new Date(schedule.end_date + 'T' + schedule.end_at)
             }
             return data;
           })}

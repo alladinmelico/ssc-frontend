@@ -110,8 +110,8 @@ export default function UserModal ({modalClosed, user}) {
   }, [dispatch, error, updateError, isUpdated, success, user])
 
   const onSubmit = async data => {
-    data.section_id = toAddSection.id
-    data.course_id = toAddCourse.id
+    data.section_id = toAddSection?.id
+    data.course_id = toAddCourse?.id
     if (user.id) {
       dispatch(updateUser(user.id, data))
     } else {
