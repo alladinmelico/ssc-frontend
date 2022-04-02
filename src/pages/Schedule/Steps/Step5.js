@@ -18,8 +18,7 @@ export default function Step5({history}) {
   const componentRef =  React.createRef();
   const { schedule } = useSelector((state) => state.newSchedule)
   const { isUpdated } = useSelector((state) => state.schedule)
-
-  const { auth } = useAuth();
+  const { auth } = useAuth()
   const {
     photoURL: currentPhoroURL = '',
     displayName: currentDisplayName = '',
@@ -53,6 +52,14 @@ export default function Step5({history}) {
                     <Typography variant='h6' >{email}</Typography>
                     <Typography variant='overline' display="block">Time in: {schedule ? schedule.start_at : isUpdated.start_at}</Typography>
                     <Typography variant='overline' display="block">Time out: {schedule ? schedule.end_at : isUpdated.end_at}</Typography>
+                    <div style={{ maxWidth: '200px' }}>
+                      {auth.role === 4 ? (
+                        <Typography variant='caption'>As guest, QR code will serve as your Gate pass.</Typography>
+                      ) : (
+                        <Typography variant='caption'>This QR code does NOT serve as your Gate pass.</Typography>                                            
+                      )}
+                      <Typography variant='caption'>(Scan the QR code to check the validity of the Schedule)</Typography>
+                    </div>
                   </div>
                   <QRCode value={url} size={200} fgColor="#005662" />
                 </Box>

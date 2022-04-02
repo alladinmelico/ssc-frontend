@@ -22,6 +22,7 @@ const Monitor = lazy(() => import('../pages/Monitor'))
 const Subject = lazy(() => import('../pages/Subject'))
 const SubjectShow = lazy(() => import('../pages/Subject/SubjectShow'))
 const SubjectList = lazy(() => import('../pages/Subject/SubjectList'))
+const Ticket = lazy(() => import('../pages/Ticket'))
 const Facility = lazy(() => import('../pages/Facility'))
 const FacilityShow = lazy(() => import('../pages/Facility/FacilityShow'))
 const FacilityForm = lazy(() => import('../pages/Facility/FacilityForm'))
@@ -143,6 +144,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         {role === 1 ?  <User /> :  <PageNotFound />}
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/ticket',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        {role === 1 ? <Ticket /> :  <PageNotFound />} 
       </AuthorizedRoute>
     ),
   },

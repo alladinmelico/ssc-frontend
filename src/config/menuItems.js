@@ -37,7 +37,8 @@ import {
   AssessmentOutlined,
   MonitorOutlined,
   TableChartOutlined,
-  CalendarViewMonthOutlined
+  CalendarViewMonthOutlined,
+  BugReportOutlined
 } from '@mui/icons-material'
 import allLocales from './locales'
 import allThemes from './themes'
@@ -170,6 +171,13 @@ const getMenuItems = (props) => {
       visible: can('USER'),
       primaryText: intl.formatMessage({ id: 'user', defaultMessage: 'Users' }),
       leftIcon: <PersonOutlineOutlined />,
+    },
+    {
+      forAdmin: true,
+      value: '/ticket',
+      visible: can('TICKET'),
+      primaryText: intl.formatMessage({ id: 'ticket', defaultMessage: 'Tickets' }),
+      leftIcon: <BugReportOutlined />,
     },
     {
       value: '/subject',

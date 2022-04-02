@@ -63,7 +63,7 @@ export default function Step4({history, activeStep, setActiveStep}) {
     }
 
     if (schedule.days_of_week) {
-      for (let i = 0; i < schedule.days_of_week; i++) {
+      for (let i = 0; i < schedule.days_of_week.length; i++) {
         formData.append('days_of_week[]', schedule.days_of_week[i]);
       }
     }

@@ -19,28 +19,15 @@ import { NEW_SCHEDULE_REQUEST, CLEAR_DATA } from "constants/scheduleConstants"
 import PrevNextButtons from './PrevNextButtons';
 import { useNavigate } from "react-router-dom";
 import TypeCards from './TypeCards';
+import { useAuth } from 'base-shell/lib/providers/Auth'
+import {defaultRoles} from 'constants/scheduleForm'
 
 export default function Step1({history, activeStep, setActiveStep}) {
   const [title, setTitle] = useState('');
   const [type, setType] = useState('');
   const [errors, setErrors] = useState('');
-  const [types, setTypes] = useState([
-    {
-      value: 'whole_class',
-      label: 'Create a schedule for the whole class',
-      image: '/types/learning.svg'   
-    },
-    {
-      value: 'course_related',
-      label: 'Course Subject Related',
-      image: '/types/education.svg'    
-    },
-    {
-      value: 'personal',
-      label: 'Personal Visit',
-      image: '/types/location.svg'   
-    },
-  ]);
+  const { auth } = useAuth()
+  const [types, setTypes] = useState(defaultRoles);
   const [classroom, setClassroom] = useState({});
   const [error, setError] = useState({});
 
@@ -75,14 +62,15 @@ export default function Step1({history, activeStep, setActiveStep}) {
   useEffect(() => {
     if (typeof count !== 'number') {
       dispatch(getAdminClassrooms(0, 100))
+      if (auth.role === 4) {
+        setTypes(defaultRoles.find(item => item.value === 'personal'))
+      } else if (auth.role === 3) {
+        setTypes(setTypes(defaultRoles.filter(item => item.value === 'personal' || item.value === 'course_related')))
+      } else {
+        setTypes(defaultRoles)
+      }
     } else if (count === 0 ) {
-      setTypes([
-        {
-          value: 'personal',
-          label: 'Personal Visit',
-          image: '/types/location.svg'   
-        },
-      ])
+      setTypes(defaultRoles.find(item => item.value === 'personal'))
       setType('personal')
     }
 
@@ -113,28 +101,34 @@ export default function Step1({history, activeStep, setActiveStep}) {
                 <p>You do not have a classroom yet...</p>
               </Box>
             ): (
-              <FormControl fullWidth margin="normal">
-                <InputLabel id="classroom-select-label">Classroom</InputLabel>
-                <Select
-                  labelId="classroom-select-label"
-                  id="classroom-select"
-                  value={classroom}
-                  label="Classroom"
-                  error={errors.classroom}
-                  onChange={(event) => {
-                    setErrors('')
-                    setClassroom(event.target.value)
-                  }}
-                  m={2}
-                >
-                  {classrooms.map(item => (
-                    <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
-                  ))}
-                </Select>
-                {errors && errors.classroom && (
-                  <FormHelperText error id="classroom-helper-text">{errors.classroom}</FormHelperText>                    
-                )}
-              </FormControl>            
+              <>
+                {type !== 'personal' && (
+                  <FormControl fullWidth margin="normal">
+                    
+                    <InputLabel id="classroom-select-label">Classroom</InputLabel>
+                    <Select
+                      labelId="classroom-select-label"
+                      id="classroom-select"
+                      value={classroom}
+                      label="Classroom"
+                      error={errors.classroom}
+                      onChange={(event) => {
+                        setErrors('')
+                        setClassroom(event.target.value)
+                      }}
+                      m={2}
+                    >
+                      {classrooms.map(item => (
+                        <MenuItem value={item.id} key={item.id}>{item.name}</MenuItem>
+                      ))}
+                    </Select>
+                    {errors && errors.classroom && (
+                      <FormHelperText error id="classroom-helper-text">{errors.classroom}</FormHelperText>                    
+                    )}
+                  </FormControl> 
+                
+                )}           
+              </>
             )}
           </>
         ) : (

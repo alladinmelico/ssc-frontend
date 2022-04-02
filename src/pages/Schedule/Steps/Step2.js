@@ -27,6 +27,7 @@ import Button from '@mui/material/Button';
 import API from 'config/api'
 import TypeCards from './TypeCards';
 import FormHelperText from '@mui/material/FormHelperText';
+import { useAuth } from 'base-shell/lib/providers/Auth'
 const dayjs = require('dayjs')
 const isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
 const isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
@@ -36,6 +37,7 @@ dayjs.extend(isSameOrAfter)
 export default function Step2({history, activeStep, setActiveStep}) {
   const [type, setType] = useState(1);
   const [errors, setErrors] = useState('');
+  const { auth } = useAuth()
   const [types, setTypes] = useState([
     {
       value: 1,
@@ -182,36 +184,6 @@ export default function Step2({history, activeStep, setActiveStep}) {
     setRepeatBy(schedule.repeat_by ? schedule.repeat_by : '')
   }
 
-  // function fetchFilteredFacilities () {
-  //   setFilteredFacilities(facilities.filter(item => {
-  //     if (!item.schedules) {
-  //       return true
-  //     }
-
-  //     item.schedules.forEach(sched => {
-  //       const tStart = dayjs(getTimeMin(sched.start_at))
-  //       const tEnd = dayjs(getTimeMin(sched.end_at))
-  //       const dStart = dayjs(sched.start_date)
-  //       if (!isRecurring) {
-  //         if ((tStart.isSameOrAfter(startTime) ||
-  //           tEnd.isSameOrBefore(endTime)) &&
-  //           dStart.isSame(startDate)) {
-  //           return false  
-  //         } 
-  //       } else {
-  //         const dEnd = dayjs(sched.end_date)
-  //         if ((tStart.isSameOrAfter(startTime) ||
-  //           tEnd.isSameOrBefore(endTime)) &&
-  //           (dStart.isSameOrAfter(startDate) ||
-  //           dEnd.isSameOrBefore(endDate))) {
-  //           return false  
-  //         }        
-  //       }
-  //     });
-  //     return true
-  //   }))
-  // }
-
   useEffect(() => {
     if (!count) {
       dispatch(getAdminFacilities(0, 1000))
@@ -305,7 +277,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 minDate={dayjs(new Date())}
                 maxDate={isRecurring ? endDate : null}
                 value={startDate}
-                shouldDisableDate={disableWeekends}
+                shouldDisableDate={auth.role === 4 ? disableWeekends : null}
                 onChange={(val) => {
                   oneDayDiff()
                   setFilteredFacilities([])
@@ -322,7 +294,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                   inputFormat="MM/D/YYYY"
                   minDate={startDate}
                   value={endDate}
-                  shouldDisableDate={disableWeekends}
+                  shouldDisableDate={auth.role === 4 ? disableWeekends : null}
                   onChange={(val) => {
                     oneDayDiff()
                     setFilteredFacilities([])

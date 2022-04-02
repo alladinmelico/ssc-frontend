@@ -38,6 +38,13 @@ import {
 } from "./reducers/sectionReducers"
 
 import {
+  ticketsReducer,
+  newTicketReducer,
+  ticketReducer,
+  ticketDetailsReducer,
+} from "./reducers/ticketReducers"
+
+import {
   schedulesReducer,
   newScheduleReducer,
   scheduleReducer,
@@ -99,6 +106,12 @@ const reducer = combineReducers({
   sectionDetails: sectionDetailsReducer,
   newSection: newSectionReducer,
   section: sectionReducer,
+
+  // tickets
+  tickets: ticketsReducer,
+  ticketDetails: ticketDetailsReducer,
+  newTicket: newTicketReducer,
+  ticket: ticketReducer,
 
   // schedules
   schedules: schedulesReducer,

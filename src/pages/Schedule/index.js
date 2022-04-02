@@ -39,12 +39,7 @@ const Schedule = ({history}) => {
       dispatch(getAdminSchedules(page, rowsPerPage))
     }
     
-    if (error === 'Unauthenticated.') {
-      history.push('/signin')
-    }
-
     if (deleteError) {
-      alert.error(deleteError)
       dispatch(clearErrors())
     }
 
