@@ -9,6 +9,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
+import API from 'config/api'
 import {
   getAdminFacilities,
   deleteFacility,
@@ -21,6 +22,7 @@ import { Link } from "react-router-dom"
 import Fab from '@mui/material/Fab';
 import {useNavigate} from 'react-router-dom';
 import MainAppBar from 'components/MainAppBar'
+import RestoreFromTrashOutlinedIcon from '@mui/icons-material/RestoreFromTrashOutlined';
 
 const Facility = ({history}) => {
   const [page, setPage] = useState(0)
@@ -61,13 +63,30 @@ const Facility = ({history}) => {
     }
   }, [dispatch, deleteError, isDeleted, page, rowsPerPage, error])
 
-  const role = JSON.parse(localStorage.getItem('auth')).role
+  
+  async function restore (id) {
+    await API.put(`/facility/${id}/restore`).then(response => {
+      if (response.data) {
+        dispatch(getAdminFacilities(page, rowsPerPage))
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 
+  const role = JSON.parse(localStorage.getItem('auth')).role
   function getActions (params) {
-    const actions = [
-      <GridActionsCellItem
-        icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/facility/${params.row.id}`)} />}
-        label="View" />,
+    if (params.row.deleted_at) {
+      return [
+         <GridActionsCellItem icon={<RestoreFromTrashOutlinedIcon color="success" />} onClick={() => {
+          restore(params.row.id)
+        }} label="View" />,
+      ]
+    } 
+
+   const actions = [
+      <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/facility/${params.row.id}`)} />}
+      label="View" />, 
     ]
 
     if (role === 1) {
@@ -96,7 +115,6 @@ const Facility = ({history}) => {
         } label="Delete" />,
       )
     }
-
     return actions;
   }
 
