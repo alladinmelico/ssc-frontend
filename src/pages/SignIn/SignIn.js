@@ -45,6 +45,7 @@ const SignIn = ({ redirectTo = '/' }) => {
             role: res.data.role_id,
             isAuthenticated: true
           }));
+          toggleThis('isAuthMenuOpen', false)
           window.location = '/home'
       }).catch(err => {
       })

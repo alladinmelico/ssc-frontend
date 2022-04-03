@@ -24,8 +24,6 @@ import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 
 export default function UserModal ({modalClosed, user}) {
   const [openModal, setOpenModal] = useState(false)
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10);
   const { courses } = useSelector((state) => state.courses)
   const { loading : sectionLoading, sections, count } = useSelector((state) => state.sections)
   const [toAddSection, setToAddSection] = useState(user ? user.section : '');
@@ -58,6 +56,8 @@ export default function UserModal ({modalClosed, user}) {
 
   const clearForm = () => {
     reset({ name: '', email: '', school_id: '', year: 0})
+    setToAddSection({name: ''})
+    setToAddCourse({name: ''})
   }
 
   useEffect(() => {

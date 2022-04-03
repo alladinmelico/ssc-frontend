@@ -3,7 +3,7 @@ import React from 'react'
 
 const TypeCards = ({types, type, setType}) => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
       {types.map(item => (
         <div
           className={`type-card ${item.value === type ? 'type-card-active' : ''}`}

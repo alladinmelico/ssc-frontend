@@ -251,17 +251,19 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 renderInput={(params) => <TextField helperText="Maximum time rage is 8 hours. Maximum time to set is 10:00 P.M." required fullWidth {...params} />}
               />
             </Grid>
-            <Grid item xs={isRecurring ? 6 : 12}>
-              <FormControlLabel control={<Switch 
-                checked={isRecurring}
-                onChange={(e) => {
-                  if (e.target.checked) {
-                    setEndDate(startDate.add(3, 'day'))
-                  }
-                  return setIsRecurring(e.target.checked) 
-                }}
-              />} label="Recurring" />
-            </Grid>
+            {auth.role !== 4 && (
+              <Grid item xs={isRecurring ? 6 : 12}>
+                <FormControlLabel control={<Switch 
+                  checked={isRecurring}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setEndDate(startDate.add(3, 'day'))
+                    }
+                    return setIsRecurring(e.target.checked) 
+                  }}
+                />} label="Recurring" />
+              </Grid>
+            )}
             {isRecurring && (
               <Grid item xs={6}>
                 <FormControlLabel control={<Switch 

@@ -62,13 +62,6 @@ export default function Step1({history, activeStep, setActiveStep}) {
   useEffect(() => {
     if (typeof count !== 'number') {
       dispatch(getAdminClassrooms(0, 100))
-      if (auth.role === 4) {
-        setTypes(defaultRoles.find(item => item.value === 'personal'))
-      } else if (auth.role === 3) {
-        setTypes(setTypes(defaultRoles.filter(item => item.value === 'personal' || item.value === 'course_related')))
-      } else {
-        setTypes(defaultRoles)
-      }
     } else if (count === 0 ) {
       setTypes(defaultRoles.find(item => item.value === 'personal'))
       setType('personal')
@@ -76,7 +69,18 @@ export default function Step1({history, activeStep, setActiveStep}) {
 
     if (schedule) {
       setTitle(schedule.title)
-      setType(schedule.type ? schedule.type : 'whole_class')
+      if (schedule.type) {
+        setType(schedule.type)
+      } else if (auth.role === 4) {
+        setTypes(defaultRoles.filter(item => item.value === 'personal'))
+        setType('personal')
+      } else if (auth.role === 3) {
+        setTypes(defaultRoles.filter(item => item.value === 'personal' || item.value === 'course_related'))
+        setType('course_related')
+      } else {
+        setTypes(defaultRoles)
+        setType('whole_class')
+      }
       setClassroom(schedule.classroom_id)
     }
   }, [dispatch, history, schedule, count])

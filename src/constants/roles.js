@@ -21,11 +21,6 @@ const roles = [
     },
     {
       value: 6,
-      label: 'Organization President', 
-      crud: ['SCHEDULE', 'CLASSROOM', 'SECTION'] 
-    },
-    {
-      value: 7,
       label: 'Staff', 
       crud: ['SCHEDULE', 'SUBJECT', 'CLASSROOM', 'SECTION', 'FACILITY', 'REPORT', 'COMMUNICATION'] 
     },
