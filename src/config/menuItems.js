@@ -38,8 +38,10 @@ import {
   MonitorOutlined,
   TableChartOutlined,
   CalendarViewMonthOutlined,
-  BugReportOutlined
+  ConfirmationNumberOutlined 
 } from '@mui/icons-material'
+
+
 import allLocales from './locales'
 import allThemes from './themes'
 import roles from 'constants/roles'
@@ -177,7 +179,7 @@ const getMenuItems = (props) => {
       value: '/ticket',
       visible: can('TICKET'),
       primaryText: intl.formatMessage({ id: 'ticket', defaultMessage: 'Tickets' }),
-      leftIcon: <BugReportOutlined />,
+      leftIcon: < ConfirmationNumberOutlined />,
     },
     {
       value: '/subject',
