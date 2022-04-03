@@ -65,7 +65,7 @@ const Rfid = ({history}) => {
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'user_name', headerName: 'Name',flex: 1 ,minWidth: 200},
     { field: 'value', headerName: 'Value', width: 150 },
-    { field: 'is_logged', headerName: 'Logged', width: 300 },
+    { field: 'is_logged', headerName: 'Logged', width: 300, type: 'boolean' },
     {
       field: 'actions',
       headerName: 'Actions',

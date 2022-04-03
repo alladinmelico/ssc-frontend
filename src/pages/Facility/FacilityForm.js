@@ -31,6 +31,11 @@ import { Container } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import MainAppBar from 'components/MainAppBar'
 import FileUpload from "react-mui-fileuploader"
+import {
+  allUsers
+} from "actions/userActions"
+import { Skeleton } from '@mui/material';
+import { Autocomplete } from '@mui/material';
 
 export default function FacilityForm () {
   const [area, setArea] = useState(0)
@@ -40,9 +45,11 @@ export default function FacilityForm () {
   const [selectedTab, setSelectedTab] = useState(0)
   const [selected, setSelected] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState(1)
+  const [toAddStaff, setToAddStaff] = useState({name: ''});
   const [cover, setCover] = useState('');
   const dispatch = useDispatch()
   const { loading, error, success } = useSelector((state) => state.newFacility)
+  const { users, count  } = useSelector((state) => state.allUsers)
   const { loading: loadingDetails, facility, error: errorDetails } = useSelector((state) => state.facilityDetails)
   const {
     loading: updateLoading,
@@ -80,6 +87,7 @@ export default function FacilityForm () {
     setArea(0)
     setCover('')
     setSelected('')
+    setToAddStaff({name: ''})
   }
 
   const getBuildings = async () => {
@@ -120,12 +128,18 @@ export default function FacilityForm () {
   useEffect(( ) => {
     getBuildings()
     getfacilityTypes()
+
+    if (!count) {
+      dispatch(allUsers())
+    }
+
     if(facility.id) {      
       setValue('name', facility.name)
       setValue('code', facility.code)
       setValue('capacity', facility.capacity)
       setValue('type', types.find(item => item.value === facility.type)?.id)
       setValue('building_id', facility.building_id)
+      setToAddStaff(facility.staff)
       setSelected(facility.svg_key)
     } else if (id && !loadingDetails) {
       dispatch(getFacilityDetails(id))
@@ -177,6 +191,10 @@ export default function FacilityForm () {
       }
       formData.append('department_id', selectedDepartment)
       formData.append('svg_key', selected)
+
+      if (toAddStaff.id) {
+        formData.append('staff_id', toAddStaff.id)
+      }
 
       if (facility.id) {
         dispatch(updateFacility(facility.id, formData))
@@ -265,8 +283,7 @@ export default function FacilityForm () {
                       labelId="types-select-label"
                       id="types-select"
                       label="types"
-                      defaultValue={facility ? types.find(item => item.value === facility.type)?.id : ''}
-                    
+                      defaultValue={facility ? types.find(item => item.value === facility.type)?.id : ''}                    
                     >
                       {types.map(type => (
                         <MenuItem value={type.id} key={type.id}>{type.value}</MenuItem>
@@ -274,6 +291,29 @@ export default function FacilityForm () {
                     </Select>
                   </FormControl>
                 </Stack>
+
+                {(users && users.length) ? (
+                <FormControl fullWidth required margin="normal">
+                  <Autocomplete
+                    id="staffs-list"
+                    name="staffs"
+                    options={users.filter(item => item.role_id === 6 )}
+                    value={toAddStaff}
+                    getOptionLabel={((option) => option.name)}
+                    onChange={(event, newVal) => setToAddStaff(newVal)}
+                    helperText={errors.president_id?.message}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Staff"
+                        placeholder="Staff"
+                      />
+                    )}
+                  />
+                </FormControl>
+                ) : (
+                  <Skeleton animation="wave" height={100} />
+                )}
 
 
                 <FormControl fullWidth margin="normal">

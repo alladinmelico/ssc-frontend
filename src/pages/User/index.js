@@ -73,6 +73,67 @@ const User = ({history}) => {
     }
   }, [dispatch, deleteError, isDeleted, page, rowsPerPage, error])
 
+  function getActions (params) {
+    const actions = [
+      <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
+        setUser(params.row)
+        setEditMode(false)
+      }} label="View" />,
+      <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
+        setUser(params.row)
+        setEditMode(true)
+      }} label="Edit" />,
+      <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
+        openDialog({
+          title: intl.formatMessage({
+            id: 'delete_dialog_title',
+            defaultMessage: 'Delete User',
+          }),
+          message: intl.formatMessage({
+            id: 'delete_dialog_message',
+            defaultMessage:
+              'Are you sure you want to delete this item?',
+          }),
+          action: intl.formatMessage({
+            id: 'delete_dialog_action',
+            defaultMessage: 'YES, Delete',
+          }),
+          handleAction: (handleClose) => {
+            dispatch(deleteUser(params.id))
+            handleClose()
+          },
+        })
+      } label="Delete" />
+    ]
+    if (params.row.changes_verified === 0) {
+      actions.push(
+        <GridActionsCellItem icon={<VerifiedIcon color="info" />} onClick={() => 
+          openDialog({
+            title: intl.formatMessage({
+              id: 'verify_dialog_title',
+              defaultMessage: 'Verify User',
+            }),
+            message: intl.formatMessage({
+              id: 'verify_dialog_message',
+              defaultMessage:
+                'Are you sure you want to verify this user?',
+            }),
+            action: intl.formatMessage({
+              id: 'verify_dialog_action',
+              defaultMessage: 'Verify',
+            }),
+            handleAction: (handleClose) => {
+              verification(params.id)
+              handleClose()
+            },
+          })
+        } label="Verify" />
+      )
+    }
+
+    return actions
+  }
+
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
     { field: 'name', headerName: 'Name', flex: 0.5 , minWidth: 150 },
@@ -82,65 +143,14 @@ const User = ({history}) => {
     { field: 'school_id', headerName: 'School ID', flex: 0.5 , minWidth: 150 },
     { field: 'role', headerName: 'Role', flex: 0.5 , minWidth: 100 },
     { field: 'course_name', headerName: 'Course', flex: 0.5 , minWidth: 100 },
-    { field: 'changes_verified', headerName: 'Status', width: 75 },
+    { field: 'changes_verified', headerName: 'Verified', minWidth: 75, type: 'boolean' },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       width: 150,
       disableExport: true,
-      getActions: (params) => [
-        <GridActionsCellItem icon={<VisibilityOutlinedIcon color="green" />} onClick={() => {
-          setUser(params.row)
-          setEditMode(false)
-        }} label="View" />,
-        <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
-          setUser(params.row)
-          setEditMode(true)
-        }} label="Edit" />,
-        <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
-          openDialog({
-            title: intl.formatMessage({
-              id: 'delete_dialog_title',
-              defaultMessage: 'Delete User',
-            }),
-            message: intl.formatMessage({
-              id: 'delete_dialog_message',
-              defaultMessage:
-                'Are you sure you want to delete this item?',
-            }),
-            action: intl.formatMessage({
-              id: 'delete_dialog_action',
-              defaultMessage: 'YES, Delete',
-            }),
-            handleAction: (handleClose) => {
-              dispatch(deleteUser(params.id))
-              handleClose()
-            },
-          })
-        } label="Delete" />,
-        <GridActionsCellItem icon={<VerifiedIcon color="info" />} onClick={() => 
-            openDialog({
-              title: intl.formatMessage({
-                id: 'verify_dialog_title',
-                defaultMessage: 'Verify User',
-              }),
-              message: intl.formatMessage({
-                id: 'verify_dialog_message',
-                defaultMessage:
-                  'Are you sure you want to verify this user?',
-              }),
-              action: intl.formatMessage({
-                id: 'verify_dialog_action',
-                defaultMessage: 'Verify',
-              }),
-              handleAction: (handleClose) => {
-                verification(params.id)
-                handleClose()
-              },
-            })
-          } label="Verify" />,
-      ]
+      getActions
     },
   ];
 

@@ -319,3 +319,11 @@ body {
   border-radius: 0.5rem;
   padding: 0.5rem;
 }
+
+.temperature-normal {
+  background-color: rgb(112, 199, 112);
+}
+
+.temperature-danger {
+  background-color: rgb(199, 112, 112);
+}
