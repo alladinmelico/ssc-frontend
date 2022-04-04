@@ -1,5 +1,10 @@
 const roles = [
     {
+      value: 1,
+      label: 'Admin',
+      crud: ['SUBJECT', 'SECTION','USER', 'TICKET', 'FACILITY', 'COURSE', 'REPORT', 'COMMUNICATION', 'HARDWARE'] 
+    },
+    {
       value: 2,
       label: 'Faculty',
       crud: ['SCHEDULE', 'SUBJECT', 'CLASSROOM', 'SECTION'] 
@@ -22,7 +27,7 @@ const roles = [
     {
       value: 6,
       label: 'Staff', 
-      crud: ['SCHEDULE', 'SUBJECT', 'CLASSROOM', 'SECTION', 'FACILITY', 'REPORT', 'COMMUNICATION'] 
+      crud: ['SCHEDULE', 'FACILITY', 'REPORT', 'COMMUNICATION', 'HARDWARE'] 
     },
     {
       value: 7,

@@ -138,6 +138,26 @@ const Report = () => {
               <Button variant="contained" endIcon={<DownloadOutlined />}>Generate</Button>
             </a>
           </Box>
+          <Box sx={{ p: '0.5rem', display: 'flex', justifyContent: 'space-between' }}>
+            <Box>
+              <Typography variant="h5">
+                Facilities Report
+              </Typography>
+              <Typography sx={{mt: "1rem"}} variant="caption">
+                Retrieve facility data such as average schedules per Facility,<br></br>
+                average facility capacity,<br></br>
+                and list of facilities within selected date range.
+              </Typography>
+            </Box>
+            <a
+              href={`${baseURL}/report/facility?start_date=${startDate.format('YYYY-MM-DD')}&end_date=${endDate.format('YYYY-MM-DD')}`}
+              style={{ textDecoration: 'none' }}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Button variant="contained" endIcon={<DownloadOutlined />}>Generate</Button>
+            </a>
+          </Box>
         </Stack>
       </Container>
     </Page>

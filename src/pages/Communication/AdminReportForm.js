@@ -8,16 +8,21 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import { useAuth } from 'base-shell/lib/providers/Auth'
+import Page from 'material-ui-shell/lib/containers/Page'
+import { Box, Container } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
-export default function AdminReportModal ({openModal, setOpenModal, modalClosed}) {
+export default function AdminReportModal () {
   const { auth } = useAuth()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [message, setMessage] = useState('')
-  const [reason, setReason] = useState('')
+  const [title, setTitle] = useState('')
+  const [category, setCategory] = useState('')
   const { enqueueSnackbar } = useSnackbar()
 
-  const reasons = [
+  const categorys = [
     'RFID scanner issue',
     'Temperature Scanner issue',
     'No Data displaying on the monitor',
@@ -28,9 +33,9 @@ export default function AdminReportModal ({openModal, setOpenModal, modalClosed}
   const onSubmit = async e => {
     e.preventDefault();
     setLoading(true)
-    await API.post(`admin-report`, {message, reason})
+    await API.post(`ticket`, {message, category, title})
     .then(res => {
-      if (res.status === 200) {
+      if (res.status === 201) {
         enqueueSnackbar('Report successfully sent.', {
           variant: 'success',
           anchorOrigin: {
@@ -56,51 +61,64 @@ export default function AdminReportModal ({openModal, setOpenModal, modalClosed}
 
   function clearValues () {
     setLoading(false)
-    setOpenModal(false)
+    setTitle('')
     setMessage('')
-    setReason('')
-    modalClosed()
+    setCategory('')
   }
 
   return (
-    <div>
-      <FormModal
-        title="Submit a Report to Admin"
-        onSubmit={onSubmit}
-        openModal={openModal}
-        loading={loading}
-        success={success}
-        setOpenModal={setOpenModal}
-        noFab={true}
-        cancelled={() => {
-          clearValues()
-        }}
-      >
-        <TextField
-          id="outlined-multiline-static"
-          label="Message"
-          multiline
-          rows={5}
-          value={message}
-          onChange={(event) => setMessage(event.target.value)}
-          fullWidth
-        />
+     <Page pageTitle="Report a Bug">
+      <Box sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Container maxWidth="sm" >
+          <form onSubmit={onSubmit}>
+            <TextField
+              id="outlined-multiline-static"
+              label="Title"
+              rows={5}
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              fullWidth
+              margin="normal"
+              required
+            />
 
-        <FormControl fullWidth required margin="normal">
-          <InputLabel id="reasons-select-label">Reason</InputLabel>
-          <Select
-            id="reason-select"
-            label="reasons"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-            required
-          >
-            {reasons.map((reason, index) => (
-              <MenuItem value={reason} key={index}>{reason}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </FormModal>
-    </div>
+            <TextField
+              id="outlined-multiline-static"
+              label="Message"
+              multiline
+              rows={5}
+              value={message}
+              onChange={(event) => setMessage(event.target.value)}
+              fullWidth
+            />
+
+            <FormControl fullWidth required margin="normal">
+              <InputLabel id="categorys-select-label">Category</InputLabel>
+              <Select
+                id="category-select"
+                label="categorys"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              >
+                {categorys.map((category, index) => (
+                  <MenuItem value={category} key={index}>{category}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <LoadingButton
+              loading={loading}
+              loadingPosition="start"
+              startIcon={<SendOutlinedIcon />}
+              variant="contained"
+              type="submit"
+            >
+              Report
+            </LoadingButton>
+          </form>
+        </Container>
+      </Box>
+    </Page>
   );
 }
