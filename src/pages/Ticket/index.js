@@ -19,13 +19,13 @@ import {
   clearErrors,
 } from "../../actions/ticketActions"
 import { DELETE_TICKET_RESET } from "../../constants/ticketConstants"
-import TicketShow from './TicketShow';
 import MainAppBar from 'components/MainAppBar'
+import {PRIORITIES, STATUSES} from 'constants/ticket'
 
 const Ticket = ({history}) => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
-  const [ticket, setTicket] = useState({})
+  const [ticket, setTicket] = useState('')
   const [editMode, setEditMode] = useState(true)
   const navigate = useNavigate();
 
@@ -38,7 +38,7 @@ const Ticket = ({history}) => {
   const { error: deleteError, isDeleted } = useSelector((state) => state.ticket || {})
 
   useEffect(() => {
-    if (!loading) {
+    if (!count) {
       dispatch(getAdminTickets(page, rowsPerPage))
     }
 
@@ -58,14 +58,11 @@ const Ticket = ({history}) => {
         },
       })
     }
-  }, [dispatch, deleteError, isDeleted, page, rowsPerPage, error])
+  }, [dispatch, deleteError, isDeleted, page, rowsPerPage])
 
 
   function getActions (params) {
     return [
-      <GridActionsCellItem
-      icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/ticket/${params.row.id}`)} />}
-      label="View" />,
       <GridActionsCellItem icon={<EditOutlinedIcon color="primary" />} onClick={() => {
           setTicket(params.row)
           setEditMode(true)
@@ -96,8 +93,11 @@ const Ticket = ({history}) => {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 100, type: 'number'},
-    { field: 'name', headerName: 'Name', flex: 0.5 ,minWidth: 150 },
-    { field: 'code', headerName: 'Code', flex: 0.5 , minWidth: 300 },
+    { field: 'ticket_id', headerName: 'Ticket ID', minWidth: 300, type: 'number'},
+    { field: 'title', headerName: 'Title', flex: 1 ,minWidth: 300 },
+    { field: 'category', headerName: 'Category', flex: 0.5 , minWidth: 300 },
+    { field: 'priority_label', headerName: 'Priority' },
+    { field: 'status_label', headerName: 'Status' },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -113,16 +113,12 @@ const Ticket = ({history}) => {
         <MainAppBar
           title={intl.formatMessage({ id: 'ticket', defaultMessage: 'Ticket' })}
           noBack
-          modal={
-            <TicketShow ticket={ticket} modalClosed={() => {
-              setTicket({})
-              setEditMode(true)
-            }} />
-          }
         />
     }>
       <DataTable
-        rows={tickets ? tickets : []}
+        rows={tickets ? tickets.map(item => ({...item,
+          priority_label: PRIORITIES.find(val => val.value === item.priority)?.label,
+          status_label: STATUSES.find(val => val.value === item.status)?.label})) : []}
         columns={columns}
         count={count}
         loading={loading}
@@ -131,6 +127,13 @@ const Ticket = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
+
+      {ticket && (
+        <TicketForm ticket={ticket} modalClosed={() => {
+          setTicket('')
+          setEditMode(true)
+        }} />
+      )}
     </Page>
   );
 };

@@ -20,12 +20,15 @@ import { Link } from "react-router-dom"
 import ScheduleShow from './ScheduleShow';
 import {useNavigate} from 'react-router-dom';
 import MainAppBar from 'components/MainAppBar'
+import { useAuth } from 'base-shell/lib/providers/Auth'
+import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
+import ScheduleRemarks from './ScheduleRemarks';
 
 const Schedule = ({history}) => {
+  const [selectedSchedule, setSelectedSchedule] = useState('')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(50);
-  const [schedule, setSchedule] = useState({})
-  const [editMode, setEditMode] = useState(true)
+  const { auth } = useAuth()
   const intl = useIntl();
   const dispatch = useDispatch()
   const { openDialog, setProcessing } = useQuestions()
@@ -33,6 +36,38 @@ const Schedule = ({history}) => {
   const navigate = useNavigate();
   const { loading, schedules, count, error } = useSelector((state) => state.schedules)
   const { error: deleteError, isDeleted } = useSelector((state) => state.schedule)
+
+  function getActions (params) {
+    const actions = [
+      <GridActionsCellItem 
+        icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/schedule/${params.row.id}`)}/>} label="View" />,
+      <GridActionsCellItem icon={
+        <EditOutlinedIcon color="primary" onClick={() => navigate(`/schedule/${params.row.id}/edit`)}/>
+      } label="Edit" />,
+      <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
+        openDialog({
+          title: "Delete Schedule",
+          message: `Are you sure you want to delete ${params.row.title}?`,
+          action: intl.formatMessage({
+            id: 'dialog_action',
+            defaultMessage: 'YES, Delete',
+          }),
+          handleAction: (handleClose) => {
+            dispatch(deleteSchedule(params.id))
+            handleClose()
+          },
+        })
+      } label="Delete" />
+    ]
+    if (auth.id === params.row.approver) {
+      actions.push(
+        <GridActionsCellItem icon={<BeenhereOutlinedIcon color="success" />} onClick={() => 
+          setSelectedSchedule(params.row)
+        } label="Verify" />
+      )  
+    }
+    return actions
+  }
 
   useEffect(() => {
     if (!loading) {
@@ -63,44 +98,15 @@ const Schedule = ({history}) => {
     { field: 'end_date', headerName: 'End Date'},
     { field: 'start_at', headerName: 'Start Time'},
     { field: 'end_at', headerName: 'End Time'},
+    { field: 'status', headerName: 'Approved', type: 'boolean'},
+    { field: 'remarks', headerName: 'Remarks', minWidth: 200},
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       disableExport: true,
-      getActions: (params) => [
-        <GridActionsCellItem 
-          icon={<VisibilityOutlinedIcon color="green" onClick={() => navigate(`/schedule/${params.row.id}`)}/>}
-          onClick={() => {
-          setEditMode(false)
-        }} label="View" />,
-        <GridActionsCellItem icon={
-          <Link to={`/schedule/${params.row.id}/edit`}>
-            <EditOutlinedIcon color="primary" />
-          </Link>
-        } label="Edit" />,
-        <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
-          openDialog({
-            title: intl.formatMessage({
-              id: 'dialog_title',
-              defaultMessage: 'Dialog Item',
-            }),
-            message: intl.formatMessage({
-              id: 'dialog_message',
-              defaultMessage:
-                'Are you sure you want to delete this item?',
-            }),
-            action: intl.formatMessage({
-              id: 'dialog_action',
-              defaultMessage: 'YES, Delete',
-            }),
-            handleAction: (handleClose) => {
-              dispatch(deleteSchedule(params.id))
-              handleClose()
-            },
-          })
-        } label="Delete" />,
-      ]
+      minWidth: 200,
+      getActions
     },
   ];
 
@@ -113,7 +119,7 @@ const Schedule = ({history}) => {
         />}
     >
       <DataTable
-        rows={schedules ? schedules : []}
+        rows={schedules ? schedules.map(item => ({...item, status: !!item.approved_at})) : []}
         columns={columns}
         count={count}
         loading={loading}
@@ -122,6 +128,9 @@ const Schedule = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
+      {selectedSchedule && (
+        <ScheduleRemarks schedule={selectedSchedule} modalClosed={() => setSelectedSchedule('')} />
+      )}
     </Page>
   );
 };

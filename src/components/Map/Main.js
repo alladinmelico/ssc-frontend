@@ -36,6 +36,7 @@ import Switch from '@mui/material/Switch'
 import { makeStyles } from '@mui/styles';
 import GalleryModal from '../Modal/GalleryModal';
 import FacilityMapDetailsModal from './FacilityMapDetailsModal'
+import {DEPARTMENTS} from 'constants/facility'
 
 const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment, showDetails}) => {
   const dispatch = useDispatch()
@@ -51,21 +52,15 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
     setData(facilities.find(item => item.svg_key === selected));
   }
   
-  const departments = ['Bachelor of Engineering and Allied Department',
-    'Basic Arts and Sciences Department',
-    'Civil and Allied Department',
-    'Electrical and Allied Department',
-    'Mechanical and Allied Department',
-  ]
   const useStyles = makeStyles({
-  resetButton:{
-  maxWidth: '100%',
-    "@media (max-width: 576px)": {
-    maxWidth: '300px',
-    alignContent: "center",
-    }
-  },
-});
+    resetButton:{
+    maxWidth: '100%',
+      "@media (max-width: 576px)": {
+      maxWidth: '300px',
+      alignContent: "center",
+      }
+    },
+  });
 
 const classes = useStyles();
 
@@ -144,8 +139,8 @@ const classes = useStyles();
               setSelectedDepartment(event.target.value)
             }}    
           >
-            {departments.map((department, index) => (
-              <MenuItem value={++index} key={index}>{department}</MenuItem>
+            {DEPARTMENTS.map((department) => (
+              <MenuItem value={department.id} key={department.id}>{department.value}</MenuItem>
             ))}
           </Select>
         </FormControl>

@@ -10,6 +10,7 @@ const SignUp = lazy(() => import('../pages/SignUp/SignUp'))
 const PasswordReset = lazy(() => import('../pages/PasswordReset/PasswordReset'))
 const About = lazy(() => import('../pages/About'))
 const Communication = lazy(() => import('../pages/Communication'))
+const AdminReportForm = lazy(() => import('../pages/Communication/AdminReportForm'))
 const Report = lazy(() => import('../pages/Report'))
 const Schedule = lazy(() => import('../pages/Schedule'))
 const ScheduleShow = lazy(() => import('../pages/Schedule/ScheduleShow'))
@@ -75,7 +76,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {role === 1 ?  <Communication /> :  <PageNotFound />}
+        {can('COMMUNICATION') ?  <Communication /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },
@@ -84,7 +85,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {role === 1 ?  <Report /> :  <PageNotFound />}
+        {can('COMMUNICATION') ?  <Report /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },
@@ -143,7 +144,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {role === 1 ?  <User /> :  <PageNotFound />}
+        {can('USER') ?  <User /> :  <PageNotFound />}
       </AuthorizedRoute>
     ),
   },
@@ -152,7 +153,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {role === 1 ? <Ticket /> :  <PageNotFound />} 
+        {can('TICKET') ? <Ticket /> :  <PageNotFound />} 
       </AuthorizedRoute>
     ),
   },
@@ -287,7 +288,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {role === 1 ? <Rfid /> : <PageNotFound />}        
+        {can('HARDWARE') ? <Rfid /> : <PageNotFound />}        
       </AuthorizedRoute>
     ),
   },
@@ -296,7 +297,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {role === 1 ? <Temperature /> : <PageNotFound />}          
+        {can('HARDWARE') ? <Temperature /> : <PageNotFound />}          
       </AuthorizedRoute>
     ),
   },
@@ -305,7 +306,7 @@ const routes = [
     exact: true,
     element: (
       <AuthorizedRoute>
-        {role === 1 ? <Monitor /> : <PageNotFound />}          
+        {can('HARDWARE') ? <Monitor /> : <PageNotFound />}          
       </AuthorizedRoute>
     ),
   },
@@ -324,6 +325,15 @@ const routes = [
     element: (
       <AuthorizedRoute>
         <MyAccount />
+      </AuthorizedRoute>
+    ),
+  },
+  {
+    path: '/report-bug',
+    exact: true,
+    element: (
+      <AuthorizedRoute>
+        <AdminReportForm /> 
       </AuthorizedRoute>
     ),
   },

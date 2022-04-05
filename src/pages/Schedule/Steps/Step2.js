@@ -94,7 +94,6 @@ export default function Step2({history, activeStep, setActiveStep}) {
         type: types.find(item => item.value === type)?.label?.toLowerCase()
       }
       const {data} = await API.get('availability/facility', {params})
-      await console.log(data)
       await setFilteredFacilities(data.data)
     } catch (error) {
       console.log(error)

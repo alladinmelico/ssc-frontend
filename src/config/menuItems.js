@@ -78,7 +78,7 @@ const getMenuItems = (props) => {
   })
 
   function can(type) {
-    return auth.role === 1 || roles.find(item => item.value === auth.role)?.crud.includes(type)
+    return roles.find(item => item.value === auth.role)?.crud.includes(type)
   }
 
   const isAuthorised = auth.isAuthenticated
@@ -168,18 +168,16 @@ const getMenuItems = (props) => {
       ],
     },
     {
-      forAdmin: true,
       value: '/user',
       visible: can('USER'),
       primaryText: intl.formatMessage({ id: 'user', defaultMessage: 'Users' }),
       leftIcon: <PersonOutlineOutlined />,
     },
     {
-      forAdmin: true,
       value: '/ticket',
       visible: can('TICKET'),
       primaryText: intl.formatMessage({ id: 'ticket', defaultMessage: 'Tickets' }),
-      leftIcon: < ConfirmationNumberOutlined />,
+      leftIcon: <ConfirmationNumberOutlined />,
     },
     {
       value: '/subject',
@@ -212,7 +210,7 @@ const getMenuItems = (props) => {
       leftIcon: <GroupsOutlined />,
     },
     {
-      forAdmin: true,
+      visible: can('HARDWARE'),
       primaryText: intl.formatMessage({ id: 'hardware', defaultMessage: 'Hardware' }),
       primaryTogglesNestedList: true,
       leftIcon: <DevicesOutlined />,
@@ -293,7 +291,6 @@ const getMenuItems = (props) => {
           ],
     },
     {
-      forAdmin: true,
       value: '/communication',
       visible: can('COMMUNICATION'),
       primaryText: intl.formatMessage({ id: 'communication', defaultMessage: 'Communication' }),
@@ -304,6 +301,12 @@ const getMenuItems = (props) => {
       visible: can('REPORT'),
       primaryText: intl.formatMessage({ id: 'report', defaultMessage: 'Report' }),
       leftIcon: <AssessmentOutlined />,
+    },
+    {
+      value: '/report-bug',
+      visible: true,
+      primaryText: "Report a bug",
+      leftIcon: <ConfirmationNumberOutlined />,
     },
     {
       value: '/about',
@@ -324,10 +327,6 @@ const getMenuItems = (props) => {
       leftIcon: <GetApp />,
     },
   ]
-
-  if (auth.role !== 1) {
-    return mainItems.filter(item => !item.forAdmin || item.visible )
-  }
 
   return mainItems
 }

@@ -118,6 +118,7 @@ const DataTable = ({page, setPage, count, rows, columns, loading, rowsPerPage, s
             rows={rows}
             columns={columns}
             loading={loading}
+            getRowClassName={(params) => params.row.temperature ? (params.row.temperature > 37.5 ? 'temperature-danger' : 'temperature-normal') : ''}
             components={{
               Toolbar: GridToolbar,
               LoadingOverlay: CustomLoadingOverlay,
