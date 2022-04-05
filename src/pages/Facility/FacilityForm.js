@@ -36,12 +36,11 @@ import {
 } from "actions/userActions"
 import { Skeleton } from '@mui/material';
 import { Autocomplete } from '@mui/material';
+import {TYPES, BUILDINGS, DEPARTMENTS} from 'constants/facility'
 
 export default function FacilityForm () {
   const [area, setArea] = useState(0)
   const [maxPeople, setMaxPeople] = useState(0)
-  const [buildings, setBuildings] = useState([])
-  const [types, setfacilityTypes] = useState([])
   const [selectedTab, setSelectedTab] = useState(0)
   const [selected, setSelected] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState(1)
@@ -60,13 +59,6 @@ export default function FacilityForm () {
   const { enqueueSnackbar } = useSnackbar()
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const departments = ['Bachelor of Engineering and Allied Department',
-    'Basic Arts and Sciences Department',
-    'Civil and Allied Department',
-    'Electrical and Allied Department',
-    'Mechanical and Allied Department',
-  ]
 
   const schema = yup.object({
     name: yup.string().required("Name is a required field."),
@@ -90,22 +82,6 @@ export default function FacilityForm () {
     setToAddStaff({name: ''})
   }
 
-  const getBuildings = async () => {
-    try {
-      const { data }  = await API.get('/buildings')
-      await setBuildings(data)
-    } catch (error) {
-     }
-  }
-  
-  const getfacilityTypes = async () => {
-    try {
-      const { data }  = await API.get('/facility-types')
-      await setfacilityTypes(data)
-    } catch (error) {
-     }
-  }
-
   const handleFileUploadError = (error) => {
     // Do something...
   }
@@ -126,9 +102,6 @@ export default function FacilityForm () {
   }
 
   useEffect(( ) => {
-    getBuildings()
-    getfacilityTypes()
-
     if (!count) {
       dispatch(allUsers())
     }
@@ -137,7 +110,7 @@ export default function FacilityForm () {
       setValue('name', facility.name)
       setValue('code', facility.code)
       setValue('capacity', facility.capacity)
-      setValue('type', types.find(item => item.value === facility.type)?.id)
+      setValue('type', TYPES.find(item => item.value === facility.type)?.id)
       setValue('building_id', facility.building_id)
       setToAddStaff(facility.staff)
       setSelected(facility.svg_key)
@@ -189,7 +162,9 @@ export default function FacilityForm () {
       } else {
         formData.delete('cover')
       }
-      formData.append('department_id', selectedDepartment)
+      if (selectedDepartment) {
+        formData.append('department_id', selectedDepartment)
+      }
       formData.append('svg_key', selected)
 
       if (toAddStaff.id) {
@@ -283,9 +258,9 @@ export default function FacilityForm () {
                       labelId="types-select-label"
                       id="types-select"
                       label="types"
-                      defaultValue={facility ? types.find(item => item.value === facility.type)?.id : ''}                    
+                      defaultValue={facility ? TYPES.find(item => item.value === facility.type)?.id : ''}                    
                     >
-                      {types.map(type => (
+                      {TYPES.map(type => (
                         <MenuItem value={type.id} key={type.id}>{type.value}</MenuItem>
                       ))}
                     </Select>
@@ -326,7 +301,8 @@ export default function FacilityForm () {
                     label="building"
                     defaultValue={facility ? facility.building_id : ''}                  
                   >
-                    {buildings.map(building => (
+                    {BUILDINGS.filter(item => DEPARTMENTS.find(dept => dept.id === selectedDepartment).buildings.includes(item.id))
+                      .map(building => (
                       <MenuItem value={building.id} key={building.id}>{building.value}</MenuItem>
                     ))}
                   </Select>

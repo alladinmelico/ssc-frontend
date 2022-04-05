@@ -26,9 +26,12 @@ import Divider from '@mui/material/Divider';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import Button from '@mui/material/Button';
 import MainAppBar from 'components/MainAppBar'
+import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
+import ScheduleRemarks from './ScheduleRemarks';
 
 const ScheduleShow = () => {
   const loc = window.location.pathname
+  const [showVerify, setShowVerify] = useState(false)
   const id = loc.substring(loc.lastIndexOf('/') + 1);
   const [success, setSuccess] = useState(false)
   const [schedule, setSchedule] = useState('')
@@ -144,6 +147,17 @@ const ScheduleShow = () => {
         </Container>
       ) :(  
         <Container maxWidth="lg" sx={{ mx: "auto"}}>
+          {(schedule.approver && (auth.id === schedule.approver)) &&  (
+            <Button
+              variant={schedule.approved_at ? "outlined" : "contained"}
+              startIcon={<BeenhereOutlinedIcon />}
+              onClick={() => 
+                setShowVerify(true)
+              }
+            >
+              {schedule.approved_at ? 'Verified' : 'Verify'}
+            </Button>
+          )}
           <Box sx={{ p: '1rem' }}>
             <Box sx={{mx:"auto", mt:"1rem"}}>
               <SchedDetail label="Created by" value={schedule.user?.name} /> 
@@ -237,6 +251,13 @@ const ScheduleShow = () => {
         <AbsentForm successfullySent={() => {
           getSchedule()
         }} batch={batch} openModal={openModal} setOpenModal={setOpenModal} />
+      )}
+
+      {showVerify && (
+        <ScheduleRemarks schedule={schedule} modalClosed={() => {
+          setShowVerify(false)
+          getSchedule()
+        }} />
       )}
     </Page>
   )
