@@ -76,7 +76,7 @@ const Monitor = () => {
               <Stack direction="column" spacing={4}>
                 {temperature ? (
                   <Paper elevation={1} sx={{ textAlign: 'center', backgroundColor:  temperature.temperature < 37.5 ? 'green' : 'red' }} >
-                    <Typography sx={{fontWeight:"600", color: 'white'}} variant="h2">{temperature.temperature?.toFixed(2)}</Typography>
+                    <Typography sx={{fontWeight:"600", color: 'white'}} variant="h2">{temperature.temperature}</Typography>
                   </Paper>
                 ): (
                   <Skeleton sx={{width:"100%"}} animation="wave" height={100} />

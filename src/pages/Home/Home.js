@@ -74,12 +74,14 @@ const HomePage = () => {
       getDashboardData()
       getTemperaturesData()
       window.echo.channel('logging').listen('UserLogging', (e) => {
-        if (presentUsers.find(item => item.id === e.rfid.user.id) && !e.rfid.is_logged) {
-          setPresentUsers(presentUsers.filter(item => item.id != e.rfid.user.id))
-          enqueueSnackbar(`${e.rfid.user.name} logged out.`, {variant: 'success'})  
-        } else if (!presentUsers.find(item => item.id === e.rfid.user.id) && e.rfid.is_logged) {
-          setPresentUsers([...presentUsers, e.rfid.user])
-          enqueueSnackbar(`${e.rfid.user.name} logged in.`, {variant: 'success'})  
+        if (presentUsers) {
+          if (presentUsers.find(item => item.id === e.rfid.user.id) && !e.rfid.is_logged) {
+            setPresentUsers(presentUsers.filter(item => item.id != e.rfid.user.id))
+            enqueueSnackbar(`${e.rfid.user.name} logged out.`, {variant: 'success'})  
+          } else if (!presentUsers.find(item => item.id === e.rfid.user.id) && e.rfid.is_logged) {
+            setPresentUsers([...presentUsers, e.rfid.user])
+            enqueueSnackbar(`${e.rfid.user.name} logged in.`, {variant: 'success'})  
+          }
         }
       })
       window.echo.channel('temperature').listen('UserTemperature', (e) => {
