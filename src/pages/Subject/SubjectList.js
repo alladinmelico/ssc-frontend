@@ -36,11 +36,14 @@ const SubjectList = () => {
   return (
     <Page pageTitle="Subjects">
       <Container sx={{ pt: '3rem', display: 'flex', flexDirection: 'column', height: '100%' }} >
-        <Grid container sx={{ flexGrow: 1 }} spacing={{ xs:2, sm:3, md:3}}  justifyContent="center" alignItems="center">
+        <Grid container sx={{ flexGrow: 1 }} spacing={{ xs:2, sm:3, md:3}}  justifyContent="center" alignItems="stretch">
           {subjects.map(subject => (
             <Grid item xs={12} sm={6} md={4} lg={3} sx={{ pb: "1rem" }}>
-              <Card sx={{ maxWidth: 300, height: 320, mx:"auto" }}>
-                <CardActionArea onClick={() => navigate(`/subject/${subject.id}`)}>                
+              <Card sx={{ maxWidth: 300, height: "100%", mx:"auto" }}>
+                <CardActionArea
+                  sx={{ height: "100%" }}
+                  style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+                  onClick={() => navigate(`/subject/${subject.id}`)}>                
                   {subject.cover && (
                     <CardMedia
                       component="img"

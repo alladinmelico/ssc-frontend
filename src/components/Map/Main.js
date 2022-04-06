@@ -263,7 +263,7 @@ const classes = useStyles();
           <Box>
             <Stack>
               <Typography variant="overline" >
-                Name
+                Facility
               </Typography>
               <Typography variant="body1" >
               <Button onClick={() => {

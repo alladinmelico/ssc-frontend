@@ -31,7 +31,7 @@ const HomePage = () => {
   const [schedulesCount, setSchedulesCount] = useState(0)
   const [temperatures, setTemperatures] = useState([])
   const [schedules, setSchedules] = useState([])
-  const [presentUsers, setPresentUsers] = useState(0)
+  const [presentUsers, setPresentUsers] = useState([])
   const [schedulesNow, setSchedulesNow] = useState([])
   const [schedulesOverStay, setSchedulesOverStay] = useState([])
   const [success, setSuccess] = useState(false)

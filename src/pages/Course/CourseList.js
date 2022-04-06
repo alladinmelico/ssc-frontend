@@ -34,10 +34,10 @@ const CourseList = () => {
   return (
     <Page pageTitle="Courses">
       <Container sx={{ pt: '3rem', display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <Grid container sx={{ flexGrow: 1 }} spacing={{ xs:2, sm:3, md:3}} justifyContent="center" alignItems="center">
+        <Grid container sx={{ flexGrow: 1 }} spacing={{ xs:2, sm:3, md:3}} justifyContent="center" alignItems="stretch">
           {courses.map(course => (
             <Grid item xs={12} sm={6} md={4} lg={3} sx={{ pb: "1rem" }}>
-              <Card sx={{ maxWidth: 300, height: 400, mx:"auto" }}>                               
+              <Card sx={{ maxWidth: 300, height: "100%", mx:"auto" }}>                               
                 {course.cover && (
                   <CardMedia
                     component="img"

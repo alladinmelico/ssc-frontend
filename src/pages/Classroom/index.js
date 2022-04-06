@@ -42,13 +42,8 @@ const Classroom = ({history}) => {
     if (!loading) {
       dispatch(getAdminClassrooms(page, rowsPerPage))
     }
-    
-    if (error === 'Unauthenticated.') {
-      history.push('/signin')
-    }
 
     if (deleteError) {
-      alert.error(deleteError)
       dispatch(clearErrors())
     }
 
@@ -112,14 +107,14 @@ const Classroom = ({history}) => {
           })
         } label="Delete" />,
       ]
-    }
+    } 
     const columns = [
       { field: 'id', headerName: 'ID', width: 100, type: 'number'},
       { field: 'name', headerName: 'Name', flex: 0.5 , minWidth: 150 },
       { field: 'description_heading', headerName: 'Description Heading', flex: 0.5 ,minWidth: 300 },
-      { field: 'description', headerName: 'Description', flex: 0.5 ,minWidth: 150 },
-      { field: 'google_classroom_id', headerName: 'Google Classroom ID', width: 150 },
-      { field: 'section', headerName: 'Section', width: 150 },
+      { field: 'section', headerName: 'Section', minWidth: 150 },
+      { field: 'president', headerName: 'President', minWidth: 200 },
+      { field: 'faculty', headerName: 'Faculty', minWidth: 200 },
       { field: 'subject_name', headerName: 'Subject', flex: 0.5 , minWidth: 150 },
       {
         field: 'actions',
@@ -152,7 +147,12 @@ const Classroom = ({history}) => {
         />
     }>
       <DataTable
-        rows={classrooms ? classrooms.map(classroom => ({...classroom, section:classroom.section?.name })) : []}
+        rows={classrooms ? classrooms.map(classroom => ({
+          ...classroom,
+          section:classroom.section?.name,
+          faculty:classroom.section?.faculty?.name,
+          president:classroom.section?.president?.name
+        })) : []}
         columns={columns}
         count={count}
         loading={loading}
