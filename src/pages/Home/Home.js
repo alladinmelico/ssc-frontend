@@ -42,7 +42,7 @@ const HomePage = () => {
   const [data, setData] = useState({})
 
   const overUser = () => {
-    setData();
+    setData(schedulesOverStay);
   }
 
   const { enqueueSnackbar } = useSnackbar()
@@ -63,7 +63,6 @@ const HomePage = () => {
         setSchedulesCount(res.data.schedules_today.length)
         setSchedulesNow(res.data.schedules_now)
         setSchedulesOverStay(res.data.schedules_overstay)
-        console.log(res.data)
         setLoading(false)
         setSuccess(true)
       }).catch(error => {
@@ -142,12 +141,14 @@ const HomePage = () => {
                   backgroundColor="#ffffb3"
                   borderColor="#caae53"
                   title="Total Overstayed Users"
-                  icon={<WarningAmberOutlinedIcon sx={{ color: "#caae53"  }} />}
-                  onClick={() => {
+                  icon={<WarningAmberOutlinedIcon sx={{ color: "#caae53"  }} onClick={() => {
                     overUser()
-                    setViewModal(true)}}
+                    setViewModal(true)}}/>}
+                    onPress={() => {
+                      overUser()
+                      setViewModal(true)}}
                   />
-                  {viewModal && <OverstayedModal user={data} modalClosed={() => {setViewModal(false) }}/>}
+                  {viewModal && <OverstayedModal schedules_overstay={schedulesOverStay} modalClosed={() => {setViewModal(false) }}/>}
 
                 <ScheduleChart schedules={schedules} schedulesNow={schedulesNow} />
               </Grid>

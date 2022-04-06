@@ -1,19 +1,18 @@
 import React, {useState, useEffect} from "react";
 import ShowModal from 'components/Modal/ShowModal'
-import { Button, Stack } from "@mui/material";
+import { Button, List, Stack, ListItemText, ListSubheader } from "@mui/material";
 import ItemDetail from "components/Modal/ItemDetail";
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 
-const OverstayedModal = ({modalClosed, user}) => {
+const OverstayedModal = ({modalClosed, schedules_overstay}) => {
   const [openModal, setOpenModal] = useState(false)
 
   useEffect(() => {
     
-    if (user !== null) {
+    if (schedules_overstay.length !== 0) {
       setOpenModal(true)
-      console.log(user)
     }
-  }, [user])
+  }, [schedules_overstay])
 
   return (
     <div>
@@ -23,9 +22,13 @@ const OverstayedModal = ({modalClosed, user}) => {
       setOpenModal={setOpenModal}
       cancelled={modalClosed}
       >
-      <Stack spacing={2}>
-        <ItemDetail label="Name" value={user.name} />
+        <Stack spacing={2}>
+        <ItemDetail label="Name" />
       </Stack>
+        <List>
+          {schedules_overstay.map(sched=> (
+          <ListItemText primary={sched.name} />))}
+          </List>
     </ShowModal>
       </div>
   )
