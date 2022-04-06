@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import Library from './Library'
+import Gym from './Gym'
 import Beng from './Beng'
 import Bsad from './Bsad'
 import Civil from './Civil'
@@ -36,6 +38,7 @@ import Switch from '@mui/material/Switch'
 import { makeStyles } from '@mui/styles';
 import GalleryModal from '../Modal/GalleryModal';
 import FacilityMapDetailsModal from './FacilityMapDetailsModal'
+import {DEPARTMENTS} from 'constants/facility'
 
 const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment, showDetails}) => {
   const dispatch = useDispatch()
@@ -51,21 +54,15 @@ const Main = ({selected, setSelected, selectedDepartment, setSelectedDepartment,
     setData(facilities.find(item => item.svg_key === selected));
   }
   
-  const departments = ['Bachelor of Engineering and Allied Department',
-    'Basic Arts and Sciences Department',
-    'Civil and Allied Department',
-    'Electrical and Allied Department',
-    'Mechanical and Allied Department',
-  ]
   const useStyles = makeStyles({
-  resetButton:{
-  maxWidth: '100%',
-    "@media (max-width: 576px)": {
-    maxWidth: '300px',
-    alignContent: "center",
-    }
-  },
-});
+    resetButton:{
+    maxWidth: '100%',
+      "@media (max-width: 576px)": {
+      maxWidth: '300px',
+      alignContent: "center",
+      }
+    },
+  });
 
 const classes = useStyles();
 
@@ -144,8 +141,8 @@ const classes = useStyles();
               setSelectedDepartment(event.target.value)
             }}    
           >
-            {departments.map((department, index) => (
-              <MenuItem value={++index} key={index}>{department}</MenuItem>
+            {DEPARTMENTS.map((department) => (
+              <MenuItem value={department.id} key={department.id}>{department.value}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -169,6 +166,18 @@ const classes = useStyles();
             </Box>
           ) : (
             <Box>
+              {(selectedDepartment === 0 && floor == 1) &&
+                <Library 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 0 && floor == 2) &&
+                <Gym 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
               {(selectedDepartment === 1 && floor == 1) && 
                <div id="map-rot">
                 <Beng 
@@ -268,7 +277,7 @@ const classes = useStyles();
           <Box>
             <Stack>
               <Typography variant="overline" >
-                Name
+                Facility
               </Typography>
               <Typography variant="body1" >
               <Button onClick={() => {
@@ -281,6 +290,7 @@ const classes = useStyles();
             </Stack>
           </Box>
         )}
+        {(selectedDepartment !== 0) &&
         <FormControl>
           <FormLabel id="demo-controlled-radio-buttons-group">Floor</FormLabel>
           <RadioGroup
@@ -289,7 +299,7 @@ const classes = useStyles();
             name="row-radio-buttons-group"
             value={floor}
             onChange={(event) => setFloor(event.target.value)}
-          >
+            >
             <FormControlLabel value={1} control={<Radio />} label="First" />
             <FormControlLabel value={2} control={<Radio />} label="Second" />
             {selectedDepartment === 5 && 
@@ -298,6 +308,22 @@ const classes = useStyles();
               <FormControlLabel value={4} control={<Radio />} label="NDT" />}
           </RadioGroup>
         </FormControl>
+          }
+        {(selectedDepartment === 0) &&
+        <FormControl>
+          <FormLabel id="demo-controlled-radio-buttons-group">Facilities</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="demo-row-radio-buttons-group-label"
+            name="row-radio-buttons-group"
+            value={floor}
+            onChange={(event) => setFloor(event.target.value)}
+            >
+            <FormControlLabel value={1} control={<Radio />} label="Library" />
+            <FormControlLabel value={2} control={<Radio />} label="Gym" />
+          </RadioGroup>
+        </FormControl>
+          }
         {showWholeMap && (
           <FormControl>
             <FormLabel id="demo-radio-buttons-group-label">View</FormLabel>
