@@ -9,6 +9,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import Page from 'material-ui-shell/lib/containers/Page';
 import Skeleton from '@mui/material/Skeleton';
+import Typography from '@mui/material/Typography';
+
 import API from '../../config/api'
 import Container from '@mui/material/Container';
 import { useAuth } from 'base-shell/lib/providers/Auth'
@@ -18,7 +20,12 @@ import VerifiedOutlinedIcon from '@mui/icons-material/VerifiedOutlined';
 import DoneOutlinedIcon from '@mui/icons-material/DoneOutlined';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import Chip from '@mui/material/Chip';
 import MailOutlineOutlinedIcon from '@mui/icons-material/MailOutlineOutlined';
+import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
+import DateRangeOutlinedIcon from '@mui/icons-material/DateRangeOutlined';
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import AbsentForm from "./AbsentForm";
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
@@ -26,12 +33,9 @@ import Divider from '@mui/material/Divider';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import Button from '@mui/material/Button';
 import MainAppBar from 'components/MainAppBar'
-import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
-import ScheduleRemarks from './ScheduleRemarks';
 
 const ScheduleShow = () => {
   const loc = window.location.pathname
-  const [showVerify, setShowVerify] = useState(false)
   const id = loc.substring(loc.lastIndexOf('/') + 1);
   const [success, setSuccess] = useState(false)
   const [schedule, setSchedule] = useState('')
@@ -146,56 +150,52 @@ const ScheduleShow = () => {
           <Skeleton variant="text" sx={{ my: 2  }} />
         </Container>
       ) :(  
-        <Container maxWidth="lg" sx={{ mx: "auto"}}>
-          {(schedule.approver && (auth.id === schedule.approver)) &&  (
-            <Button
-              variant={schedule.approved_at ? "outlined" : "contained"}
-              startIcon={<BeenhereOutlinedIcon />}
-              onClick={() => 
-                setShowVerify(true)
-              }
-            >
-              {schedule.approved_at ? 'Verified' : 'Verify'}
-            </Button>
-          )}
-          <Box sx={{ p: '1rem' }}>
-            <Box sx={{mx:"auto", mt:"1rem"}}>
-              <SchedDetail label="Created by" value={schedule.user?.name} /> 
-            </Box>
+        <Container maxWidth="md" sx={{ mx: "auto"}}>
+          <Box sx={{ p: '2rem' }}>
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            <Grid item xs={6}>
             <Box sx={{mx:"auto", mt:"1rem"}}>
               <SchedDetail label="Title" value={schedule.title} />
-            </Box> 
-            <Box sx={{mx:"auto", mt:"1rem"}}>
-              <SchedDetail label="Type" value={schedule.type} />
-            </Box> 
-            <Box sx={{mx:"auto", mt:"1rem"}}>
-              <SchedDetail label="Classroom" value={schedule.classroom?.name} />
-            </Box> 
-            <Box sx={{mx:"auto", mt:"1rem"}}>
-              <SchedDetail label="Facility" value={schedule.facility?.name} />
             </Box>
-            <Box sx={{mx:"auto", mt:"1rem"}}>
-              <Grid container direction="row">
-                <Grid item xs={4}>
-                  <SchedDetail label="Start Time" value={schedule.start_at} />
-                </Grid>
-                <Grid item xs={4}>
-                  <SchedDetail label="End Time" value={schedule.end_at} />
-                </Grid>
-              </Grid>
+            <Box sx={{mx:"auto", mt:"1.5rem"}}>
+            <SchedDetail  label="Start Time & End Time" />
+              <Stack
+                direction="row"
+                divider={<Divider orientation="vertical" flexItem />}
+                spacing={4}
+                marginTop="1rem"
+                >
+                <Chip icon={<AccessTimeOutlinedIcon />} color="primary" label={schedule.start_at}/>
+                <Chip icon={<AccessTimeOutlinedIcon />}  color="primary" label={schedule.end_at}/>
+              </Stack>
             </Box>
-             <Box sx={{mx:"auto", mt:"1rem"}}>
-              <Grid container direction="row" spacing={1}>
-                <Grid item xs={4}>
-                  <SchedDetail label="Start Date" value={schedule.start_date} />
-                </Grid>
-                <Grid item xs={4}>
-                  <SchedDetail label="End Date" value={schedule.end_date} />
-                </Grid>
-              </Grid>
+            <Box sx={{mx:"auto", mt:"1.5rem"}}>
+             <SchedDetail  label="Start Date & End Date" />
+              <Stack
+                direction="row"
+                divider={<Divider orientation="vertical" flexItem />}
+                marginTop="1rem"
+                spacing={2}
+                >
+                <Chip icon={<CalendarTodayOutlinedIcon />} color="primary" label={schedule.start_date}/>
+                <Chip icon={<DateRangeOutlinedIcon />}  color="primary" label={schedule.end_date}/>
+              </Stack>
             </Box>
-            {schedule.is_recurring && (
+            </Grid>
+            <Grid item xs={6}>
               <Box sx={{mx:"auto", mt:"1rem"}}>
+                <Stack
+                  direction="column"
+                  spacing={4}
+                  marginTop="1rem"
+                  >
+                    <SchedDetail label="Created by" value={schedule.user?.name} /> 
+                    <SchedDetail label="Classroom" value={schedule.classroom?.name} />
+                    <SchedDetail label="Facility" value={schedule.facility?.name} />
+                </Stack>
+              </Box>
+              {schedule.is_recurring && (
+              <Box sx={{mx:"auto", mt:"2rem"}}>
                 <Grid container direction="row" spacing={1}>
                   <Grid item xs={4}>
                     <SchedDetail label="Repeat By" value={schedule.repeat_by} />
@@ -209,7 +209,7 @@ const ScheduleShow = () => {
                 </Grid>
               </Box>           
             )}
-            <Box sx={{mx:"auto", mt:"1rem"}}>
+            <Box sx={{mx:"auto", mt:"2rem"}}>
               <SchedDetail label="Note" value={schedule.note} />
             </Box>
             {schedule.attachment && (
@@ -221,7 +221,9 @@ const ScheduleShow = () => {
                 </a>
               </Box>
             )}
-            <Container maxWidth="lg" sx={{ mt: "2rem" }}>
+            </Grid>
+          </Grid>
+            <Container maxWidth="md" sx={{ mt: "2rem" }}>
               <Box sx={{mx:"auto", mt:"1rem"}}>
                 <SchedDetail label="Users" value={schedule.batches?.map((row, rowIndex) => (
                   <ListItem
@@ -251,13 +253,6 @@ const ScheduleShow = () => {
         <AbsentForm successfullySent={() => {
           getSchedule()
         }} batch={batch} openModal={openModal} setOpenModal={setOpenModal} />
-      )}
-
-      {showVerify && (
-        <ScheduleRemarks schedule={schedule} modalClosed={() => {
-          setShowVerify(false)
-          getSchedule()
-        }} />
       )}
     </Page>
   )
