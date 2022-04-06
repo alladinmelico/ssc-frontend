@@ -7,11 +7,9 @@ import Divider from '@mui/material/Divider';
 import { useSnackbar } from 'notistack'
 import { Box } from '@mui/system';
 import { Button } from '@mui/material';
-import AdminReportForm from './AdminReportForm'
 import UserBypassForm from './UserBypassForm'
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
-import OverstayedUser from './OverstayedUser'
 
 const Communication = () => {
   const [openModal, setOpenModal] = useState(false)
@@ -58,13 +56,6 @@ const Communication = () => {
         spacing={2}
         divider={<Divider orientation="horizontal" flexItem />}
       >
-
-        <Box sx={{ p: '0.5rem' }}>
-          <Button onClick={() => {
-            setOpenModal(true)
-            setModal('REPORT')
-          }}>Submit a report to the Admin</Button>
-        </Box>
         <Box sx={{ p: '0.5rem' }}>
           <Button onClick={() => {
             setOpenModal(true)
@@ -86,11 +77,7 @@ const Communication = () => {
           }}
           >Notify users on updated Terms of Service and Policy Policy</Button>
         </Box>
-        <Box sx={{ p: '0.5rem' }}>
-          <OverstayedUser />
-        </Box>
       </Stack>
-      {modal === 'REPORT' && <AdminReportForm modalClosed={() => setModal('')} openModal={openModal} setOpenModal={setOpenModal} />}          
       {modal === 'BYPASS' && <UserBypassForm modalClosed={() => setModal('')} openModal={openModal} setOpenModal={setOpenModal} />}          
     </Page>
   )

@@ -46,13 +46,13 @@ export default function Step5({history}) {
                   <img src='/logo192.png' alt="logo" height={50} />
                   <Typography variant='outline' >Safe and Smart Campus</Typography>
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', width: '100%' }}>
+                <Box sx={{ display: 'flex', flexDirection: {xs: 'column', md: 'row'}, justifyContent: 'space-around', alignItems: 'center', width: '100%' }}>
                   <div>
                     <Typography variant='h5' >{currentDisplayName}</Typography>
                     <Typography variant='h6' >{email}</Typography>
                     <Typography variant='overline' display="block">Time in: {schedule ? schedule.start_at : isUpdated.start_at}</Typography>
                     <Typography variant='overline' display="block">Time out: {schedule ? schedule.end_at : isUpdated.end_at}</Typography>
-                    <div style={{ maxWidth: '200px' }}>
+                    <div style={{ maxWidth: '200px', textAlign: 'center', opacity: 0.5, marginBottom: '1rem', marginLeft: 'auto', marginRight: 'auto' }}>
                       {auth.role === 4 ? (
                         <Typography variant='caption'>As guest, QR code will serve as your Gate pass.</Typography>
                       ) : (

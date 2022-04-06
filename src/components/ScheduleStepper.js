@@ -15,7 +15,7 @@ const steps = [
 
 export default function ScheduleStepper({activeStep}) {
   return (
-    <Box sx={{ width: '100%' }} p={5}>
+    <Box sx={{ width: '100%', py: 5, px: {md: 5} }}>
       <Stepper activeStep={activeStep} alternativeLabel>
         {steps.map((label) => (
           <Step key={label}>

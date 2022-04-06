@@ -4,7 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 
-const DashboardCard = ({number, title, icon, backgroundColor, borderColor}) => {
+const DashboardCard = ({number, title, icon, backgroundColor, borderColor, actions}) => {
   return (
     <Box sx={{ m: '1rem' }}>
       <Card variant="outlined" sx={{ backgroundColor, borderColor, color: "#212121" }}>
@@ -17,6 +17,7 @@ const DashboardCard = ({number, title, icon, backgroundColor, borderColor}) => {
             {title}
           </Typography>
         </CardContent>
+        {actions}
       </Card>
     </Box>
   )

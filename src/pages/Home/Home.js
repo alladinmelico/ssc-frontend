@@ -23,6 +23,8 @@ import ScheduleChart from './ScheduleChart';
 import FacilityChart from './FacilityChart';
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import OverstayedModal from 'components/Modal/OverstayedModal';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
 
 const HomePage = () => {
   const intl = useIntl()
@@ -143,12 +145,22 @@ const HomePage = () => {
                   backgroundColor="#ffffb3"
                   borderColor="#caae53"
                   title="Total Overstayed Users"
-                  icon={<WarningAmberOutlinedIcon sx={{ color: "#caae53"  }} onClick={() => {
-                    overUser()
-                    setViewModal(true)}}/>}
-                    onPress={() => {
-                      overUser()
-                      setViewModal(true)}}
+                  icon={
+                    <WarningAmberOutlinedIcon
+                      sx={{ color: "#caae53"  }}
+                    />}
+                  actions={
+                    <CardActions>
+                      {auth.role === 1 && (
+                        <Button size="small"
+                          onClick={() => {
+                          overUser()
+                          setViewModal(true)}}>
+                          View List
+                        </Button>
+                      )}
+                    </CardActions>
+                  }
                   />
                   {viewModal && <OverstayedModal schedules_overstay={schedulesOverStay} modalClosed={() => {setViewModal(false) }}/>}
 

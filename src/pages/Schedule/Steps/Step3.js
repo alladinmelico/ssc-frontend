@@ -170,8 +170,9 @@ export default function Step3({history, activeStep, setActiveStep}) {
                     {count === 0 ? (
                       <Typography variant="h5">No user added to "{schedule.classroom_name}" classroom.</Typography>
                     ) : (
-                      <Box sx={{ display: 'flex', flexDirection: 'column', mx: 'auto', justifyContent: 'space-around' }}> 
-                        <Box sx={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', mx: 'auto', justifyContent: 'space-around' }} > 
+                        <Box
+                          sx={{ display: 'flex', flexDirection: {xs: 'column', md: 'row'}, justifyContent: 'space-around', width: '100%' }} >
                           <Autocomplete
                             fullWidth
                             disablePortal
@@ -181,10 +182,10 @@ export default function Step3({history, activeStep, setActiveStep}) {
                             onChange={(event, newVal) => setToAddUser(newVal)}
                             options={users}
                             margin="normal"
-                            sx={{ minWidth: 300, flexGrow: 1, mx: '1rem' }}
+                            sx={{ minWidth: 300, flexGrow: 1, my: {xs: '1rem', md: 0}, mx: {md: '1rem'} }}
                             renderInput={(params) => <TextField {...params} label="Add User" placeholder="Select user to add" />}
                           />
-                          <FormControl fullWidth sx={{ minWidth: 300, mx: '1rem' }}>
+                          <FormControl fullWidth sx={{ minWidth: 300, my: {xs: '1rem', md: 0}, mx: {md: '1rem'} }} >
                             <InputLabel id="batch-select-label">Batch</InputLabel>
                             <Select
                               labelId="batch-select-label"
@@ -220,7 +221,7 @@ export default function Step3({history, activeStep, setActiveStep}) {
                 {hasUser && (
                   <Grid container>
                     {batches.map((batch, index) => (
-                      <Grid item xs={6} key={index}>
+                      <Grid item xs={12} md={6} key={index}>
                       
                         <Box>
                           <List dense 

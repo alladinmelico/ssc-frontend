@@ -63,7 +63,6 @@ export default function ClassroomJoin ({modalClosed, page, rowsPerPage}) {
         variant="outlined"
         color="secondary"
         onClick={() => setOpenModal(true)}
-        size="large"
         aria-label="add"
         style={{ backgroundColor: 'transparent', marginRight: '1rem' }}
         startIcon={<GroupAddOutlinedIcon />}

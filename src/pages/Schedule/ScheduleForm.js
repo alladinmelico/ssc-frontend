@@ -76,7 +76,7 @@ export default function ScheduleForm ({ match }) {
           <Skeleton variant="rectangular" height={118} animation="wave" sx={{ my: 2  }} />
         </Box>
       ): (
-        <Box sx={{ maxWidth: activeStep === 2 ? 'md' : 'sm' }} m="auto" mt={5}>
+        <Box sx={{ maxWidth: activeStep === 2 ? 'md' : 'sm', p: '1rem' }} m="auto" mt={5}>
           {activeStep === 0 && <Step1 activeStep={activeStep} setActiveStep={setActiveStep} />}
           {activeStep === 1 && <Step2 activeStep={activeStep} setActiveStep={setActiveStep} />}
           {activeStep === 2 && <Step3 activeStep={activeStep} setActiveStep={setActiveStep} />}

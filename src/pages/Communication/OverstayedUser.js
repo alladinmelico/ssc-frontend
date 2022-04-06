@@ -13,31 +13,7 @@ const OverstayedUser = () => {
   const [user, setUser] = useState('')
   const [success, setSuccess] = useState(false)
 
-  const sendNotification = async () => {
-    await API.post(`overstay/${user}`)
-    .then(res => {
-      if (res.status === 200) {
-        setSuccess(true)
-        enqueueSnackbar('Overstay notification sent.', {
-          variant: 'success',
-          anchorOrigin: {
-            vertical: 'top',
-            horizontal: 'center',
-          },
-        })
-      }
-    })
-    .catch(err => {
-      setSuccess(false)
-      enqueueSnackbar('Overstay notification failed.', {
-        variant: 'error',
-        anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'center',
-        },
-      })
-    })
-  };
+  
 
   async function getOverstayed () {
     try {
@@ -55,9 +31,11 @@ const OverstayedUser = () => {
     }
   })
 
+  console.log(users.map(item => item.batches.map(b => b.user)))
+
   return (
-     <List dense>
-        {users.map(item => (
+     <List>
+        {users.map(item => item.batches.map(b => b.user)).map(item => (
           <ListItem
             secondaryAction={
               <IconButton edge="end" aria-label="notify">
