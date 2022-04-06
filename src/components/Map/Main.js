@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import Library from './Library'
+import Gym from './Gym'
 import Beng from './Beng'
 import Bsad from './Bsad'
 import Civil from './Civil'
@@ -164,6 +166,18 @@ const classes = useStyles();
             </Box>
           ) : (
             <Box>
+              {(selectedDepartment === 0 && floor == 1) &&
+                <Library 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
+              {(selectedDepartment === 0 && floor == 2) &&
+                <Gym 
+                setSelected={setSelected}
+                selected={selected}
+                facilities={formatFacility()}
+                />}
               {(selectedDepartment === 1 && floor == 1) && 
                <div id="map-rot">
                 <Beng 
@@ -276,6 +290,7 @@ const classes = useStyles();
             </Stack>
           </Box>
         )}
+        {(selectedDepartment !== 0) &&
         <FormControl>
           <FormLabel id="demo-controlled-radio-buttons-group">Floor</FormLabel>
           <RadioGroup
@@ -284,7 +299,7 @@ const classes = useStyles();
             name="row-radio-buttons-group"
             value={floor}
             onChange={(event) => setFloor(event.target.value)}
-          >
+            >
             <FormControlLabel value={1} control={<Radio />} label="First" />
             <FormControlLabel value={2} control={<Radio />} label="Second" />
             {selectedDepartment === 5 && 
@@ -293,6 +308,22 @@ const classes = useStyles();
               <FormControlLabel value={4} control={<Radio />} label="NDT" />}
           </RadioGroup>
         </FormControl>
+          }
+        {(selectedDepartment === 0) &&
+        <FormControl>
+          <FormLabel id="demo-controlled-radio-buttons-group">Facilities</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="demo-row-radio-buttons-group-label"
+            name="row-radio-buttons-group"
+            value={floor}
+            onChange={(event) => setFloor(event.target.value)}
+            >
+            <FormControlLabel value={1} control={<Radio />} label="Library" />
+            <FormControlLabel value={2} control={<Radio />} label="Gym" />
+          </RadioGroup>
+        </FormControl>
+          }
         {showWholeMap && (
           <FormControl>
             <FormLabel id="demo-radio-buttons-group-label">View</FormLabel>

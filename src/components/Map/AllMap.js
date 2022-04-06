@@ -10,6 +10,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import Gym from "./Gym"
+import Library from "./Library"
 
 const AllMap = ({selected, setSelected, facilities, view}) => {
   return (
@@ -50,6 +52,22 @@ const AllMap = ({selected, setSelected, facilities, view}) => {
         </div>
         <div id="gen-map-electrical">
           <Electrical
+            setSelected={setSelected}
+            selected={selected}
+            facilities={facilities}
+            hasShadow={true}
+          />
+        </div>
+        <div id="gen-map-gym">
+          <Gym
+            setSelected={setSelected}
+            selected={selected}
+            facilities={facilities}
+            hasShadow={true}
+          />
+        </div>
+        <div id="gen-map-library">
+          <Library
             setSelected={setSelected}
             selected={selected}
             facilities={facilities}
