@@ -4,7 +4,6 @@ import { useIntl } from 'react-intl'
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import DashboardCard from './DashboardCard';
-import Paper from '@mui/material/Paper';
 import Main from 'components/Map/Main';
 import DashboardTime from './DashboardTime';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
@@ -23,6 +22,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ScheduleChart from './ScheduleChart';
 import FacilityChart from './FacilityChart';
 import { useAuth } from 'base-shell/lib/providers/Auth'
+import OverstayedModal from 'components/Modal/OverstayedModal';
 
 const HomePage = () => {
   const intl = useIntl()
@@ -37,6 +37,13 @@ const HomePage = () => {
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false);
   const { auth } = useAuth()
+
+  const [viewModal, setViewModal] = useState(false)
+  const [data, setData] = useState({})
+
+  const overUser = () => {
+    setData();
+  }
 
   const { enqueueSnackbar } = useSnackbar()
 
@@ -56,6 +63,7 @@ const HomePage = () => {
         setSchedulesCount(res.data.schedules_today.length)
         setSchedulesNow(res.data.schedules_now)
         setSchedulesOverStay(res.data.schedules_overstay)
+        console.log(res.data)
         setLoading(false)
         setSuccess(true)
       }).catch(error => {
@@ -135,7 +143,12 @@ const HomePage = () => {
                   borderColor="#caae53"
                   title="Total Overstayed Users"
                   icon={<WarningAmberOutlinedIcon sx={{ color: "#caae53"  }} />}
-                />
+                  onClick={() => {
+                    overUser()
+                    setViewModal(true)}}
+                  />
+                  {viewModal && <OverstayedModal user={data} modalClosed={() => {setViewModal(false) }}/>}
+
                 <ScheduleChart schedules={schedules} schedulesNow={schedulesNow} />
               </Grid>
             </Grid>    
