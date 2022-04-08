@@ -33,17 +33,23 @@ import Divider from '@mui/material/Divider';
 import LaunchOutlinedIcon from '@mui/icons-material/LaunchOutlined';
 import Button from '@mui/material/Button';
 import MainAppBar from 'components/MainAppBar'
+import BeenhereOutlinedIcon from '@mui/icons-material/BeenhereOutlined';
+import ScheduleRemarks from './ScheduleRemarks';
+import ScheduleQR from "./ScheduleQR";
+import Modal from '@mui/material/Modal';
 
 const ScheduleShow = () => {
   const loc = window.location.pathname
   const id = loc.substring(loc.lastIndexOf('/') + 1);
   const [success, setSuccess] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [schedule, setSchedule] = useState('')
   const [openModal, setOpenModal] = useState(false)
   const [batch, setBatch] = useState('')
   const { auth } = useAuth()
   const { openDialog } = useQuestions()
   const { enqueueSnackbar } = useSnackbar()
+  const [showVerify, setShowVerify] = useState(false)
 
   async function getSchedule() {
     try {
@@ -153,36 +159,63 @@ const ScheduleShow = () => {
         <Container maxWidth="md" sx={{ mx: "auto"}}>
           <Box sx={{ p: '2rem' }}>
           <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
             <Box sx={{mx:"auto", mt:"1rem"}}>
+              {(schedule.approver && (auth.id === schedule.approver)) &&  (
+                  <Button
+                    variant={schedule.approved_at ? "outlined" : "contained"}
+                    startIcon={<BeenhereOutlinedIcon />}
+                    sx={{ mb: '1rem' }}
+                    onClick={() => 
+                      setShowVerify(true)
+                    }
+                  >
+                    {schedule.approved_at ? 'Verified' : 'Verify'}
+                  </Button>
+                )}
               <SchedDetail label="Title" value={schedule.title} />
             </Box>
             <Box sx={{mx:"auto", mt:"1.5rem"}}>
-            <SchedDetail  label="Start Time & End Time" />
-              <Stack
-                direction="row"
-                divider={<Divider orientation="vertical" flexItem />}
-                spacing={4}
-                marginTop="1rem"
-                >
-                <Chip icon={<AccessTimeOutlinedIcon />} color="primary" label={schedule.start_at}/>
-                <Chip icon={<AccessTimeOutlinedIcon />}  color="primary" label={schedule.end_at}/>
-              </Stack>
+              <Typography sx={{fontWeight:"600"}} variant="caption" display="block">
+                Start Time & End Time
+              </Typography>
+                <Stack
+                  direction="row"
+                  divider={<Divider orientation="vertical" flexItem />}
+                  spacing={4}
+                  justifyContent="center"
+                  marginTop="1rem"
+                  >
+                  <Chip icon={<AccessTimeOutlinedIcon />} color="primary" label={schedule.start_at}/>
+                  <Chip icon={<AccessTimeOutlinedIcon />}  color="primary" label={schedule.end_at}/>
+                </Stack>
             </Box>
             <Box sx={{mx:"auto", mt:"1.5rem"}}>
-             <SchedDetail  label="Start Date & End Date" />
+              <Typography sx={{fontWeight:"600"}} variant="caption" display="block">
+                Start Date & End Date
+              </Typography>
               <Stack
                 direction="row"
                 divider={<Divider orientation="vertical" flexItem />}
                 marginTop="1rem"
+                justifyContent="center"
                 spacing={2}
                 >
                 <Chip icon={<CalendarTodayOutlinedIcon />} color="primary" label={schedule.start_date}/>
                 <Chip icon={<DateRangeOutlinedIcon />}  color="primary" label={schedule.end_date}/>
               </Stack>
             </Box>
+            {schedule.is_recurring && (
+              <Box>
+                <Chip label="Recurring" variant="outlined" />
+                <Chip label={schedule.repeat_by} variant="outlined" />
+                {schedule.repeat_by === 'weekly' && (
+                  <Chip label={schedule.repeat_by} variant="outlined" />
+                )}
+              </Box>            
+            )}
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Box sx={{mx:"auto", mt:"1rem"}}>
                 <Stack
                   direction="column"
@@ -211,6 +244,7 @@ const ScheduleShow = () => {
             )}
             <Box sx={{mx:"auto", mt:"2rem"}}>
               <SchedDetail label="Note" value={schedule.note} />
+              <Button onClick={() => setShowModal(true)}>View QR Code</Button>
             </Box>
             {schedule.attachment && (
               <Box sx={{mx:"auto", mt:"1rem"}}>
@@ -254,6 +288,24 @@ const ScheduleShow = () => {
           getSchedule()
         }} batch={batch} openModal={openModal} setOpenModal={setOpenModal} />
       )}
+
+      {showVerify && (
+        <ScheduleRemarks schedule={schedule} modalClosed={() => {
+          setShowVerify(false)
+          getSchedule()
+        }} />
+      )}
+
+      <Modal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Container maxWidth='sm'>
+          <ScheduleQR schedule={schedule} url={'https://phplaravel-745170-2505664.cloudwaysapps.com/schedule/' + schedule.id} />
+        </Container>
+      </Modal>
     </Page>
   )
 }

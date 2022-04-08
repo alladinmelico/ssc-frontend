@@ -9,7 +9,7 @@ const SchedDetail = ({label, value}) => {
         {label}
       </Typography>
       <Typography variant="body1" display="block">
-        {value}
+        {value || '---'}
       </Typography>
     </Box>
   )
