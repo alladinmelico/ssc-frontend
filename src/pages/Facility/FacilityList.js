@@ -39,7 +39,7 @@ const FacilityList = () => {
         <Grid container sx={{ flexGrow: 1 }} spacing={{ xs:2, sm:3, md:3}} justifyContent="center" alignItems="stretch">
           {facilities.map(facility => (
             <Grid item xs={12} sm={6} md={4} lg={3} sx={{ pb: "1rem" }}>
-                <Card sx={{ maxWidth: 300,height: "100%" }}>
+                <Card sx={{ maxWidth: 300, height: "100%", mx:"auto" }}>
                   <CardActionArea sx={{ height: "100%"}}
                     style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between'  }}
                     onClick={() => navigate(`/facility/${facility.id}`)}>
