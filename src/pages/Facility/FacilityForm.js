@@ -113,6 +113,7 @@ export default function FacilityForm () {
       setValue('type', TYPES.find(item => item.value === facility.type)?.id)
       setValue('building_id', facility.building_id)
       setToAddStaff(facility.staff)
+      setSelectedDepartment(facility.department_id)
       setSelected(facility.svg_key)
     } else if (id && !loadingDetails) {
       dispatch(getFacilityDetails(id))
