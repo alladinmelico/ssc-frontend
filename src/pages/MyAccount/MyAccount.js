@@ -7,7 +7,7 @@ import { useIntl } from 'react-intl';
 import API from '../../config/api'
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question';
 import ImgageUploadDialog from 'material-ui-shell/lib/containers/ImageUploadDialog';
-
+import ItemDetail from "components/Modal/SchedDetail";
 import ProfileForm from './ProfileForm'
 import Stack from '@mui/material/Stack';
 import Skeleton from '@mui/material/Skeleton';
@@ -169,11 +169,35 @@ const MyAccount = () => {
                 marginRight="1rem"
                 marginLeft="1rem"
             >
-                <Typography sx={{fontWeight:"600", mt:"1rem"}} variant="h5">{user.name}</Typography>
-                <Typography variant="body1">{user.course?.name}</Typography>
-                <Typography variant="body1">{user.section?.name}-{user.year}</Typography>
-                <Typography sx={{fontWeight:"500", mt:"1rem"}} variant="body1">{user.school_id}</Typography>
-                <Typography variant="body2">{user.email}</Typography>
+                <Typography sx={{fontWeight:"600", mt:"1rem", color:"primary"}} variant="h5">{user.name}</Typography>
+                <Box>
+                  <Stack
+                  direction="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  marginRight="1rem"
+                  marginLeft="1rem"
+                  >
+                    <Typography sx={{ fontWeight:"600", mt:"1rem"}} variant="body1">{user.course?.name}</Typography>
+                    <Typography variant="overline" display="block">COURSE</Typography>
+                  </Stack>
+                </Box>
+                <Box>
+                  <Stack
+                  direction="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  marginRight="1rem"
+                  marginLeft="1rem"
+                  >
+                    <Typography sx={{ fontWeight:"600", mt:"1rem"}} variant="body1">{user.section?.name}</Typography>
+                    <Typography variant="overline" display="block">SECTION</Typography>
+                    <Typography sx={{fontWeight:"600", mt:"1rem"}} variant="body1">{user.year}</Typography>
+                    <Typography variant="overline" display="block">YEAR</Typography>
+                  </Stack>
+                </Box>
+                  <Typography sx={{fontWeight:"500", mt:"1rem"}} variant="body1">{user.school_id}</Typography>
+                  <Typography variant="body2">{user.email}</Typography>
                 </Stack>
               </div>
                ) : (
