@@ -38,6 +38,8 @@ const HomePage = () => {
   const [schedulesOverStay, setSchedulesOverStay] = useState([])
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false);
+  const [listenerInit, setListenerInit] = useState(false);
+
   const { auth } = useAuth()
 
   const [viewModal, setViewModal] = useState(false)
@@ -82,21 +84,27 @@ const HomePage = () => {
     if (!success && auth.token) {
       getDashboardData()
       getTemperaturesData()
-      window.echo.channel('logging').listen('UserLogging', (e) => {
-        if (presentUsers) {
-          if (presentUsers.find(item => item.id === e.rfid.user.id) && !e.rfid.is_logged) {
-            setPresentUsers(presentUsers.filter(item => item.id != e.rfid.user.id))
-            enqueueSnackbar(`${e.rfid.user.name} logged out.`, {variant: 'success'})  
-          } else if (!presentUsers.find(item => item.id === e.rfid.user.id) && e.rfid.is_logged) {
-            setPresentUsers([...presentUsers, e.rfid.user])
-            enqueueSnackbar(`${e.rfid.user.name} logged in.`, {variant: 'success'})  
+      if (!listenerInit) {
+        window.echo.channel('logging').listen('UserLogging', (e) => {
+          if (presentUsers) {
+            if (presentUsers.find(item => item.id === e.rfid.user.id) && !e.rfid.is_logged) {
+              setPresentUsers(presentUsers.filter(item => item.id != e.rfid.user.id))
+              enqueueSnackbar(`${e.rfid.user.name} logged out.`, {variant: 'success'})  
+            } else if (!presentUsers.find(item => item.id === e.rfid.user.id) && e.rfid.is_logged) {
+              setPresentUsers([...presentUsers, e.rfid.user])
+              enqueueSnackbar(`${e.rfid.user.name} logged in.`, {variant: 'success'})  
+            }
           }
-        }
-      })
-      window.echo.channel('temperature').listen('UserTemperature', (e) => {
-        enqueueSnackbar(`${e.temperature.user.name} recorded ${e.temperature.temperature}.`, {variant: 'info'}) 
-        setTemperatures(prev => [e.temperature, ...prev.slice(0, -1)])
-      })
+        })
+        window.echo.channel('temperature').listen('UserTemperature', (e) => {
+            console.log(temperatures, e.temperature)
+          if (auth.id === e.temperature.user_id || auth.role === 1) {
+              enqueueSnackbar(`${e.temperature.user.name} recorded ${e.temperature.temperature}.`, {variant: 'info'}) 
+          }
+          setTemperatures(prev => [e.temperature, ...prev.slice(0, -1)])
+        })
+        setListenerInit(true)
+      }
     }
   }, [schedulesCount, success]);
 

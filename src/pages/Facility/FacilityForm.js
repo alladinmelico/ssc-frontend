@@ -162,9 +162,7 @@ export default function FacilityForm () {
       } else {
         formData.delete('cover')
       }
-      if (selectedDepartment) {
-        formData.append('department_id', selectedDepartment)
-      }
+      formData.append('department_id', selectedDepartment)
       formData.append('svg_key', selected)
 
       if (toAddStaff.id) {
