@@ -41,9 +41,6 @@ const Facility = ({history}) => {
     if (!loading) {
       dispatch(getAdminFacilities(page, rowsPerPage))
     }
-    if (error === 'Unauthenticated.') {
-      history.push('/signin')
-    }
 
     if (deleteError) {
       alert.error(deleteError)
@@ -89,32 +86,30 @@ const Facility = ({history}) => {
       label="View" />, 
     ]
 
-    if (role === 1) {
-      actions.push(
-        <GridActionsCellItem icon={ <EditOutlinedIcon color="primary" onClick={() => navigate(`/facility/${params.row.id}/edit`)} />} label="Edit" />,
-        <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
-          openDialog({
-            title: intl.formatMessage({
-              id: 'dialog_title',
-              defaultMessage: 'Dialog Item',
-            }),
-            message: intl.formatMessage({
-              id: 'dialog_message',
-              defaultMessage:
-                'Are you sure you want to delete this item?',
-            }),
-            action: intl.formatMessage({
-              id: 'dialog_action',
-              defaultMessage: 'YES, Delete',
-            }),
-            handleAction: (handleClose) => {
-              dispatch(deleteFacility(params.id))
-              handleClose()
-            },
-          })
-        } label="Delete" />,
-      )
-    }
+    actions.push(
+      <GridActionsCellItem icon={ <EditOutlinedIcon color="primary" onClick={() => navigate(`/facility/${params.row.id}/edit`)} />} label="Edit" />,
+      <GridActionsCellItem icon={<DeleteOutlinedIcon color="error" />} onClick={() => 
+        openDialog({
+          title: intl.formatMessage({
+            id: 'dialog_title',
+            defaultMessage: 'Dialog Item',
+          }),
+          message: intl.formatMessage({
+            id: 'dialog_message',
+            defaultMessage:
+              'Are you sure you want to delete this item?',
+          }),
+          action: intl.formatMessage({
+            id: 'dialog_action',
+            defaultMessage: 'YES, Delete',
+          }),
+          handleAction: (handleClose) => {
+            dispatch(deleteFacility(params.id))
+            handleClose()
+          },
+        })
+      } label="Delete" />,
+    )
     return actions;
   }
 

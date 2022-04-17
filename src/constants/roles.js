@@ -32,7 +32,7 @@ const roles = [
     {
       value: 7,
       label: 'Guard', 
-      crud: ['HARDWARE'] 
+      crud: ['HARDWARE', 'COMMUNICATION'] 
     },
   ]
 
