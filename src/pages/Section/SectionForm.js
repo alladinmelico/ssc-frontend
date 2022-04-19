@@ -105,8 +105,13 @@ export default function SectionModal ({modalClosed, section}) {
   }, [dispatch, error, updateError, isUpdated, success, section])
 
   const onSubmit = async data => {
-    data.president_id = toAddPresident.id
-    data.faculty_id = toAddFaculty.id
+    if (auth.role === 2) {
+      data.faculty_id = auth.id
+      data.president_id = toAddPresident.id
+    } else if (auth.role === 5) {
+      data.president_id = auth.id
+      data.faculty_id = toAddFaculty.id
+    }
     if (section.id) {
       dispatch(updateSection(section.id, data))
     } else {
@@ -152,22 +157,24 @@ export default function SectionModal ({modalClosed, section}) {
 
         {users && users.length ? (
         <FormControl fullWidth required margin="normal">
-          <Autocomplete
-            id="presidents-list"
-            name="presidents"
-            options={users.filter(item => item.role_id === 5 )}
-            value={toAddPresident}
-            getOptionLabel={((option) => option.name)}
-            onChange={(event, newVal) => setToAddPresident(newVal)}
-            helperText={errors.president_id?.message}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="President"
-                placeholder="President"
-              />
-            )}
-          />
+          {auth.role === 2 && (
+            <Autocomplete
+              id="presidents-list"
+              name="presidents"
+              options={users.filter(item => item.role_id === 5 )}
+              value={toAddPresident}
+              getOptionLabel={((option) => option.name)}
+              onChange={(event, newVal) => setToAddPresident(newVal)}
+              helperText={errors.president_id?.message}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="President"
+                  placeholder="President"
+                />
+              )}
+            />          
+          )}
         </FormControl>
         ) : (
           <Skeleton animation="wave" height={100} />
@@ -175,22 +182,24 @@ export default function SectionModal ({modalClosed, section}) {
 
       {users && users.length ? (
         <FormControl fullWidth required margin="normal">
-          <Autocomplete
-            id="faculty-list"
-            name="faculty"
-            options={users.filter(item => item.role_id === 2 )}
-            value={toAddFaculty}
-            getOptionLabel={((option) => option.name)}
-            onChange={(event, newVal) => setToAddFaculty(newVal)}
-            helperText={errors.faculty_id?.message}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Faculty"
-                placeholder="Faculty"
-              />
-            )}
-          />
+          {auth.role === 5 && (
+            <Autocomplete
+              id="faculty-list"
+              name="faculty"
+              options={users.filter(item => item.role_id === 2 )}
+              value={toAddFaculty}
+              getOptionLabel={((option) => option.name)}
+              onChange={(event, newVal) => setToAddFaculty(newVal)}
+              helperText={errors.faculty_id?.message}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Faculty"
+                  placeholder="Faculty"
+                />
+              )}
+            />          
+          )}
         </FormControl>
         ) : (
           <Skeleton animation="wave" height={100} />
