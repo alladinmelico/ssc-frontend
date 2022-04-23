@@ -28,6 +28,7 @@ import API from 'config/api'
 import TypeCards from './TypeCards';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useAuth } from 'base-shell/lib/providers/Auth'
+import ScheduleCalendar from '../ScheduleCalendar';
 const dayjs = require('dayjs')
 const isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
 const isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
@@ -221,6 +222,54 @@ export default function Step2({history, activeStep, setActiveStep}) {
       <form onSubmit={submit}>      
         <LocalizationProvider dateAdapter={DateAdapter}>
           <Grid container rowSpacing={3} spacing={2}>
+            {count ? (
+              <Grid item xs={facility ? 9:12}>
+                {type && (
+                  <FormControl fullWidth required >
+                    <InputLabel id="facility-select-label">Facility</InputLabel>
+                    <Select
+                      labelId="facility-select-label"
+                      id="facility-select"
+                      value={facility}
+                      label="Type"
+                      onChange={(e) => {
+                        setErrors('')
+                        setFacility(e.target.value)
+                      }}
+                      error={!!errors.facility}
+                      aria-describedby="facility-helper-text" 
+                      required
+                    >
+                      {type ? facilities.filter(item => item.type.toLowerCase() === types.find(item => item.value === type)?.label.toLowerCase()).map(item => (
+                        <MenuItem value={item.id} key={item.id}>{item.name} {item.schedules ? `[${item.schedules.length} schedules]` : '[no schedule]'}</MenuItem>
+                      )) : ''}
+                    </Select>
+                    {errors && errors.facility && (
+                      <FormHelperText error id="facility-helper-text">{errors.facility}</FormHelperText>                    
+                    )}
+                  </FormControl>
+                )}
+              </Grid>
+            ) : (
+              <Grid item xs={12}>
+                <Skeleton animation="wave" height={100} />
+              </Grid>
+            )}
+            {(count && facility && !errors) && (
+              <Grid item xs={3}>
+                <TextField
+                  label="Capacity"
+                  fullWidth
+                  disabled
+                  value={facilities.find(item => item.id === facility)?.capacity}
+                />
+              </Grid>
+            )} 
+
+            {(facilities && facility) && (
+              <ScheduleCalendar schedules={facilities.find(item => item.id === facility).schedules} />
+            )}
+
             <Grid item xs={6}>
               <TimePicker
                 label="Start Time"
@@ -371,49 +420,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
             <Grid item xs={6}>
               <Button color="primary" type="button" onClick={() => getAvailableFacilities()}>Check available Facilities</Button>
             </Grid>
-            {count ? (
-              <Grid item xs={facility ? 9:12}>
-                {type && (
-                  <FormControl fullWidth required >
-                    <InputLabel id="facility-select-label">Facility</InputLabel>
-                    <Select
-                      labelId="facility-select-label"
-                      id="facility-select"
-                      value={facility}
-                      label="Type"
-                      onChange={(e) => {
-                        setErrors('')
-                        setFacility(e.target.value)
-                      }}
-                      error={!!errors.facility}
-                      aria-describedby="facility-helper-text" 
-                      required
-                    >
-                      {type ? filteredFacilities.filter(item => item.type.toLowerCase() === types.find(item => item.value === type)?.label.toLowerCase()).map(item => (
-                        <MenuItem value={item.id} key={item.id}>{item.name} {item.schedules ? `[${item.schedules.length} schedules]` : '[no schedule]'}</MenuItem>
-                      )) : ''}
-                    </Select>
-                    {errors && errors.facility && (
-                      <FormHelperText error id="facility-helper-text">{errors.facility}</FormHelperText>                    
-                    )}
-                  </FormControl>
-                )}
-              </Grid>
-            ) : (
-              <Grid item xs={12}>
-                <Skeleton animation="wave" height={100} />
-              </Grid>
-            )}
-            {(count && facility && !errors) && (
-              <Grid item xs={3}>
-                <TextField
-                  label="Capacity"
-                  fullWidth
-                  disabled
-                  value={facilities.find(item => item.id === facility)?.capacity}
-                />
-              </Grid>
-            )}            
+                       
           </Grid>
         </LocalizationProvider>
 

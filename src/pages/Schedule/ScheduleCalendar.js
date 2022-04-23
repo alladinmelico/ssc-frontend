@@ -1,0 +1,104 @@
+import React, {useEffect, useState} from 'react'
+import FullCalendar from '@fullcalendar/react' 
+import dayGridPlugin from '@fullcalendar/daygrid' 
+import timeGridWeek from '@fullcalendar/timegrid' 
+import {
+  getAdminSchedules
+} from "actions/scheduleActions"
+import { useDispatch, useSelector } from "react-redux"
+import dayjs from 'dayjs';
+import { Container } from '@mui/material';
+import rrulePlugin from '@fullcalendar/rrule'
+
+const ScheduleCalendar = ({schedules, hasButtons=true}) => {
+  const dispatch = useDispatch()
+  function getDaysOfWeek(daysOfWeek, num = false) {
+    if (num) {
+      const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+      const selectedDays = []
+      if (typeof daysOfWeek === 'object' && daysOfWeek !== null) {
+        daysOfWeek.forEach(day => {
+          selectedDays.push(days.indexOf(day) + "") 
+        });
+      } 
+      return selectedDays
+    }
+    let convertedDays = [] 
+    if (typeof daysOfWeek === 'object') {
+      console.log(daysOfWeek)
+      daysOfWeek.forEach(day => {
+        convertedDays.push(day.toLowerCase().substring(0, 2))
+      });
+      return convertedDays
+    }
+    return []
+  }
+
+  function getRule (sched) {
+    const data = {}
+    data.dtstart = new Date(sched.start_date + 'T' + sched.start_at)
+    data.until = new Date(sched.end_date + 'T' + sched.end_at)
+
+    if (sched.is_recurring && sched.repeat_by) {
+      data.freq = sched.repeat_by
+      if (sched.repeat_by === 'weekly') {
+        if (sched.days_of_week === null) {
+          data.byweekday = ['mo']
+        } else {
+          data.byweekday = getDaysOfWeek(sched.days_of_week)        
+        }
+      }
+      if (sched.repeat_by === 'monthly') {
+        data.bymonth = range(dayjs(sched.start_date).month(),dayjs(sched.end_date).month(), 1)
+      }
+    } else {
+      data.freq = 'daily'
+    }
+    return data
+  }
+
+  const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+
+  return (
+    <Container sx={{ my: '1rem' }}>
+      <FullCalendar
+        plugins={[ dayGridPlugin, timeGridWeek, rrulePlugin ]}
+        weekends={true}
+        headerToolbar={{
+          left: 'dayGridMonth,timeGridWeek,timeGridDay',
+          center: 'title',
+          right: 'prevYear,prev,next,nextYear'
+        }}
+        footerToolbar= {{
+          center: '',
+          right: 'prev,next'
+        }}
+        selectable={true}
+        dayMaxEvents={true}
+        dateClick={function(info) {
+          alert('clicked ' + info.dateStr);
+        }}
+        select={function(info) {
+          alert('selected ' + info.dateStr);
+        }}
+        events={schedules.map(schedule => {
+          const data = {
+            id: schedule.id,
+            title: schedule.title,
+            allDay: false,           
+            editable: false,
+            start: new Date(schedule.start_date + 'T' + schedule.start_at),
+            end: new Date(schedule.start_date + 'T' + schedule.end_at),
+          }
+          if (schedule.is_recurring) {
+            data.rrule = getRule(schedule)
+          }
+          return data;
+        })}
+        initialView="dayGridMonth"
+      />
+    </Container>
+  )
+}
+
+export default ScheduleCalendar

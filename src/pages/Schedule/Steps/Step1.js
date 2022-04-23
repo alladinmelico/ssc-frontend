@@ -21,6 +21,8 @@ import { useNavigate } from "react-router-dom";
 import TypeCards from './TypeCards';
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import {defaultRoles} from 'constants/scheduleForm'
+import InputAdornment from '@mui/material/InputAdornment';
+import TitleOutlinedIcon from '@mui/icons-material/TitleOutlined';
 
 export default function Step1({history, activeStep, setActiveStep}) {
   const [title, setTitle] = useState('');
@@ -28,7 +30,9 @@ export default function Step1({history, activeStep, setActiveStep}) {
   const [errors, setErrors] = useState('');
   const { auth } = useAuth()
   const [types, setTypes] = useState(defaultRoles);
-  const [classroom, setClassroom] = useState({});
+  const [classroom, setClassroom] = useState('');
+  const [label, setLabel] = useState('Title of the schedule');
+  
   const [error, setError] = useState({});
 
   const dispatch = useDispatch()
@@ -87,17 +91,17 @@ export default function Step1({history, activeStep, setActiveStep}) {
 
   return (
     <Box sx={{ minWidth: 120 }}>
-      <TypeCards types={types} type={type} setType={setType} />
+      <TypeCards types={types} type={type} setType={(val) => {
+        setType(val)
+        if (val === 'personal') {
+          setClassroom('')
+          setLabel('Purpose of the visit')
+        } else {
+          setLabel('Title of the schedule')
+        }
+      }} />
       <form onSubmit={submit}>
-        <TextField
-          id="outlined-basic"
-          label="Title"
-          variant="outlined"
-          fullWidth
-          value={title}
-          required
-          onChange={(e) => setTitle(e.target.value)}
-        />
+
         {classrooms ? (
           <>
             {classrooms.length === 0 ? (
@@ -118,6 +122,8 @@ export default function Step1({history, activeStep, setActiveStep}) {
                       error={errors.classroom}
                       onChange={(event) => {
                         setErrors('')
+                        const selectedClassroom = classrooms.find(item => item.id === event.target.value)
+                        setTitle(`${selectedClassroom.subject?.name} (${selectedClassroom.name})`)
                         setClassroom(event.target.value)
                       }}
                       m={2}
@@ -138,6 +144,26 @@ export default function Step1({history, activeStep, setActiveStep}) {
         ) : (
           <Skeleton animation="wave" height={100} />
         )}
+
+        <TextField
+          id="outlined-basic"
+          label={label}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <TitleOutlinedIcon />
+              </InputAdornment>
+            ),
+          }}
+          fullWidth
+          value={title}
+          required
+          margin='normal'
+          onChange={(e) => setTitle(e.target.value)}
+        />
 
         <PrevNextButtons setActiveStep={setActiveStep} handleBack={() => {
            dispatch({type: CLEAR_DATA})
