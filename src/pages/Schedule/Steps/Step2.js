@@ -65,7 +65,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
   const [classroom, setClassroom] = useState({});
   const [filteredSchedules, setFilteredSchedules] = useState([]);
   const [startTime, setStartTime] = useState(dayjs(new Date(0, 0, 0, 7, 0)));
-  const [endTime, setEndTime] = useState(startTime.add(8, 'hour'));
+  const [endTime, setEndTime] = useState(dayjs(new Date(0, 0, 0, 15, 0)));
   const [startDate, setStartDate] = useState(dayjs(new Date()));
   const [endDate, setEndDate] = useState(startDate.add(1, 'year'));
   const [isRecurring, setIsRecurring] = useState(false);
