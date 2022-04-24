@@ -29,15 +29,19 @@ import TypeCards from './TypeCards';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import ScheduleCalendar from '../ScheduleCalendar';
+import { List, ListItemText, Typography } from '@mui/material';
 const dayjs = require('dayjs')
+const isBetween = require('dayjs/plugin/isBetween')
 const isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
 const isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
+dayjs.extend(isBetween)
 
 export default function Step2({history, activeStep, setActiveStep}) {
   const [type, setType] = useState(1);
   const [errors, setErrors] = useState('');
+  const [selected, setSelected] = useState('');
   const { auth } = useAuth()
   const [types, setTypes] = useState([
     {
@@ -216,6 +220,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
     }
   }, [dispatch, history, error, schedule, count])
 
+  console.log(selected)
   return (
     <Box sx={{ minWidth: 120 }}>
       <TypeCards types={types} type={type} setType={setType} />
@@ -267,7 +272,26 @@ export default function Step2({history, activeStep, setActiveStep}) {
             )} 
 
             {(facilities && facility) && (
-              <ScheduleCalendar schedules={facilities.find(item => item.id === facility).schedules} />
+              <ScheduleCalendar setSelected={setSelected} schedules={facilities.find(item => item.id === facility).schedules} />
+            )}
+
+            {selected && (
+              <Grid item xs={12}>
+                <Typography>Schedules of {facilities.find(item => item.id === facility).name}</Typography>
+                <List>
+                  {
+                    facilities
+                      .find(item => item.id === facility).schedules
+                      .filter(item => 
+                        dayjs(selected.startStr).isSameOrAfter(item.start_date) ||
+                        dayjs(selected.endStr).isSameOrBefore(item.end_date)
+                      )
+                      .map(item => (
+                        <ListItemText key={item.id} primary={item.name} />
+                      ))
+                  }
+                </List>
+              </Grid>
             )}
 
             <Grid item xs={6}>

@@ -9,8 +9,9 @@ import { useDispatch, useSelector } from "react-redux"
 import dayjs from 'dayjs';
 import { Container } from '@mui/material';
 import rrulePlugin from '@fullcalendar/rrule'
+import interactionPlugin from "@fullcalendar/interaction";
 
-const ScheduleCalendar = ({schedules, hasButtons=true}) => {
+const ScheduleCalendar = ({schedules, setSelected, hasButtons=true}) => {
   const dispatch = useDispatch()
   function getDaysOfWeek(daysOfWeek, num = false) {
     if (num) {
@@ -25,7 +26,6 @@ const ScheduleCalendar = ({schedules, hasButtons=true}) => {
     }
     let convertedDays = [] 
     if (typeof daysOfWeek === 'object') {
-      console.log(daysOfWeek)
       daysOfWeek.forEach(day => {
         convertedDays.push(day.toLowerCase().substring(0, 2))
       });
@@ -62,7 +62,7 @@ const ScheduleCalendar = ({schedules, hasButtons=true}) => {
   return (
     <Container sx={{ my: '1rem' }}>
       <FullCalendar
-        plugins={[ dayGridPlugin, timeGridWeek, rrulePlugin ]}
+        plugins={[ dayGridPlugin, timeGridWeek, rrulePlugin, interactionPlugin ]}
         weekends={true}
         headerToolbar={{
           left: 'dayGridMonth,timeGridWeek,timeGridDay',
@@ -75,12 +75,7 @@ const ScheduleCalendar = ({schedules, hasButtons=true}) => {
         }}
         selectable={true}
         dayMaxEvents={true}
-        dateClick={function(info) {
-          alert('clicked ' + info.dateStr);
-        }}
-        select={function(info) {
-          alert('selected ' + info.dateStr);
-        }}
+        select={setSelected}
         events={schedules.map(schedule => {
           const data = {
             id: schedule.id,
