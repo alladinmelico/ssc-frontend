@@ -29,7 +29,7 @@ import TypeCards from './TypeCards';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useAuth } from 'base-shell/lib/providers/Auth'
 import ScheduleCalendar from '../ScheduleCalendar';
-import { List, ListItemText, Typography } from '@mui/material';
+import { List, ListItem, ListItemText, Typography } from '@mui/material';
 const dayjs = require('dayjs')
 const isBetween = require('dayjs/plugin/isBetween')
 const isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
@@ -63,7 +63,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
   const [facility, setFacility] = useState('');
   const [filteredFacilities, setFilteredFacilities] = useState([]);
   const [classroom, setClassroom] = useState({});
-  const [classrooms, setClassrooms] = useState([]);
+  const [filteredSchedules, setFilteredSchedules] = useState([]);
   const [startTime, setStartTime] = useState(dayjs(new Date(0, 0, 0, 7, 0)));
   const [endTime, setEndTime] = useState(startTime.add(8, 'hour'));
   const [startDate, setStartDate] = useState(dayjs(new Date()));
@@ -220,7 +220,6 @@ export default function Step2({history, activeStep, setActiveStep}) {
     }
   }, [dispatch, history, error, schedule, count])
 
-  console.log(selected)
   return (
     <Box sx={{ minWidth: 120 }}>
       <TypeCards types={types} type={type} setType={setType} />
@@ -272,22 +271,39 @@ export default function Step2({history, activeStep, setActiveStep}) {
             )} 
 
             {(facilities && facility) && (
-              <ScheduleCalendar setSelected={setSelected} schedules={facilities.find(item => item.id === facility).schedules} />
+              <ScheduleCalendar setSelected={(val)=> {
+                setSelected(val)
+                setFilteredSchedules(facilities
+                  .find(item => item.id === facility).schedules
+                  .filter(item => 
+                    dayjs(val.startStr).isSameOrAfter(item.start_date) ||
+                    dayjs(val.endStr).isSameOrBefore(item.end_date)
+                  )
+                  .sort((curr, next) => (
+                    dayjs(curr.start_at).isSameOrAfter(next.start_at)
+                  )))
+                console.log(facilities
+                  .find(item => item.id === facility).schedules
+                  .filter(item => 
+                    dayjs(val.startStr).isSameOrAfter(item.start_date) ||
+                    dayjs(val.endStr).isSameOrBefore(item.end_date)
+                  )
+                  .sort((curr, next) => (
+                    dayjs(curr.start_at).isSameOrAfter(next.start_at)
+                  )))
+              }} schedules={facilities.find(item => item.id === facility).schedules} />
             )}
 
             {selected && (
               <Grid item xs={12}>
                 <Typography>Schedules of {facilities.find(item => item.id === facility).name}</Typography>
-                <List>
+                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                   {
-                    facilities
-                      .find(item => item.id === facility).schedules
-                      .filter(item => 
-                        dayjs(selected.startStr).isSameOrAfter(item.start_date) ||
-                        dayjs(selected.endStr).isSameOrBefore(item.end_date)
-                      )
+                    filteredSchedules
                       .map(item => (
-                        <ListItemText key={item.id} primary={item.name} />
+                        <ListItem key={item.id} >
+                          <ListItemText primary={`${item.start_at} to ${item.end_at}`} />
+                        </ListItem>
                       ))
                   }
                 </List>
@@ -297,7 +313,12 @@ export default function Step2({history, activeStep, setActiveStep}) {
             <Grid item xs={6}>
               <TimePicker
                 label="Start Time"
-                minTime={dayjs(new Date(0, 0, 0, 7, 0))}
+                minTime={() => {
+                  if (filteredSchedules.length > 0) {
+                    return dayjs(filteredFacilities[0].end_at)  
+                  }
+                  return dayjs(new Date(0, 0, 0, 7, 0))
+                }}
                 maxTime={dayjs(new Date(0, 0, 0, 21, 0))}
                 value={startTime}
                 onChange={(val) => {
