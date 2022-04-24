@@ -11,7 +11,7 @@ import { Container } from '@mui/material';
 import rrulePlugin from '@fullcalendar/rrule'
 import interactionPlugin from "@fullcalendar/interaction";
 
-const ScheduleCalendar = ({schedules, setSelected, hasButtons=true}) => {
+const ScheduleCalendar = ({schedules, schedule, startDate, endDate, isRecurring, setSelected, hasButtons=true}) => {
   const dispatch = useDispatch()
   function getDaysOfWeek(daysOfWeek, num = false) {
     if (num) {
@@ -58,6 +58,11 @@ const ScheduleCalendar = ({schedules, setSelected, hasButtons=true}) => {
   }
 
   const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+  let addedSchedule = [...schedules]
+  if (schedule) {
+    schedule.current = true
+    addedSchedule = [...schedules, schedule]
+  }
 
   return (
     <Container sx={{ my: '1rem' }}>
@@ -75,11 +80,10 @@ const ScheduleCalendar = ({schedules, setSelected, hasButtons=true}) => {
         }}
         selectable={true}
         dayMaxEvents={true}
-        select={setSelected}
-        events={schedules.map(schedule => {
+        dateClick={setSelected}
+        events={addedSchedule.map(schedule => {
           const data = {
             id: schedule.id,
-            title: schedule.title,
             allDay: false,           
             editable: false,
             start: new Date(schedule.start_date + 'T' + schedule.start_at),
@@ -87,6 +91,21 @@ const ScheduleCalendar = ({schedules, setSelected, hasButtons=true}) => {
           }
           if (schedule.is_recurring) {
             data.rrule = getRule(schedule)
+          }
+          if (schedule.current) {
+            if (!schedule.start) {
+              data.start = new Date(startDate.format())
+              if (isRecurring) {
+                data.end = new Date(endDate.format())
+              } else {
+                data.end = new Date(startDate.format())
+              }
+            }
+            data.display = 'background'
+            data.color = '#00838f'
+            data.backgroundColor = '#00838f'
+            data.allDay = true
+            data.title = schedule.title
           }
           return data;
         })}
