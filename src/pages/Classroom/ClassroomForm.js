@@ -247,7 +247,9 @@ export default function ClassroomModal ({modalClosed, classroom}) {
             {...register("name")}
             error={errors.name ? true : false}
             label="Name"
-            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
             defaultValue={classroom ? classroom.name : ''}
             helperText={errors.name?.message}
             margin="normal"
@@ -258,7 +260,9 @@ export default function ClassroomModal ({modalClosed, classroom}) {
             {...register("description_heading")}
             error={errors.description_heading ? true : false}
             label="Description Heading"
-            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
             defaultValue={classroom ? classroom.description_heading : ''}
             helperText={errors.description_heading?.message}
             margin="normal"
@@ -269,7 +273,9 @@ export default function ClassroomModal ({modalClosed, classroom}) {
             {...register("description")}
             error={errors.description ? true : false}
             label="Description"
-            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
             defaultValue={classroom ? classroom.description : ''}
             helperText={errors.description?.message}
             margin="normal"

@@ -28,15 +28,20 @@ import API from 'config/api'
 import TypeCards from './TypeCards';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useAuth } from 'base-shell/lib/providers/Auth'
+import ScheduleCalendar from '../ScheduleCalendar';
+import { List, ListItem, ListItemText, Typography } from '@mui/material';
 const dayjs = require('dayjs')
+const isBetween = require('dayjs/plugin/isBetween')
 const isSameOrAfter = require('dayjs/plugin/isSameOrAfter')
 const isSameOrBefore = require('dayjs/plugin/isSameOrBefore')
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
+dayjs.extend(isBetween)
 
 export default function Step2({history, activeStep, setActiveStep}) {
   const [type, setType] = useState(1);
   const [errors, setErrors] = useState('');
+  const [selected, setSelected] = useState('');
   const { auth } = useAuth()
   const [types, setTypes] = useState([
     {
@@ -58,9 +63,9 @@ export default function Step2({history, activeStep, setActiveStep}) {
   const [facility, setFacility] = useState('');
   const [filteredFacilities, setFilteredFacilities] = useState([]);
   const [classroom, setClassroom] = useState({});
-  const [classrooms, setClassrooms] = useState([]);
+  const [filteredSchedules, setFilteredSchedules] = useState([]);
   const [startTime, setStartTime] = useState(dayjs(new Date(0, 0, 0, 7, 0)));
-  const [endTime, setEndTime] = useState(startTime.add(8, 'hour'));
+  const [endTime, setEndTime] = useState(dayjs(new Date(0, 0, 0, 15, 0)));
   const [startDate, setStartDate] = useState(dayjs(new Date()));
   const [endDate, setEndDate] = useState(startDate.add(1, 'year'));
   const [isRecurring, setIsRecurring] = useState(false);
@@ -138,13 +143,9 @@ export default function Step2({history, activeStep, setActiveStep}) {
 
   const submit = (event) => {
     event.preventDefault()
-    if (filteredFacilities.length === 0) {
-      setErrors({facility: 'Please fetch the list available of facilities.'})
-    } else {
-      setErrors('')
-      saveData()
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    }
+    setErrors('')
+    saveData()
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   }
 
   function disableWeekends(date) {
@@ -215,22 +216,108 @@ export default function Step2({history, activeStep, setActiveStep}) {
     }
   }, [dispatch, history, error, schedule, count])
 
+  let minStartTime = dayjs(new Date(0, 0, 0, 7, 0))
+  if (filteredSchedules.length > 0) {
+    const endAtObj = dayjs(filteredSchedules[0]?.end_at)
+    if (endAtObj.hour() > 8) {
+      minStartTime = dayjs(filteredSchedules[0]?.end_at)  
+    }
+  }
+
   return (
     <Box sx={{ minWidth: 120 }}>
       <TypeCards types={types} type={type} setType={setType} />
       <form onSubmit={submit}>      
         <LocalizationProvider dateAdapter={DateAdapter}>
           <Grid container rowSpacing={3} spacing={2}>
+            {count ? (
+              <Grid item xs={facility ? 9:12}>
+                {type && (
+                  <FormControl fullWidth required >
+                    <InputLabel id="facility-select-label">Facility</InputLabel>
+                    <Select
+                      labelId="facility-select-label"
+                      id="facility-select"
+                      value={facility}
+                      label="Type"
+                      onChange={(e) => {
+                        setErrors('')
+                        setFacility(e.target.value)
+                      }}
+                      error={!!errors.facility}
+                      aria-describedby="facility-helper-text" 
+                      required
+                    >
+                      {type ? facilities.filter(item => item.type.toLowerCase() === types.find(item => item.value === type)?.label.toLowerCase()).map(item => (
+                        <MenuItem value={item.id} key={item.id}>{item.name} {item.schedules ? `[${item.schedules.length} schedules]` : '[no schedule]'}</MenuItem>
+                      )) : ''}
+                    </Select>
+                    {errors && errors.facility && (
+                      <FormHelperText error id="facility-helper-text">{errors.facility}</FormHelperText>                    
+                    )}
+                  </FormControl>
+                )}
+              </Grid>
+            ) : (
+              <Grid item xs={12}>
+                <Skeleton animation="wave" height={100} />
+              </Grid>
+            )}
+            {(count && facility && !errors) && (
+              <Grid item xs={3}>
+                <TextField
+                  label="Capacity"
+                  fullWidth
+                  disabled
+                  value={facilities.find(item => item.id === facility)?.capacity}
+                />
+              </Grid>
+            )} 
+
+            {(facilities && facility) && (
+              <ScheduleCalendar 
+                schedule={schedule}
+                startDate={startDate}
+                endDate={endDate}
+                isRecurring={isRecurring}
+                setSelected={(val)=> {
+                setSelected(val)
+                setFilteredSchedules(facilities
+                  .find(item => item.id === facility).schedules
+                  .filter(item => 
+                    dayjs(val.dateStr).isSameOrAfter(item.start_date) &&
+                    dayjs(val.dateStr).isSameOrBefore(item.end_date)
+                  )
+                  .sort((curr, next) => (
+                    parseInt(curr.start_at.split(':')[0]) - parseInt(next.start_at.split(':')[0])
+                  )))
+              }} schedules={facilities.find(item => item.id === facility).schedules} />
+            )}
+
+            {selected && (
+              <Grid item xs={12}>
+                <Typography>Schedules of {facilities.find(item => item.id === facility)?.name} on {selected.dateStr}</Typography>
+                <ul sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                  {
+                    filteredSchedules
+                      .map(item => (
+                        <li key={item.id} >
+                          {`${item.start_at} to ${item.end_at}`}
+                        </li>
+                      ))
+                  }
+                </ul>
+              </Grid>
+            )}
+
             <Grid item xs={6}>
               <TimePicker
                 label="Start Time"
-                minTime={dayjs(new Date(0, 0, 0, 7, 0))}
+                minTime={minStartTime}
                 maxTime={dayjs(new Date(0, 0, 0, 21, 0))}
                 value={startTime}
                 onChange={(val) => {
                   setStartTime(val)
-                  setFilteredFacilities([])
-                  setFacility('')
                 }}
                 helper
                 renderInput={(params) => <TextField helperText="Earliest time to set is 7:00 A.M." required fullWidth {...params} />}
@@ -244,8 +331,6 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 value={endTime}
                 onChange={(val) => {
                   setEndTime(val)
-                  setFilteredFacilities([])
-                  setFacility('')
                 }}
                 renderInput={(params) => <TextField helperText="Maximum time rage is 8 hours. Maximum time to set is 10:00 P.M." required fullWidth {...params} />}
               />
@@ -267,7 +352,10 @@ export default function Step2({history, activeStep, setActiveStep}) {
               <Grid item xs={6}>
                 <FormControlLabel control={<Switch 
                   checked={isEndOfSem}
-                  onChange={(e) => setIsEndOfSem(e.target.checked) }
+                  onChange={(e) => {
+                    setIsEndOfSem(e.target.checked)
+                    setEndDate(dayjs('8/30/2022'))
+                  }}
                 />} label="Until the end of Semester" />
               </Grid>
             )}
@@ -281,9 +369,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 shouldDisableDate={auth.role === 4 ? disableWeekends : null}
                 onChange={(val) => {
                   oneDayDiff()
-                  setFilteredFacilities([])
-                  setFacility('')
-                  return setStartDate(val)
+                  setStartDate(val)
                 }}
                 renderInput={(params) => <TextField required fullWidth {...params} />}
               />
@@ -298,8 +384,6 @@ export default function Step2({history, activeStep, setActiveStep}) {
                   shouldDisableDate={auth.role === 4 ? disableWeekends : null}
                   onChange={(val) => {
                     oneDayDiff()
-                    setFilteredFacilities([])
-                    setFacility('')
                     setEndDate(val)
                   }}
                   renderInput={(params) => <TextField required fullWidth {...params} />}
@@ -368,52 +452,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 </FormControl>
               </Grid>        
             )}
-            <Grid item xs={6}>
-              <Button color="primary" type="button" onClick={() => getAvailableFacilities()}>Check available Facilities</Button>
-            </Grid>
-            {count ? (
-              <Grid item xs={facility ? 9:12}>
-                {type && (
-                  <FormControl fullWidth required >
-                    <InputLabel id="facility-select-label">Facility</InputLabel>
-                    <Select
-                      labelId="facility-select-label"
-                      id="facility-select"
-                      value={facility}
-                      label="Type"
-                      onChange={(e) => {
-                        setErrors('')
-                        setFacility(e.target.value)
-                      }}
-                      error={!!errors.facility}
-                      aria-describedby="facility-helper-text" 
-                      required
-                    >
-                      {type ? filteredFacilities.filter(item => item.type.toLowerCase() === types.find(item => item.value === type)?.label.toLowerCase()).map(item => (
-                        <MenuItem value={item.id} key={item.id}>{item.name} {item.schedules ? `[${item.schedules.length} schedules]` : '[no schedule]'}</MenuItem>
-                      )) : ''}
-                    </Select>
-                    {errors && errors.facility && (
-                      <FormHelperText error id="facility-helper-text">{errors.facility}</FormHelperText>                    
-                    )}
-                  </FormControl>
-                )}
-              </Grid>
-            ) : (
-              <Grid item xs={12}>
-                <Skeleton animation="wave" height={100} />
-              </Grid>
-            )}
-            {(count && facility && !errors) && (
-              <Grid item xs={3}>
-                <TextField
-                  label="Capacity"
-                  fullWidth
-                  disabled
-                  value={facilities.find(item => item.id === facility)?.capacity}
-                />
-              </Grid>
-            )}            
+                       
           </Grid>
         </LocalizationProvider>
 
