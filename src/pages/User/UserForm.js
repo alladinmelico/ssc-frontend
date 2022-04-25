@@ -61,7 +61,7 @@ export default function UserModal ({modalClosed, user}) {
   }
 
   useEffect(() => {
-    dispatch(getAdminCourses(0, 50))
+    dispatch(getAdminCourses(0, 50, 'no_trash=true'))
     if (!sectionLoading){
       dispatch(getAdminSections(0, 50))
     }

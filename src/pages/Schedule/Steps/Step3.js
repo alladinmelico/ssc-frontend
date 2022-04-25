@@ -125,8 +125,12 @@ export default function Step3({history, activeStep, setActiveStep}) {
       setBatches(sliceIntoChunks(userObjects, schedule.facility_capacity))
     } else if (schedule.batches && schedule.batches.length !== 0) {
       setBatches(sliceIntoChunks(schedule.batches.map(item => item.user), schedule.facility_capacity))
-    } else if (schedule && schedule.type === 'whole_class') {
-      setBatches(sliceIntoChunks(users, schedule.facility_capacity))
+    } else if (schedule && schedule.type === 'whole_class' && count) {
+      if (count > 50) {
+        dispatch(getUsers(schedule.classroom_id))
+      } else {
+        setBatches(sliceIntoChunks(users, schedule.facility_capacity))      
+      }
     }
 
     if (schedule) {
@@ -138,14 +142,16 @@ export default function Step3({history, activeStep, setActiveStep}) {
 
   return (
     <Box sx={{ minWidth: 120 }}>
-      
-          <FormControlLabel control={
-            <Switch 
-              checked={hasUser}
-              onChange={(e) => setHasUser(e.target.checked)}
-              disabled={schedule && schedule.type === 'whole_class'}
-            />} label="Users involved"
-          />
+
+          {schedule.type !== 'personal' && (
+            <FormControlLabel control={
+              <Switch 
+                checked={hasUser}
+                onChange={(e) => setHasUser(e.target.checked)}
+                disabled={schedule && schedule.type === 'whole_class'}
+              />} label="Users involved"
+            />          
+          )}
          
           <form onSubmit={submit}>
             {schedule.type !== 'personal' ? (

@@ -105,12 +105,15 @@ export default function SectionModal ({modalClosed, section}) {
   }, [dispatch, error, updateError, isUpdated, success, section])
 
   const onSubmit = async data => {
-    if (auth.role === 2) {
+    if (auth.role === 2 ) {
       data.faculty_id = auth.id
       data.president_id = toAddPresident.id
     } else if (auth.role === 5) {
       data.president_id = auth.id
       data.faculty_id = toAddFaculty.id
+    } else if (auth.role === 1) {
+      data.faculty_id = toAddFaculty.id
+      data.president_id = toAddPresident.id
     }
     if (section.id) {
       dispatch(updateSection(section.id, data))
@@ -157,7 +160,7 @@ export default function SectionModal ({modalClosed, section}) {
 
         {users && users.length ? (
         <FormControl fullWidth required margin="normal">
-          {auth.role === 2 && (
+          {(auth.role === 2 || auth.role === 1) && (
             <Autocomplete
               id="presidents-list"
               name="presidents"
@@ -182,7 +185,7 @@ export default function SectionModal ({modalClosed, section}) {
 
       {users && users.length ? (
         <FormControl fullWidth required margin="normal">
-          {auth.role === 5 && (
+          {(auth.role === 5 || auth.role === 1) && (
             <Autocomplete
               id="faculty-list"
               name="faculty"

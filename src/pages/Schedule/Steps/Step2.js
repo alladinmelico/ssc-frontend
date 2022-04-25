@@ -315,6 +315,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                   .sort((curr, next) => (
                     parseInt(curr.start_at.split(':')[0]) - parseInt(next.start_at.split(':')[0])
                   )))
+                setStartDate(dayjs(val.dateStr))
               }} schedules={facilities.find(item => item.id === facility).schedules} />
             )}
 
@@ -376,7 +377,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 }
               />
             </Grid>
-            {auth.role !== 4 && (
+            {(auth.role !== 4 && schedule.type !== 'personal') && (
               <Grid item xs={isRecurring ? 6 : 12}>
                 <FormControlLabel control={<Switch 
                   checked={isRecurring}
@@ -400,7 +401,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 />} label="Until the end of Semester" />
               </Grid>
             )}
-            <Grid item xs={6}>
+            <Grid item xs={isRecurring ? 6:12}>
               <MobileDatePicker
                 label="Start Date"
                 inputFormat="MM/D/YYYY"
