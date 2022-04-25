@@ -130,12 +130,12 @@ export const getCourseDetails = (id) => async (dispatch) => {
     }
 }
 
-export const getAdminCourses = (page = 1, limit = 10) => async (dispatch) => {
+export const getAdminCourses = (page = 1, limit = 10, params) => async (dispatch) => {
     try {
 
         dispatch({ type: ADMIN_COURSES_REQUEST })
 
-        const { data } = await API.get(`course?type=1&page=${++page}&limit=${limit}`)
+        const { data } = await API.get(`course?type=1&page=${++page}&limit=${limit}&${params}`)
 
         dispatch({
             type: ADMIN_COURSES_SUCCESS,

@@ -338,6 +338,11 @@ body {
   background-color: rgb(112, 199, 112);
 }
 
+.valid-schedule {
+  background-color: rgb(200, 245, 200);
+  border: solid 2px #00838f;
+}
+
 .temperature-danger {
   background-color: rgb(199, 112, 112);
 }

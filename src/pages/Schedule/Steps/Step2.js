@@ -70,6 +70,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
   const [endDate, setEndDate] = useState(startDate.add(1, 'year'));
   const [isRecurring, setIsRecurring] = useState(false);
   const [isEndOfSem, setIsEndOfSem] = useState(false);
+  const [hasTimeConflict, setHasTimeConflict] = useState(false);
   const [daysOfWeek, setDaysOfWeek] = useState([]);
   const [repeatBy, setRepeatBy] = useState('');
 
@@ -224,6 +225,29 @@ export default function Step2({history, activeStep, setActiveStep}) {
     }
   }
 
+  function checkTimeConflict () {
+    if (facility && startTime && endTime) {
+      console.log(filteredSchedules.find(item => {
+        const startAt = new Date(0, 0, 0, parseInt(item.start_at.split(':')[0]), parseInt(item.start_at.split(':')[1]), 0)
+        const endAt = new Date(0, 0, 0, parseInt(item.end_at.split(':')[0]), parseInt(item.end_at.split(':')[1]), 0)
+        return (startTime.hour() >= startAt.getHours() && startTime.minute() >= startAt.getMinutes()) ||
+        (endTime.hour() <= endAt.getHours() && endTime.minute() <= endAt.getMinutes()) 
+      }))
+      if(filteredSchedules.find(item => {
+        const startAt = new Date(0, 0, 0, parseInt(item.start_at.split(':')[0]), parseInt(item.start_at.split(':')[1]), 0)
+        const endAt = new Date(0, 0, 0, parseInt(item.end_at.split(':')[0]), parseInt(item.end_at.split(':')[1]), 0)
+        return (startTime.hour() >= startAt.getHours() && startTime.minute() >= startAt.getMinutes()) ||
+        (endTime.hour() <= endAt.getHours() && endTime.minute() <= endAt.getMinutes()) 
+      })) {
+        setHasTimeConflict(true)
+      } else {
+        setHasTimeConflict(false)
+      }
+    } else {
+      setHasTimeConflict(false)
+    }
+  }
+
   return (
     <Box sx={{ minWidth: 120 }}>
       <TypeCards types={types} type={type} setType={setType} />
@@ -291,6 +315,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                   .sort((curr, next) => (
                     parseInt(curr.start_at.split(':')[0]) - parseInt(next.start_at.split(':')[0])
                   )))
+                setStartDate(dayjs(val.dateStr))
               }} schedules={facilities.find(item => item.id === facility).schedules} />
             )}
 
@@ -318,9 +343,17 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 value={startTime}
                 onChange={(val) => {
                   setStartTime(val)
+                  setHasTimeConflict(false)
+                  checkTimeConflict()
                 }}
-                helper
-                renderInput={(params) => <TextField helperText="Earliest time to set is 7:00 A.M." required fullWidth {...params} />}
+                renderInput={(params) => 
+                  <TextField
+                    helperText={hasTimeConflict ? "Conflicting with existing schedules." : "Earliest time to set is 7:00 A.M."}
+                    required
+                    fullWidth
+                    error={hasTimeConflict}
+                    {...params} />
+                }
               />
             </Grid>
             <Grid item xs={6}>
@@ -331,11 +364,20 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 value={endTime}
                 onChange={(val) => {
                   setEndTime(val)
+                  setHasTimeConflict(false)
+                  checkTimeConflict()
                 }}
-                renderInput={(params) => <TextField helperText="Maximum time rage is 8 hours. Maximum time to set is 10:00 P.M." required fullWidth {...params} />}
+                renderInput={(params) => 
+                  <TextField
+                    helperText={hasTimeConflict ? "Conflicting with existing schedules." : "Maximum time rage is 8 hours. Maximum time to set is 10:00 P.M."}
+                    required
+                    fullWidth
+                    error={hasTimeConflict}
+                    {...params} />
+                }
               />
             </Grid>
-            {auth.role !== 4 && (
+            {(auth.role !== 4 && schedule.type !== 'personal') && (
               <Grid item xs={isRecurring ? 6 : 12}>
                 <FormControlLabel control={<Switch 
                   checked={isRecurring}
@@ -359,7 +401,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 />} label="Until the end of Semester" />
               </Grid>
             )}
-            <Grid item xs={6}>
+            <Grid item xs={isRecurring ? 6:12}>
               <MobileDatePicker
                 label="Start Date"
                 inputFormat="MM/D/YYYY"

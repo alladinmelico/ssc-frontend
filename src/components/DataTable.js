@@ -109,6 +109,18 @@ const DataTable = ({page, setPage, count, rows, columns, loading, rowsPerPage, s
     );
   }
 
+  function getRowClassName (params) {
+    if (params.row.temperature) {
+       return params.row.temperature > 37.5 ? 'temperature-danger' : 'temperature-normal'
+    }
+
+    if (params.row.is_valid_today) {
+      return 'valid-schedule'
+    }
+
+    return ''
+  }
+
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <div style={{ display: 'flex', height: '100%' }}>
@@ -118,7 +130,7 @@ const DataTable = ({page, setPage, count, rows, columns, loading, rowsPerPage, s
             rows={rows}
             columns={columns}
             loading={loading}
-            getRowClassName={(params) => params.row.temperature ? (params.row.temperature > 37.5 ? 'temperature-danger' : 'temperature-normal') : ''}
+            getRowClassName={getRowClassName}
             components={{
               Toolbar: GridToolbar,
               LoadingOverlay: CustomLoadingOverlay,

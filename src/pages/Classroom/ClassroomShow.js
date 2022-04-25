@@ -83,7 +83,7 @@ const ClassroomShow = () => {
               Users
             </Typography>
             <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {classroom.users.map(user => (
+              {classroom.users?.map(user => (
                 <ListItem>
                   <ListItemAvatar>
                     <Avatar alt={user.name} src={user.avatar} />
