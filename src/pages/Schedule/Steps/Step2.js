@@ -144,9 +144,11 @@ export default function Step2({history, activeStep, setActiveStep}) {
 
   const submit = (event) => {
     event.preventDefault()
-    setErrors('')
-    saveData()
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    if (!hasTimeConflict) {
+      setErrors('')
+      saveData()
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   }
 
   function disableWeekends(date) {
@@ -227,22 +229,12 @@ export default function Step2({history, activeStep, setActiveStep}) {
 
   function checkTimeConflict () {
     if (facility && startTime && endTime) {
-      console.log(filteredSchedules.find(item => {
+      setHasTimeConflict(!!filteredSchedules.find(item => {
         const startAt = new Date(0, 0, 0, parseInt(item.start_at.split(':')[0]), parseInt(item.start_at.split(':')[1]), 0)
         const endAt = new Date(0, 0, 0, parseInt(item.end_at.split(':')[0]), parseInt(item.end_at.split(':')[1]), 0)
-        return (startTime.hour() >= startAt.getHours() && startTime.minute() >= startAt.getMinutes()) ||
+        return (startTime.hour() >= startAt.getHours() && startTime.minute() >= startAt.getMinutes()) &&
         (endTime.hour() <= endAt.getHours() && endTime.minute() <= endAt.getMinutes()) 
       }))
-      if(filteredSchedules.find(item => {
-        const startAt = new Date(0, 0, 0, parseInt(item.start_at.split(':')[0]), parseInt(item.start_at.split(':')[1]), 0)
-        const endAt = new Date(0, 0, 0, parseInt(item.end_at.split(':')[0]), parseInt(item.end_at.split(':')[1]), 0)
-        return (startTime.hour() >= startAt.getHours() && startTime.minute() >= startAt.getMinutes()) ||
-        (endTime.hour() <= endAt.getHours() && endTime.minute() <= endAt.getMinutes()) 
-      })) {
-        setHasTimeConflict(true)
-      } else {
-        setHasTimeConflict(false)
-      }
     } else {
       setHasTimeConflict(false)
     }
@@ -335,6 +327,12 @@ export default function Step2({history, activeStep, setActiveStep}) {
               </Grid>
             )}
 
+            {hasTimeConflict && (
+              <Grid item xs={12}>
+                <p style={{color: 'red', borderLeft: '2px solid red', paddingLeft: '1rem'}}>Conflicting with time range of existing schedules.</p>
+              </Grid>
+            )}
+
             <Grid item xs={6}>
               <TimePicker
                 label="Start Time"
@@ -348,7 +346,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 }}
                 renderInput={(params) => 
                   <TextField
-                    helperText={hasTimeConflict ? "Conflicting with existing schedules." : "Earliest time to set is 7:00 A.M."}
+                    helperText="Earliest time to set is 7:00 A.M."
                     required
                     fullWidth
                     error={hasTimeConflict}
@@ -369,7 +367,7 @@ export default function Step2({history, activeStep, setActiveStep}) {
                 }}
                 renderInput={(params) => 
                   <TextField
-                    helperText={hasTimeConflict ? "Conflicting with existing schedules." : "Maximum time rage is 8 hours. Maximum time to set is 10:00 P.M."}
+                    helperText="Maximum time rage is 8 hours. Maximum time to set is 10:00 P.M."
                     required
                     fullWidth
                     error={hasTimeConflict}

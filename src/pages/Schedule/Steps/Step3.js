@@ -210,6 +210,7 @@ export default function Step3({history, activeStep, setActiveStep}) {
                                 </FormControl>
                               </Box>           
                               <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-around' }}>
+                                <Button size='small' onClick={() => setBatches(sliceIntoChunks(users, schedule.facility_capacity))}>Add All Users</Button>
                                 <Button size='small' onClick={() => addUser()}>Add Selected</Button>
                                 <Button size='small' onClick={() => clearFields()}>Clear Inputs</Button>
                                 <Button color="primary" onClick={shuffleBatches}>Shuffle</Button>
