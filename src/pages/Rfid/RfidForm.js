@@ -18,9 +18,10 @@ import InputLabel from '@mui/material/InputLabel';
 import Switch from '@mui/material/Switch';
 import * as yup from "yup"
 import { getAdminUsers } from 'actions/userActions'
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
+import Button from '@mui/material/Button';
 
-
-export default function RfidModal ({modalClosed, rfid}) {
+export default function RfidForm ({modalClosed, rfid}) {
   const [openModal, setOpenModal] = useState(false)
   const { users, count  } = useSelector((state) => state.users)
   const [toAddUser, setToAddUser] = useState(rfid? rfid.user : {});
@@ -98,13 +99,24 @@ export default function RfidModal ({modalClosed, rfid}) {
     if (rfid.id) {
       dispatch(updateRfid(rfid.id, {...data, user_id: toAddUser.id}))
     } else {
-      dispatch(newRfid(data))
+      dispatch(newRfid({...data, user_id: toAddUser.id}))
     }
   };
 
 
   return (
     <div>
+      <Button
+        variant="outlined"
+        color="secondary"
+        onClick={() => setOpenModal(true)}
+        size="large"
+        aria-label="add"
+        style={{ backgroundColor: 'transparent' }}
+        startIcon={<AddBoxOutlinedIcon />}
+      >
+        Add
+      </Button>
       <FormModal
         title={rfid && rfid.id ? 'Edit Rfid' : 'Add Rfid'}
         onSubmit={handleSubmit(onSubmit)}

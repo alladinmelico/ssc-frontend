@@ -13,7 +13,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useQuestions } from 'material-ui-shell/lib/providers/Dialogs/Question'
 import { useSnackbar } from 'notistack'
-
+import MainAppBar from 'components/MainAppBar'
 import {
   getAdminRfids,
   deleteRfid,
@@ -107,7 +107,21 @@ const Rfid = ({history}) => {
 
   return (
     <Page
-      pageTitle={intl.formatMessage({ id: 'rfid', defaultMessage: 'Rfid' })}
+      appBarContent={
+      <MainAppBar
+        title={intl.formatMessage({ id: 'rfid', defaultMessage: 'Rfid' })}
+        noBack
+        modal={
+          editMode ? (
+            <RfidForm rfid={rfid} modalClosed={() => setRfid({})} page={page} rowsPerPage={rowsPerPage} />
+          ) : (
+            <RfidShow rfid={rfid} modalClosed={() => {
+              setRfid({})
+              setEditMode(true)
+            }} />
+          )
+        }
+      />}
     >
       <DataTable
         rows={rfids ? rfids : []}
@@ -119,16 +133,6 @@ const Rfid = ({history}) => {
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
       />
-       <Box>
-        {editMode ? (
-          <RfidForm rfid={rfid} modalClosed={() => setRfid({})} page={page} rowsPerPage={rowsPerPage} />
-        ) : (
-          <RfidShow rfid={rfid} modalClosed={() => {
-            setRfid({})
-            setEditMode(true)
-          }} />
-        )}
-      </Box>
     </Page>
   );
 };
