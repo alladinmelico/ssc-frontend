@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const customAxios = axios.create({
-  baseURL: `https://phplaravel-745170-2505664.cloudwaysapps.com/api`,
+  baseURL: `https://phplaravel-832205-2864431.cloudwaysapps.com/api`,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
