@@ -19,7 +19,7 @@ export default function Step5({history}) {
 
   useEffect(() => {
     if ((schedule && schedule.id) || isUpdated) {
-      setUrl(`https://phplaravel-745170-2505664.cloudwaysapps.com/schedule/${schedule && schedule.id ? schedule.id : isUpdated.id}`)
+      setUrl(`https://phplaravel-832205-2864431.cloudwaysapps.com/schedule/${schedule && schedule.id ? schedule.id : isUpdated.id}`)
     }
   }, [dispatch, history, schedule, isUpdated])
 

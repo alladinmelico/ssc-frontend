@@ -303,7 +303,7 @@ const ScheduleShow = () => {
         aria-describedby="modal-modal-description"
       >
         <Container maxWidth='sm'>
-          <ScheduleQR schedule={schedule} url={'https://phplaravel-745170-2505664.cloudwaysapps.com/schedule/' + schedule.id} />
+          <ScheduleQR schedule={schedule} url={'https://phplaravel-832205-2864431.cloudwaysapps.com/schedule/' + schedule.id} />
         </Container>
       </Modal>
     </Page>

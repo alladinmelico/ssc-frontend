@@ -25,7 +25,7 @@ const Report = () => {
   const [year, setYear] = useState('');
   const [startDate, setStartDate] = useState(dayjs(new Date()));
   const [endDate, setEndDate] = useState(startDate.add(1, 'year'));
-  const baseURL = 'https://phplaravel-745170-2505664.cloudwaysapps.com'
+  const baseURL = 'https://phplaravel-832205-2864431.cloudwaysapps.com'
 
   return (
     <Page

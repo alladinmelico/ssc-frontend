@@ -13,6 +13,7 @@ import helloimage from '../../public/Hello-rafiki 1.png';
 import { Dashboard } from '@mui/icons-material'
 import HomePage from 'pages/Home/Home'
 import Container from '@mui/material/Container';
+import roles from 'constants/roles'
 
 const SignIn = ({ redirectTo = '/' }) => {
   const intl = useIntl()
@@ -36,7 +37,7 @@ const SignIn = ({ redirectTo = '/' }) => {
           setLoading(false)
           localStorage.setItem('auth',JSON.stringify({
             ...response.profileObj,
-            displayName: response.profileObj.name,
+            displayName: `${response.profileObj.name} (${roles.find(item => item.value === res.data.role_id)?.label})`,
             googleToken: response.accessToken,
             token: res.data.token,
             photoURL: response.profileObj.imageUrl,
