@@ -95,7 +95,7 @@ const Facility = ({history}) => {
             defaultMessage: 'Dialog Item',
           }),
           message: intl.formatMessage({
-            id: 'dialog_message',
+            id: 'facility_delete_dialog_message',
             defaultMessage:
               'Are you sure you want to delete this item?',
           }),

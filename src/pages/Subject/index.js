@@ -101,7 +101,7 @@ const Subject = ({history}) => {
             defaultMessage: 'Dialog Item',
           }),
           message: intl.formatMessage({
-            id: 'dialog_message',
+            id: 'subject_delete_dialog_message',
             defaultMessage:
               'Are you sure you want to delete this item?',
           }),
